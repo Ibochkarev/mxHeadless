@@ -11,6 +11,8 @@ $cases = [
     ['method' => 'GET', 'path' => '/api/v1/health', 'expect' => 200],
     ['method' => 'GET', 'path' => '/api/v1/meta/endpoints', 'expect' => 200],
     ['method' => 'GET', 'path' => '/api/v1/meta/openapi', 'expect' => 200],
+    ['method' => 'GET', 'path' => '/api/v1/meta/openapi.json', 'expect' => 200],
+    ['method' => 'GET', 'path' => '/api/v1/docs', 'expect' => 200],
     ['method' => 'GET', 'path' => '/api/v1/schema', 'expect' => 200],
     ['method' => 'GET', 'path' => '/api/v1/resources?limit=1&filter[published]=1', 'expect' => 200],
     ['method' => 'GET', 'path' => '/api/v1/contexts?limit=1', 'expect' => 401],

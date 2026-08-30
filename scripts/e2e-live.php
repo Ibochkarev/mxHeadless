@@ -10,7 +10,14 @@ $pass = 0; $fail = 0; $bugs = [];
 
 function req(string $method, string $url, array $headers = [], ?string $body = null): array {
     $ch = curl_init($url);
-    $hdrs = array_merge(['Accept: application/json'], $headers);
+    $hasAccept = false;
+    foreach ($headers as $header) {
+        if (stripos($header, 'Accept:') === 0) {
+            $hasAccept = true;
+            break;
+        }
+    }
+    $hdrs = $hasAccept ? $headers : array_merge(['Accept: application/json'], $headers);
     curl_setopt_array($ch, [
         CURLOPT_CUSTOMREQUEST => $method,
         CURLOPT_RETURNTRANSFER => true,
@@ -28,7 +35,6 @@ function req(string $method, string $url, array $headers = [], ?string $body = n
     }
     $status = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
     $headerSize = (int) curl_getinfo($ch, CURLINFO_HEADER_SIZE);
-    curl_close($ch);
     $headerRaw = substr($raw, 0, $headerSize);
     $bodyOut = substr($raw, $headerSize);
     $headersOut = [];
@@ -72,6 +78,25 @@ check('meta.endpoints', $r['status'] === 200 && $endpointCount > 5, "count=$endp
 $r = req('GET', "$base/api/v1/meta/openapi");
 check('meta.openapi', $r['status'] === 200 && isset($r['json']['data']['openapi']), (string)$r['status']);
 
+$r = req('GET', "$base/api/v1/meta/openapi.json");
+check(
+    'meta.openapi.json',
+    $r['status'] === 200
+        && ($r['json']['openapi'] ?? null) === '3.0.3'
+        && !isset($r['json']['data']['openapi']),
+    (string)$r['status'] . ' ' . substr($r['body'], 0, 80),
+);
+
+$r = req('GET', "$base/api/v1/docs", ['Accept: text/html']);
+check(
+    'docs.swagger',
+    $r['status'] === 200
+        && str_contains($r['headers']['content-type'] ?? '', 'text/html')
+        && str_contains($r['body'], 'SwaggerUIBundle')
+        && str_contains($r['body'], '/meta/openapi.json'),
+    (string)$r['status'] . ' ct=' . ($r['headers']['content-type'] ?? ''),
+);
+
 $r = req('GET', "$base/api/v1/resources?" . http_build_query(['limit' => 2, 'filter' => ['published' => ['eq' => 1]], 'fields' => 'id,pagetitle,uri']));
 check('resources.filter', $r['status'] === 200 && is_array($r['json']['data'] ?? null) && ($r['json']['data'] !== []), (string)$r['status'] . ' ' . substr($r['body'],0,120));
 $resources = $r['json']['data'] ?? [];
@@ -104,6 +129,40 @@ check('contexts.no_auth', $r['status'] === 401 && ($r['json']['code'] ?? '') ===
 $r = req('GET', "$base/api/v1/chunks?limit=1");
 check('chunks.no_auth', $r['status'] === 401, (string)$r['status']);
 
+$r = req('GET', "$base/api/v1/templates?limit=1");
+check('templates.no_auth', $r['status'] === 401, (string)$r['status']);
+
+$r = req('GET', "$base/api/v1/snippets?limit=1");
+check('snippets.no_auth', $r['status'] === 401 && ($r['json']['code'] ?? '') === 'token_required', (string)$r['status'] . ' ' . ($r['json']['code'] ?? ''));
+
+$r = req('GET', "$base/api/v1/categories?limit=1");
+check('categories.no_auth', $r['status'] === 401, (string)$r['status']);
+
+$r = req('GET', "$base/api/v1/content_types?limit=1");
+check('content_types.no_auth', $r['status'] === 401, (string)$r['status']);
+
+$r = req('GET', "$base/api/v1/tvs?limit=1");
+check('tvs.no_auth', $r['status'] === 401, (string)$r['status']);
+
+$r = req('GET', "$base/api/v1/resources?include_deleted=1&limit=1");
+check('resources.include_deleted_anon', $r['status'] === 403, (string)$r['status'] . ' ' . ($r['json']['code'] ?? ''));
+
+$r = req('GET', "$base/api/v1/resources?" . http_build_query(['limit' => 2, 'sort' => 'id:asc', 'fields' => 'id']));
+check('resources.sort_asc_alias', $r['status'] === 200 && is_array($r['json']['data'] ?? null), (string)$r['status']);
+
+// URI over limit → 414
+$longUri = str_repeat('a', 3000);
+$r = req('GET', "$base/api/v1/pages/" . $longUri);
+check('limits.uri_too_long', $r['status'] === 414, (string)$r['status']);
+
+if ($apiKey !== '') {
+    $bigPath = sys_get_temp_dir() . '/mxh-e2e-body.json';
+    file_put_contents($bigPath, json_encode(['pagetitle' => str_repeat('x', 2_000_000), 'published' => 0, 'template' => 0], JSON_THROW_ON_ERROR));
+    $r = req('POST', "$base/api/v1/resources", array_merge($auth, ['Content-Type: application/json']), (string) file_get_contents($bigPath));
+    @unlink($bigPath);
+    check('limits.body_too_large', $r['status'] === 413, (string)$r['status'] . ' ' . substr($r['body'], 0, 80));
+}
+
 // --- API key ---
 if ($apiKey !== '') {
     $r = req('GET', "$base/api/v1/contexts?limit=5", $auth);
@@ -114,6 +173,68 @@ if ($apiKey !== '') {
 
     $r = req('GET', "$base/api/v1/chunks?limit=1", $auth);
     check('chunks.with_key', $r['status'] === 200, (string)$r['status']);
+
+    $r = req('GET', "$base/api/v1/templates?limit=1&fields=id,templatename", $auth);
+    check('templates.with_key', $r['status'] === 200, (string)$r['status'] . ' ' . substr($r['body'],0,120));
+
+    $r = req('GET', "$base/api/v1/tvs?limit=1&fields=id,name,type", $auth);
+    check('tvs.with_key', $r['status'] === 200, (string)$r['status'] . ' ' . substr($r['body'],0,120));
+
+    $r = req('GET', "$base/api/v1/snippets?limit=1&include=category&fields=id,name,category", $auth);
+    check('snippets.include.category', $r['status'] === 200, (string)$r['status'] . ' ' . substr($r['body'],0,160));
+
+    $r = req('GET', "$base/api/v1/templates?" . http_build_query(['limit' => 1, 'filter' => ['published' => ['eq' => 1]]]), $auth);
+    check('templates.filter.published_denied', $r['status'] === 422, (string)$r['status']);
+
+    $r = req('GET', "$base/api/v1/categories?" . http_build_query(['limit' => 1, 'filter' => ['parent' => ['eq' => 0]]]), $auth);
+    check('categories.filter.parent', $r['status'] === 200, (string)$r['status']);
+
+    $r = req('GET', "$base/api/v1/resources/1?fields=id,createdby", $auth);
+    check(
+        'resources.protected_fields_denied',
+        $r['status'] === 422 && ($r['json']['code'] ?? '') === 'validation_failed',
+        (string)$r['status'] . ' ' . substr($r['body'], 0, 120),
+    );
+
+    $r = req('GET', "$base/api/v1/resources?limit=1&fields=id", array_merge($auth, ['Accept: text/html']));
+    check('accept.html_on_json_denied', $r['status'] === 406, (string)$r['status']);
+
+    $r = req('GET', "$base/api/v1/docs", ['Accept: text/html']);
+    check('accept.html_docs_ok', $r['status'] === 200 && str_contains($r['headers']['content-type'] ?? '', 'text/html'), (string)$r['status']);
+
+    $r = req('GET', "$base/api/v1/contexts/web", $auth);
+    check('contexts.get_by_key', $r['status'] === 200 && ($r['json']['data']['key'] ?? '') === 'web', (string)$r['status'] . ' ' . substr($r['body'], 0, 120));
+
+    $r = req('GET', "$base/api/v1/resources?limit=2&page=2&offset=10&fields=id", $auth);
+    check(
+        'pagination.page_offset_conflict',
+        $r['status'] === 422 && ($r['json']['code'] ?? '') === 'validation_failed',
+        (string)$r['status'] . ' ' . substr($r['body'], 0, 160),
+    );
+
+    $r = req('GET', "$base/api/v1/meta/openapi.json", $auth);
+    $oaTags = array_column($r['json']['tags'] ?? [], 'name');
+    $tplInclude = false;
+    foreach ($r['json']['paths']['/templates']['get']['parameters'] ?? [] as $p) {
+        if (($p['name'] ?? '') === 'include' && ($p['schema']['example'] ?? null) === 'category') {
+            $tplInclude = true;
+        }
+    }
+    $ctParams = array_column($r['json']['paths']['/content_types']['get']['parameters'] ?? [], 'name');
+    $hasContextsKey = isset($r['json']['paths']['/contexts/{key}']);
+    $deleteParams = array_column($r['json']['paths']['/resources/{id}']['delete']['parameters'] ?? [], 'name');
+    $getItemParams = array_column($r['json']['paths']['/resources/{id}']['get']['parameters'] ?? [], 'name');
+    check(
+        'openapi.element_includes',
+        $r['status'] === 200
+            && in_array('Templates', $oaTags, true)
+            && $tplInclude
+            && !in_array('include', $ctParams, true)
+            && $hasContextsKey
+            && in_array('force', $deleteParams, true)
+            && in_array('include_deleted', $getItemParams, true),
+        'tags=' . json_encode($oaTags) . ' tplInclude=' . ($tplInclude ? '1' : '0') . ' ct=' . json_encode($ctParams) . ' contextsKey=' . ($hasContextsKey ? '1' : '0') . ' del=' . json_encode($deleteParams) . ' get=' . json_encode($getItemParams),
+    );
 
     $r = req('GET', "$base/api/v1/objects/resources?limit=1", $auth);
     check('objects.resources', $r['status'] === 200, (string)$r['status']);
@@ -190,6 +311,9 @@ if ($apiKey !== '') {
 
         $r = req('DELETE', "$base/api/v1/resources/$createdId", $auth);
         check('resources.delete', in_array($r['status'], [200, 204], true), (string)$r['status'] . ' ' . substr($r['body'],0,150));
+
+        $r = req('DELETE', "$base/api/v1/resources/$createdId", $auth);
+        check('resources.delete_twice_404', $r['status'] === 404, (string)$r['status'] . ' ' . substr($r['body'],0,120));
     }
 }
 
@@ -204,6 +328,21 @@ check('404.unknown', $r['status'] === 404, (string)$r['status']);
 
 $r = req('GET', "$base/api/v1/resources/999999999", $auth);
 check('404.missing_resource', $r['status'] === 404, (string)$r['status']);
+
+// --- assets/api.php fallback (nginx-friendly ?route=) ---
+$r = req('GET', "$base/assets/components/mxheadless/api.php");
+check(
+    'fallback.api_php.discovery',
+    $r['status'] === 200 && ($r['json']['data']['name'] ?? '') === 'mxHeadless',
+    (string)$r['status'] . ' ' . substr($r['body'], 0, 120)
+);
+
+$r = req('GET', "$base/assets/components/mxheadless/api.php?route=/v1/health");
+check(
+    'fallback.api_php.route_health',
+    $r['status'] === 200 && (($r['json']['data']['status'] ?? '') === 'ok' || ($r['json']['status'] ?? '') === 'ok'),
+    (string)$r['status'] . ' ' . substr($r['body'], 0, 120)
+);
 
 echo "\n$pass passed, $fail failed\n";
 if ($bugs) {

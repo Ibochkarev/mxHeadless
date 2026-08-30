@@ -58,6 +58,10 @@ class modX
         return $this->options[$key] ?? $default;
     }
 
+    public function log(int $level, string $message, ?string $target = null, ?string $def = '', ?string $file = '', ?string $line = '', ?string $tag = ''): void
+    {
+    }
+
     public function newQuery(string $class, $criteria = null, bool $cacheFlag = true, string $alias = ''): xPDOQuery
     {
         return new xPDOQuery($class, $alias);
