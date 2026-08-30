@@ -54,7 +54,7 @@ filter[field][operator]=value
 
 | Оператор | Смысл | Пример |
 |----------|-------|--------|
-| `eq` | равно | `filter[published][eq]=1` |
+| `eq` | равно | `filter[published][eq]=1` или `true`/`false` |
 | `neq` | не равно | `filter[parent][neq]=0` |
 | `gt` | больше | `filter[id][gt]=100` |
 | `gte` | больше или равно | `filter[id][gte]=100` |
@@ -66,7 +66,7 @@ filter[field][operator]=value
 | `null` | IS NULL | `filter[deletedon][null]=1` |
 | `not_null` | IS NOT NULL | `filter[publishedon][not_null]=1` |
 
-Несколько фильтров объединяются через AND. Только `filterable` поля. Неизвестное поле: `422 Filter not allowed`.
+Несколько фильтров объединяются через AND. Boolean-поля (`published`, `deleted`, `hidemenu`, …) принимают `0`/`1` и `true`/`false` (также `yes`/`no`/`on`/`off`); иначе `422`. Только `filterable` поля. Неизвестное поле: `422 Filter not allowed`.
 
 ### Безопасность
 

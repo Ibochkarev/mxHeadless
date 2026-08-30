@@ -12,16 +12,17 @@ mxHeadless — REST API gateway для [MODX Revolution 3](https://modx.com/). �
 | [Resources API](api/resources.md) | CRUD ресурсов и страниц по URI |
 | [Аутентификация](api/authentication.md) | Сессии, API keys, OAuth tokens, CSRF |
 | [Фильтрация](api/filtering.md) | Фильтры, сортировка, пагинация, fields, includes |
-| [Расширения](extensions/overview.md) | Регистрация объектов из Extras |
+| [Расширения](extensions/overview.md) | Регистрация объектов из Extras ([MiniShop3](extensions/minishop3.md)) |
 | [OpenAPI](openapi.yaml) | Машиночитаемая спецификация |
 | [Архитектура](architecture.md) | Дизайн и security model |
 | [Безопасность](security.md) | Threat model и checklist |
 | [Contributing](contributing/development.md) | Локальная разработка, тесты, релизы |
+| [Чеклист тестирования](contributing/testing.md) | Автоматические gate и ручная матрица проверок |
 
 ## Справочник API
 
 - [Discovery](api/discovery.md) · [Health](api/health.md) · [Schema](api/schema.md) · [Meta-каталог](api/meta.md)
-- [Resources](api/resources.md) · [Pages](api/pages.md) · [Objects](api/objects.md)
+- [Resources](api/resources.md) · [Pages](api/pages.md) · [Objects](api/objects.md) · [Элементы](api/elements.md)
 - [Сортировка](api/sorting.md) · [Пагинация](api/pagination.md) · [Поля](api/fields.md) · [Связи](api/relations.md)
 - [TVs](api/tv.md) · [Media](api/media.md) · [Contexts](api/contexts.md) · [Search](api/search.md)
 - [Мутации](api/mutations.md) · [Ошибки](api/errors.md) · [Превью](api/preview.md)

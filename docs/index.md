@@ -12,16 +12,17 @@ mxHeadless is a REST API gateway for [MODX Revolution 3](https://modx.com/). It 
 | [Resources API](api/resources.md) | CRUD for MODX resources and pages by URI |
 | [Authentication](api/authentication.md) | Sessions, API keys, OAuth tokens, CSRF |
 | [Filtering & querying](api/filtering.md) | Filters, sort, pagination, fields, includes |
-| [Extensions](extensions/overview.md) | Register custom objects from Extras |
+| [Extensions](extensions/overview.md) | Register custom objects from Extras ([MiniShop3](extensions/minishop3.md)) |
 | [OpenAPI spec](openapi.yaml) | Machine-readable API description |
 | [Architecture](architecture.md) | Internal design and security model |
 | [Security](security.md) | Threat model and production checklist |
 | [Contributing](contributing/development.md) | Local dev, tests, release workflow |
+| [Testing checklist](contributing/testing.md) | Automatic gates and manual verification matrix |
 
 ## API reference
 
 - [Discovery](api/discovery.md) · [Health](api/health.md) · [Schema](api/schema.md) · [Meta catalog](api/meta.md)
-- [Resources](api/resources.md) · [Pages](api/pages.md) · [Objects](api/objects.md)
+- [Resources](api/resources.md) · [Pages](api/pages.md) · [Objects](api/objects.md) · [Elements](api/elements.md)
 - [Sorting](api/sorting.md) · [Pagination](api/pagination.md) · [Fields](api/fields.md) · [Relations](api/relations.md)
 - [TVs](api/tv.md) · [Media](api/media.md) · [Contexts](api/contexts.md) · [Search](api/search.md)
 - [Mutations](api/mutations.md) · [Errors](api/errors.md) · [Preview](api/preview.md)

@@ -12,7 +12,7 @@
 | `offset` | 0 | `mxheadless.max_offset` (100000) |
 | `page` | — | 1-based; если `offset` не передан: `offset = (page - 1) * limit` |
 
-`limit` — целое ≥ 1. `offset` — неотрицательное целое. `page` ≥ 1. Невалидные значения → `422`. Выше max — обрезаются.
+`limit` — целое ≥ 1. `offset` — неотрицательное целое. `page` ≥ 1. Невалидные значения → `422`. Выше max — обрезаются. Одновременно `page` и `offset` → `422`.
 
 ```
 GET /api/v1/resources?limit=50&offset=100

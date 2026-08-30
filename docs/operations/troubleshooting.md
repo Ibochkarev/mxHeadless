@@ -9,7 +9,7 @@ Common mxHeadless failures and where to look first.
 | Plugin disabled | Enable mxHeadless plugin in Manager |
 | Wrong prefix | Check `mxheadless.api.prefix` (default `/api`) |
 | Rewrite bypasses MODX | Route `/api` to `index.php`; see [web server](../installation/web-server.md) |
-| Friendly URLs off | Use `assets/components/mxheadless/api.php/v1/health` |
+| Friendly URLs off | Use `assets/components/mxheadless/api.php?route=/v1/health` (or PATH_INFO `api.php/v1/health` when supported) |
 
 Verify:
 

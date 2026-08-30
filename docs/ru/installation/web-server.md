@@ -17,3 +17,8 @@ location / {
 ## Резервный вход
 
 Без rewrite используйте `assets/components/mxheadless/api.php`.
+
+- С PATH_INFO: `.../api.php/v1/health`
+- Без PATH_INFO (типичный nginx/Herd): `.../api.php?route=/v1/health`
+
+Голый `api.php` — discovery. См. [установку](install.md).

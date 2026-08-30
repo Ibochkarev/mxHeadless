@@ -12,7 +12,7 @@ Caps that stop a client from pulling the whole database or sending huge payloads
 | `mxheadless.max_include_relations` | 10 | Max `include` paths |
 | `mxheadless.max_include_depth` | 2 | Max nesting in `include=a.b` |
 
-`limit` below 1 is clamped to 1. `page` without `offset` becomes `(page - 1) * limit`, then capped by `max_offset`.
+`limit` below 1 is rejected (`422`). `page` without `offset` becomes `(page - 1) * limit`, then capped by `max_offset`. Sending both `page` and `offset` returns `422`.
 
 ## Related
 

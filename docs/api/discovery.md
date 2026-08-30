@@ -27,9 +27,21 @@ The path prefix comes from the system setting `mxheadless.api.prefix` (default `
     "links": {
       "health": "/api/v1/health",
       "schema": "/api/v1/schema",
+      "docs": "/api/v1/docs",
       "endpoints": "/api/v1/meta/endpoints",
       "openapi": "/api/v1/meta/openapi",
-      "pages": "/api/v1/pages/{uri}"
+      "openapi_json": "/api/v1/meta/openapi.json",
+      "auth_token": "/api/v1/auth/token",
+      "resources": "/api/v1/resources",
+      "pages": "/api/v1/pages/{uri}",
+      "contexts": "/api/v1/contexts",
+      "chunks": "/api/v1/chunks",
+      "templates": "/api/v1/templates",
+      "snippets": "/api/v1/snippets",
+      "tvs": "/api/v1/tvs",
+      "categories": "/api/v1/categories",
+      "content_types": "/api/v1/content_types",
+      "objects": "/api/v1/objects/{name}"
     }
   },
   "meta": {}
@@ -44,7 +56,7 @@ The path prefix comes from the system setting `mxheadless.api.prefix` (default `
 | `cors` | CORS switch and configured origins (for Nuxt/Next bootstrap) |
 | `links` | Related public discovery URLs |
 
-Discovery does not list every route. For the live route list use [`/meta/endpoints`](meta.md). For route shapes and parameters, use [OpenAPI](../openapi.yaml) or [`/meta/openapi`](meta.md). For registered objects and fields, call [`/schema`](schema.md).
+Discovery does not list every route. For the live route list use [`/meta/endpoints`](meta.md). For route shapes and parameters, use [OpenAPI](../openapi.yaml), [`/meta/openapi`](meta.md), or interactive [`/docs`](meta.md) (Swagger UI). For registered objects and fields, call [`/schema`](schema.md).
 
 ## Typical use
 

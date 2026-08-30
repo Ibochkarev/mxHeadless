@@ -101,13 +101,77 @@ Scope: `objects.orders.read`. Пользователь видит только �
 
 ## Корзина и checkout
 
-Cart mutations лучше через dedicated endpoints (`registerEndpoint`), а не raw `POST /objects/orders` из браузера.
+Cart, submit заказа, login покупателя и MS3-токены живут в **нативном MiniShop3 Web API** (`assets/components/minishop3/api.php?route=/api/v1/...`). Не дублируйте их CRUD-ом `/objects/orders` из браузера.
 
-Паттерн:
+mxHeadless Extension API — для **каталога/чтения** (`products`, `categories`) и admin-чтения заказов. MS3 Web API — для **корзины / checkout / customer token**.
 
-1. `POST /api/v1/store/cart/items` — custom handler в MiniShop3 Extra
-2. Handler использует MODX session + CSRF
-3. Webhooks при завершении заказа
+Опционально Extra может `registerEndpoint` под mxHeadless (`/api/v1/store/...`), если нужен один префикс хоста. Обычно проще звать MS3 `api.php` напрямую.
+
+## Сосуществование: mxHeadless + MS3 Web API
+
+Оба используют префикс `/api/v1`, но **разные входы и envelope**. Выравнивайте настройки и клиенты фронта. Роутеры не сливать.
+
+### Entrypoints
+
+| API | Base | Envelope | Auth |
+|-----|------|----------|------|
+| mxHeadless | `https://site/api/v1/...` (plugin) или `.../mxheadless/api.php?route=/v1/...` | `data` / `meta` / `links`; ошибки = problem+json | API key, OAuth `mxt_`, session Manager |
+| MiniShop3 Web | `.../minishop3/api.php?route=/api/v1/...` | `{ success, message, data, code, error_code }` | `ms3_token` / Bearer / cookie |
+
+Pretty URL `/api/v1/cart/...` сначала попадает в **mxHeadless** plugin и даёт 404. MS3 вызывайте только через `api.php?route=` (или proxy rewrite на MS3).
+
+### CORS (только настройки)
+
+SPA в браузере бьёт в оба API. Один и тот же allowlist на обоих пакетах.
+
+| Тема | mxHeadless | MiniShop3 |
+|------|------------|-----------|
+| Origins | `mxheadless.cors.enabled=true`, `mxheadless.cors.allowed_origins` | `ms3_cors_allowed_origins` (пусто = только same-origin) |
+| Credentials (cookies) | `mxheadless.cors.allow_credentials` | В коде MS3 CORS `allow_credentials: true` при заданных origins |
+| Заголовки SPA | `Authorization`, `X-API-Key`, `Idempotency-Key`, … | `Authorization`, `MS3TOKEN` |
+
+Пример для Nuxt на `https://app.example.com`:
+
+```text
+mxheadless.cors.enabled = true
+mxheadless.cors.allowed_origins = https://app.example.com,http://localhost:3000
+mxheadless.cors.allow_credentials = false
+
+ms3_cors_allowed_origins = https://app.example.com,http://localhost:3000
+```
+
+Если магазину нужен cookie `ms3_token` cross-origin — только явные origins (не `*` с credentials). CMS API key по возможности без credentials.
+
+См. [CORS](../configuration/cors.md).
+
+### Trusted proxies
+
+mxHeadless: `mxheadless.trusted_proxies` = IP балансировщиков ([trusted proxies](../configuration/trusted-proxies.md)).
+
+У MiniShop3 отдельной настройки нет. Rate limit и логи берут IP по своей логике. Один и тот же nginx/LB перед обоими входами (`X-Forwarded-For` sanitized, TLS на proxy). Кривой proxy бьёт fairness у обоих API независимо.
+
+### Документация фронта: две спеки или BFF
+
+**Вариант A — два клиента (проще всего)**
+
+1. CMS → OpenAPI mxHeadless: live `/api/v1/meta/openapi.json` или `docs/openapi.yaml`.
+2. Shop → роуты MS3 Web (`config/routes/web.php` / docs MS3). Общего OpenAPI с mxHeadless нет.
+3. В Nuxt/Next: `runtimeConfig.cmsBase` и `runtimeConfig.shopBase` (URL `api.php` MS3). Разные мапперы ошибок (problem+json vs `{success:false}`).
+
+**Вариант B — BFF (один DX для SPA)**
+
+Node/Nitro/`server/api`:
+
+- `/bff/cms/*` → mxHeadless
+- `/bff/shop/*` → MS3 `api.php?route=`
+
+SPA говорит только с BFF. Оба error shape → один тип на фронте. CORS тогда между browser и BFF (часто same-origin).
+
+**Вариант C — split path на reverse proxy**
+
+Nginx: `/api/v1/resources|pages|contexts|chunks|…` → MODX (mxHeadless), `/api/v1/cart|order|customer|product|…` → MS3 `api.php`. Только с явным allowlist. Имена вроде `categories` столкнутся, если оба отдают их на одном path.
+
+Дефолт для большинства сайтов: **A** (каталог через Extension objects + корзина через MS3 `api.php`) или **B**, если SPA не должен знать два бэкенда.
 
 ## TVs и media
 
@@ -131,4 +195,6 @@ Media URLs через MODX Media Sources. Filesystem paths не возвраща
 
 - [Extension overview](overview.md)
 - [Authentication](../api/authentication.md)
+- [CORS](../configuration/cors.md)
+- [Trusted proxies](../configuration/trusted-proxies.md)
 - [Nuxt example](../examples/nuxt.md)

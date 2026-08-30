@@ -10,6 +10,7 @@ REST API для MODX Revolution 3. JSON-бэкенд для headless-сайто�
 - Закрытый доступ по умолчанию: MODX ACL, API keys, CSRF, rate limiting
 - Extension API для Extras (MiniShop3, YandexMapsLocator, свои модели)
 - OpenAPI и документация в [docs/ru/](docs/ru/index.md) ([EN](docs/index.md))
+- Swagger UI: `GET /api/v1/docs` (live OpenAPI на `/api/v1/meta/openapi.json`)
 
 ## Требования
 
@@ -36,11 +37,12 @@ php build.php
 curl -s https://your-site.example/api/v1 | jq
 curl -s https://your-site.example/api/v1/health | jq
 curl -s 'https://your-site.example/api/v1/resources?limit=5&filter[published]=1' | jq
+# Browser: https://your-site.example/api/v1/docs
 ```
 
 ## Документация
 
-[Русская](docs/ru/index.md) · [English](docs/index.md)
+[Русская](docs/ru/index.md) · [English](docs/index.md) · [Чеклист проверок](docs/ru/contributing/testing.md)
 
 ## Лицензия
 

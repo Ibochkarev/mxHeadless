@@ -101,13 +101,77 @@ Scope: `objects.orders.read`. Users see only orders allowed by MODX ACL and fiel
 
 ## Cart and checkout
 
-Cart mutations may use dedicated endpoints registered via `registerEndpoint` (recommended for transactional logic) rather than raw `POST /objects/orders` from the browser.
+Cart, order submit, customer login, and MS3 tokens belong to the **native MiniShop3 Web API** (`assets/components/minishop3/api.php?route=/api/v1/...`). Do not reinvent them as CRUD on `/objects/orders` from the browser.
 
-Pattern:
+Use mxHeadless Extension API for **catalog/read** (`products`, `categories`) and admin-style order reads. Use MS3 Web API for **session cart / checkout / customer token**.
 
-1. `POST /api/v1/store/cart/items` — custom handler in MiniShop3 Extra
-2. Handler uses MODX session + CSRF
-3. Emits webhooks on order completion
+Optional: a thin Extra can also `registerEndpoint` under mxHeadless (`/api/v1/store/...`) if you want one host prefix. Prefer calling MS3 `api.php` directly unless you need a single gateway.
+
+## Coexistence: mxHeadless + MS3 Web API
+
+Both products use the path prefix `/api/v1`, but **different entrypoints and envelopes**. Align settings and frontend clients. Do not merge routers.
+
+### Entrypoints
+
+| API | Base | Envelope | Auth |
+|-----|------|----------|------|
+| mxHeadless | `https://site/api/v1/...` (plugin) or `.../mxheadless/api.php?route=/v1/...` | `data` / `meta` / `links`; errors = problem+json | API key, OAuth `mxt_`, Manager session |
+| MiniShop3 Web | `.../minishop3/api.php?route=/api/v1/...` | `{ success, message, data, code, error_code }` | `ms3_token` / Bearer / cookie |
+
+Pretty URL `/api/v1/cart/...` hits the **mxHeadless** plugin first and returns 404. Call MS3 only through its `api.php?route=` URL (or proxy rewrite that targets MS3).
+
+### CORS (settings only)
+
+Browser SPA calls both APIs. Mirror the same allowlist on both packages.
+
+| Concern | mxHeadless | MiniShop3 |
+|---------|------------|-----------|
+| Enable / origins | `mxheadless.cors.enabled=true`, `mxheadless.cors.allowed_origins` | `ms3_cors_allowed_origins` (empty = same-origin only) |
+| Credentials (cookies) | `mxheadless.cors.allow_credentials` | MS3 CORS uses `allow_credentials: true` in code when origins are set |
+| Headers the SPA sends | Include `Authorization`, `X-API-Key`, `Idempotency-Key`, … | Include `Authorization`, `MS3TOKEN` |
+
+Example for Nuxt on `https://app.example.com`:
+
+```text
+mxheadless.cors.enabled = true
+mxheadless.cors.allowed_origins = https://app.example.com,http://localhost:3000
+mxheadless.cors.allow_credentials = false
+
+ms3_cors_allowed_origins = https://app.example.com,http://localhost:3000
+```
+
+If the shop needs cookie `ms3_token` cross-origin, list exact origins (never `*` with credentials). Keep CMS API key calls credential-less when possible.
+
+See [CORS](../configuration/cors.md).
+
+### Trusted proxies
+
+mxHeadless: set `mxheadless.trusted_proxies` to balancer IPs so rate limit / `client_ip` use `X-Forwarded-For` correctly ([trusted proxies](../configuration/trusted-proxies.md)).
+
+MiniShop3 does not share that setting. Rate limit and logging use its own IP resolution. Put the **same nginx/LB config** in front of both entrypoints (`X-Forwarded-For` sanitized, TLS terminated). Wrong proxy config breaks fairness on both APIs independently.
+
+### Frontend docs: two specs or one BFF
+
+**Option A — two clients (simplest)**
+
+1. CMS client → mxHeadless OpenAPI: live `/api/v1/meta/openapi.json` or repo `docs/openapi.yaml`.
+2. Shop client → MS3 Web routes (`config/routes/web.php` / MS3 docs). No shared OpenAPI with mxHeadless today.
+3. In Nuxt/Next: `runtimeConfig.cmsBase` and `runtimeConfig.shopBase` (MS3 `api.php` URL). Separate error mappers (problem+json vs `{success:false}`).
+
+**Option B — BFF (one DX for the SPA)**
+
+Node/Nitro/`server/api` proxies:
+
+- `/bff/cms/*` → mxHeadless
+- `/bff/shop/*` → MS3 `api.php?route=`
+
+SPA talks only to the BFF. Map both error shapes to one frontend type. CORS then matters only between browser and BFF (often same origin).
+
+**Option C — reverse proxy path split**
+
+Nginx routes `/api/v1/resources|pages|contexts|chunks|…` to MODX (mxHeadless) and `/api/v1/cart|order|customer|product|…` to MS3 `api.php`. Only do this with an explicit allowlist. Overlap names (`categories`) collide if both expose them under the same path.
+
+Recommended default for most sites: **Option A** (catalog via mxHeadless Extension objects + cart via MS3 `api.php`), or **B** if the SPA must not know two backends.
 
 ## TVs and media
 
@@ -131,4 +195,6 @@ Typical events:
 
 - [Extension overview](overview.md)
 - [Authentication](../api/authentication.md)
+- [CORS](../configuration/cors.md)
+- [Trusted proxies](../configuration/trusted-proxies.md)
 - [Nuxt example](../examples/nuxt.md)

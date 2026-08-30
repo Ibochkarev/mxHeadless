@@ -75,3 +75,4 @@ curl -s -X POST https://your-site.example/api/v1/auth/token \
 - [Monitoring](monitoring.md)
 - [Troubleshooting](troubleshooting.md)
 - [Security](../security.md)
+- [Testing and verification checklist](../contributing/testing.md)

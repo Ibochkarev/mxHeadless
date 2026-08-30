@@ -13,7 +13,7 @@
 
 ## Тело запроса
 
-JSON с именами полей. Принимаются только поля из `ObjectDefinition`. Скрытые поля (`properties`) и immutable системные (`id`, `createdon`, `editedon`, `deletedon`, …) на запись дают `422`. Массивы и объекты → `422`. Boolean-поля принимают `true`/`false`/`0`/`1`; integer (`parent`, `template`, …) — только целые. `class_key` — существующий subclass `modResource`. `parent` — `0` или id существующего ресурса (не self и не потомок, иначе цикл). `content_type` — существующий тип. `template` — `0` или id существующего шаблона. `alias` уникален среди неудалённых siblings в том же контексте (макс. 255 символов).
+JSON с именами полей. Принимаются только поля из `ObjectDefinition`. Скрытые поля (`properties`) и immutable системные (`id`, `createdon`, `editedon`, `deletedon`, …) на запись дают `422`. Массивы и объекты → `422`. Boolean-поля принимают `true`/`false`/`0`/`1`; integer (`parent`, `template`, …) — только целые. `class_key` — существующий subclass `modResource`. `parent` — `0` или id существующего неудалённого ресурса (не self и не потомок, иначе цикл). `content_type` — существующий тип. `template` — `0` или id существующего шаблона. `alias` уникален среди неудалённых siblings в том же контексте (макс. 255 символов).
 
 ```bash
 curl -s -X POST https://example.com/api/v1/resources \

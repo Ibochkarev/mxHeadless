@@ -47,13 +47,20 @@ mxHeadless перехватывает запросы до разбора рес�
 
 ### Запасной путь: `api.php`
 
-Без ЧПУ:
+Без ЧПУ. Если веб-сервер отдаёт PATH_INFO:
 
 ```
 https://your-site.example/assets/components/mxheadless/api.php/v1/health
 ```
 
-Оба входа используют один pipeline middleware и одни сервисы.
+На nginx/Herd (часто без PATH_INFO у вложенных `.php`) используйте query `route`:
+
+```
+https://your-site.example/assets/components/mxheadless/api.php?route=/v1/health
+https://your-site.example/assets/components/mxheadless/api.php?route=/api/v1/resources&limit=5
+```
+
+Голый `api.php` ведёт на discovery (`/api/v1`). Оба входа используют один pipeline middleware и одни сервисы.
 
 ## ЧПУ
 

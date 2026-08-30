@@ -26,7 +26,7 @@ Gateway смотрит на `mxheadless.api.prefix` (по умолчанию `/a
 |-------|---------|
 | Apache + friendly URLs | Стандартный rewrite MODX. Отдельное правило не нужно, если `/api` уже идёт в `index.php` |
 | Nginx | `try_files` на `index.php` для неизвестных путей |
-| Без rewrite | `assets/components/mxheadless/api.php/v1/...` |
+| Без rewrite | `assets/components/mxheadless/api.php?route=/v1/...` (или PATH_INFO `api.php/v1/...`) |
 
 За балансировщиком добавьте его IP в `mxheadless.trusted_proxies`, чтобы rate limit и audit видели реальный IP клиента. См. [trusted proxies](../configuration/trusted-proxies.md).
 

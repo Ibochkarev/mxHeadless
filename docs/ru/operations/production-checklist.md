@@ -74,4 +74,5 @@ curl -s -X POST https://your-site.example/api/v1/auth/token \
 - [Деплой](deployment.md)
 - [Мониторинг](monitoring.md)
 - [Troubleshooting](troubleshooting.md)
-- [Безопасность](../ru/security.md)
+- [Безопасность](../security.md)
+- [Чеклист тестирования](../contributing/testing.md)

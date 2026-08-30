@@ -114,9 +114,9 @@ DELETE /api/v1/resources/{id}
 DELETE /api/v1/resources/{id}?force=true
 ```
 
-Default is soft-delete: `deleted=1`, `deletedon` / `deletedby` set, children in the resource tree marked the same way. Soft-deleted rows stay out of normal list/get responses unless you pass `include_deleted=true` (requires `preview`, `resources.update`, or `resources.delete`; also skips the published-only filter).
+Default is soft-delete: `deleted=1`, `deletedon` / `deletedby` set, children in the resource tree marked the same way. Soft-deleted rows stay out of normal list/get responses unless you pass `include_deleted=true` (requires `preview`, `resources.update`, or `resources.delete`; also skips the published-only filter). A second soft `DELETE` on the same id returns `404`.
 
-Restore with `PATCH /resources/{id}` and `{"deleted":0}`. Pass `force=true` to permanently remove the row. Scope: `resources.delete`.
+Restore with `PATCH /resources/{id}` and `{"deleted":0}`. Pass `force=true` to permanently remove the row (including an already soft-deleted one). Scope: `resources.delete`.
 
 See [mutations](mutations.md#delete-behavior).
 

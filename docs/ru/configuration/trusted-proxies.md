@@ -46,3 +46,4 @@ mxHeadless не читает `X-Forwarded-Proto` для URL в core gateway. TLS
 - [Rate limiting](../api/rate-limiting.md)
 - [Deployment](../operations/deployment.md)
 - [Troubleshooting](../operations/troubleshooting.md)
+- [Сосуществование с MiniShop3](../extensions/minishop3.md#сосуществование-mxheadless--ms3-web-api)

@@ -59,7 +59,7 @@ Alternative key: `filters` (same structure).
 
 | Operator | Meaning | Example |
 |----------|---------|---------|
-| `eq` | equals | `filter[published][eq]=1` |
+| `eq` | equals | `filter[published][eq]=1` or `true`/`false` |
 | `neq` | not equals | `filter[parent][neq]=0` |
 | `gt` | greater than | `filter[id][gt]=100` |
 | `gte` | greater or equal | `filter[id][gte]=100` |
@@ -72,6 +72,8 @@ Alternative key: `filters` (same structure).
 | `not_null` | IS NOT NULL | `filter[publishedon][not_null]=1` |
 
 Multiple filters are combined with AND.
+
+Boolean filterable fields (`published`, `deleted`, `hidemenu`, …) accept `0`/`1` and `true`/`false` (also `yes`/`no`/`on`/`off`). Other strings return `422`.
 
 Only `filterable` fields from the object definition are accepted. Unknown fields return `422 Filter not allowed`.
 

@@ -23,3 +23,5 @@ mxheadless.cors.allowed_origins = http://localhost:3000,https://app.example.com
 OPTIONS preflight отвечает `204` с ACAO, если `Origin` совпал. Discovery (`GET /api/v1`) отдаёт `data.cors.enabled`.
 
 В `Access-Control-Expose-Headers` есть `ETag` — клиентский `fetch` может делать conditional revalidation.
+
+Если на том же сайте крутится MiniShop3 Web API, продублируйте origin SPA в `ms3_cors_allowed_origins`. Подробности: [сосуществование с MiniShop3](../extensions/minishop3.md#сосуществование-mxheadless--ms3-web-api).

@@ -47,6 +47,24 @@ Response envelope:
 
 `data` is a full OpenAPI 3.0.3 document generated from `RouteCollection` and `ObjectRegistry`.
 
+## Raw OpenAPI JSON
+
+For Swagger UI and client generators that expect a root `openapi` field (no envelope):
+
+```bash
+curl -s https://example.com/api/v1/meta/openapi.json | jq '.openapi, (.paths | keys)'
+```
+
+Content-Type: `application/openapi+json`.
+
+## Swagger UI
+
+```bash
+open https://example.com/api/v1/docs
+```
+
+Interactive docs (CDN Swagger UI) load `/meta/openapi.json`. Toggle with system setting `mxheadless.swagger.enabled` (default Yes). When disabled, `/docs` returns `404`; raw OpenAPI stays available.
+
 ## Related
 
 - [Discovery](discovery.md)

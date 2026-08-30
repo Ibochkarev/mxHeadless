@@ -17,3 +17,8 @@ Ensure `/api/v1/*` reaches MODX `index.php`.
 ## Fallback entry
 
 If rewrite is unavailable, use `assets/components/mxheadless/api.php`.
+
+- With PATH_INFO: `.../api.php/v1/health`
+- Without PATH_INFO (typical nginx/Herd): `.../api.php?route=/v1/health`
+
+Bare `api.php` serves discovery. See [install](install.md).

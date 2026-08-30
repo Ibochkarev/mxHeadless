@@ -114,9 +114,9 @@ DELETE /api/v1/resources/{id}
 DELETE /api/v1/resources/{id}?force=true
 ```
 
-По умолчанию soft-delete: `deleted=1`, выставляются `deletedon` / `deletedby`, дочерние узлы дерева ресурсов помечаются так же. Soft-deleted строки не попадают в обычные list/get, пока не передадите `include_deleted=true` (нужны `preview`, `resources.update` или `resources.delete`; также снимает фильтр только published).
+По умолчанию soft-delete: `deleted=1`, выставляются `deletedon` / `deletedby`, дочерние узлы дерева ресурсов помечаются так же. Soft-deleted строки не попадают в обычные list/get, пока не передадите `include_deleted=true` (нужны `preview`, `resources.update` или `resources.delete`; также снимает фильтр только published). Повторный soft `DELETE` того же id даёт `404`.
 
-Восстановление: `PATCH /resources/{id}` с `{"deleted":0}`. `force=true` удаляет строку навсегда. Scope: `resources.delete`.
+Восстановление: `PATCH /resources/{id}` с `{"deleted":0}`. `force=true` удаляет строку навсегда (в том числе уже soft-deleted). Scope: `resources.delete`.
 
 См. [мутации](mutations.md#delete-behavior).
 

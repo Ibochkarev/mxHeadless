@@ -26,7 +26,7 @@ The gateway matches `mxheadless.api.prefix` (default `/api`). All `/api/v1/*` re
 |-------|-------|
 | Apache + friendly URLs | Standard MODX rewrite; no extra vhost rule if `/api` already hits `index.php` |
 | Nginx | `try_files` to `index.php` for unknown paths |
-| No rewrite | `assets/components/mxheadless/api.php/v1/...` |
+| No rewrite | `assets/components/mxheadless/api.php?route=/v1/...` (or PATH_INFO `api.php/v1/...`) |
 
 Behind a load balancer, list balancer IPs in `mxheadless.trusted_proxies` so rate limits and audit see the real client IP. See [trusted proxies](../configuration/trusted-proxies.md).
 

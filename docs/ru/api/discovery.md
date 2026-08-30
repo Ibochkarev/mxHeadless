@@ -27,9 +27,21 @@ curl -s https://example.com/api/v1
     "links": {
       "health": "/api/v1/health",
       "schema": "/api/v1/schema",
+      "docs": "/api/v1/docs",
       "endpoints": "/api/v1/meta/endpoints",
       "openapi": "/api/v1/meta/openapi",
-      "pages": "/api/v1/pages/{uri}"
+      "openapi_json": "/api/v1/meta/openapi.json",
+      "auth_token": "/api/v1/auth/token",
+      "resources": "/api/v1/resources",
+      "pages": "/api/v1/pages/{uri}",
+      "contexts": "/api/v1/contexts",
+      "chunks": "/api/v1/chunks",
+      "templates": "/api/v1/templates",
+      "snippets": "/api/v1/snippets",
+      "tvs": "/api/v1/tvs",
+      "categories": "/api/v1/categories",
+      "content_types": "/api/v1/content_types",
+      "objects": "/api/v1/objects/{name}"
     }
   },
   "meta": {}
@@ -44,7 +56,7 @@ curl -s https://example.com/api/v1
 | `cors` | Включение CORS и список origins (bootstrap Nuxt/Next) |
 | `links` | Связанные публичные URL |
 
-Discovery не перечисляет все endpoint. Живой список — [`/meta/endpoints`](meta.md). Формы маршрутов — [OpenAPI](../openapi.yaml) или [`/meta/openapi`](meta.md). Объекты и поля — [`/schema`](schema.md).
+Discovery не перечисляет все endpoint. Живой список — [`/meta/endpoints`](meta.md). Формы маршрутов — [OpenAPI](../openapi.yaml), [`/meta/openapi`](meta.md) или интерактивный [`/docs`](meta.md) (Swagger UI). Объекты и поля — [`/schema`](schema.md).
 
 ## Когда вызывать
 

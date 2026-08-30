@@ -2,7 +2,11 @@
 
 Registered xPDO objects are exposed at `/api/v1/objects/{name}`. The `{name}` is the public key from `ObjectRegistry`, not the PHP class name.
 
-Core ships with `resources`, read-only `contexts`, and read-only `chunks`. Extras register names such as `products` or `locations`.
+Core ships with:
+- `resources` (CRUD; public read)
+- read-only shortcuts: `contexts`, `chunks`, `templates`, `snippets`, `tvs`, `categories`, `content_types`
+
+Extras register names such as `products` or `locations`. The same objects are also available under `/api/v1/{name}` where a shortcut route exists.
 
 ## List
 

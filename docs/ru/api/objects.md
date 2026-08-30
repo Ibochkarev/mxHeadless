@@ -2,7 +2,11 @@
 
 Зарегистрированные xPDO-объекты доступны по `/api/v1/objects/{name}`. `{name}` — публичный ключ из `ObjectRegistry`, не имя PHP-класса.
 
-В ядре есть `resources`, read-only `contexts` и `chunks`. Extras регистрируют, например, `products` или `locations`.
+В ядре есть:
+- `resources` (CRUD; публичное чтение)
+- read-only shortcut’ы: `contexts`, `chunks`, `templates`, `snippets`, `tvs`, `categories`, `content_types`
+
+Extras регистрируют, например, `products` или `locations`. Те же объекты доступны и по `/api/v1/{name}`, если есть shortcut-маршрут.
 
 ## Список
 

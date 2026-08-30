@@ -9,7 +9,7 @@
 | Плагин выключен | Включите mxHeadless в Manager |
 | Неверный prefix | Проверьте `mxheadless.api.prefix` (по умолчанию `/api`) |
 | Rewrite мимо MODX | Направьте `/api` в `index.php`. См. [web server](../installation/web-server.md) |
-| Friendly URLs выключены | Используйте `assets/components/mxheadless/api.php/v1/health` |
+| Friendly URLs выключены | Используйте `assets/components/mxheadless/api.php?route=/v1/health` (или PATH_INFO `api.php/v1/health`, если сервер поддерживает) |
 
 Проверка:
 

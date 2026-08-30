@@ -13,7 +13,7 @@
 
 ## Request body
 
-JSON object with field names as keys. Only fields listed on `ObjectDefinition` are accepted. Hidden fields (`properties` on resources) and immutable system fields (`id`, `createdon`, `editedon`, `deletedon`, …) return `422` when sent on write. Arrays and objects are rejected (`422`). Boolean fields accept `true`/`false`/`0`/`1`; integer fields (`parent`, `template`, …) must be integers. `class_key` must name an existing `modResource` subclass. `parent` must be `0` or an existing resource id (not self, and not a descendant that would create a cycle). `content_type` must reference an existing content type. `template` must be `0` or an existing template id. `alias` must be unique among non-deleted siblings in the same context (max 255 characters).
+JSON object with field names as keys. Only fields listed on `ObjectDefinition` are accepted. Hidden fields (`properties` on resources) and immutable system fields (`id`, `createdon`, `editedon`, `deletedon`, …) return `422` when sent on write. Arrays and objects are rejected (`422`). Boolean fields accept `true`/`false`/`0`/`1`; integer fields (`parent`, `template`, …) must be integers. `class_key` must name an existing `modResource` subclass. `parent` must be `0` or an existing non-deleted resource id (not self, and not a descendant that would create a cycle). `content_type` must reference an existing content type. `template` must be `0` or an existing template id. `alias` must be unique among non-deleted siblings in the same context (max 255 characters).
 
 ```bash
 curl -s -X POST https://example.com/api/v1/resources \

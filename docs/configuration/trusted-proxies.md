@@ -46,3 +46,4 @@ mxHeadless does not read `X-Forwarded-Proto` for URL generation in the core gate
 - [Rate limiting](../api/rate-limiting.md)
 - [Deployment](../operations/deployment.md)
 - [Troubleshooting](../operations/troubleshooting.md)
+- [MiniShop3 coexistence](../extensions/minishop3.md#coexistence-mxheadless--ms3-web-api)

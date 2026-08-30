@@ -23,3 +23,5 @@ mxheadless.cors.allowed_origins = http://localhost:3000,https://app.example.com
 OPTIONS preflight returns `204` with ACAO headers when the `Origin` matches. Discovery (`GET /api/v1`) exposes `data.cors.enabled` and `data.cors.allowed_origins` so the frontend can fail fast if CORS is misconfigured.
 
 `Access-Control-Expose-Headers` includes `ETag` so client `fetch` can implement conditional revalidation.
+
+When MiniShop3 Web API runs on the same site, mirror the SPA origin in `ms3_cors_allowed_origins`. Details: [MiniShop3 coexistence](../extensions/minishop3.md#coexistence-mxheadless--ms3-web-api).

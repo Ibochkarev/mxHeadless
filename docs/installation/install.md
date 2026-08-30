@@ -47,13 +47,20 @@ Configure in **System Settings** (namespace `mxheadless`):
 
 ### Fallback: `api.php`
 
-If friendly URLs are unavailable, use:
+If friendly URLs are unavailable, use the assets entrypoint. Prefer PATH_INFO when the web server supports it:
 
 ```
 https://your-site.example/assets/components/mxheadless/api.php/v1/health
 ```
 
-Both entry points share the same middleware pipeline and services.
+On nginx/Herd (often no PATH_INFO for nested `.php` URLs), use the `route` query instead:
+
+```
+https://your-site.example/assets/components/mxheadless/api.php?route=/v1/health
+https://your-site.example/assets/components/mxheadless/api.php?route=/api/v1/resources&limit=5
+```
+
+Bare `api.php` maps to discovery (`/api/v1`). Both entry points share the same middleware pipeline and services.
 
 ## Friendly URLs
 
