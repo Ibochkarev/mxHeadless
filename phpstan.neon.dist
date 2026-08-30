@@ -1,0 +1,11 @@
+parameters:
+    level: 5
+    paths:
+        - core/components/mxheadless/src
+    excludePaths:
+        - core/components/mxheadless/vendor
+    bootstrapFiles:
+        - tests/bootstrap.php
+    treatPhpDocTypesAsCertain: false
+    ignoreErrors:
+        - '#^Call to an undefined method MODX\\Revolution\\modX::#'

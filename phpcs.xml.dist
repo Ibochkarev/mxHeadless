@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<ruleset name="mxHeadless">
+    <description>PHP_CodeSniffer rules for mxHeadless</description>
+
+    <file>core/components/mxheadless/src</file>
+
+    <rule ref="PSR12"/>
+
+    <rule ref="Squiz.Classes.ValidClassName.NotPascalCase">
+        <exclude-pattern>core/components/mxheadless/src/Model/*</exclude-pattern>
+    </rule>
+
+    <exclude-pattern>core/components/mxheadless/src/Model/mysql/*</exclude-pattern>
+    <exclude-pattern>*/vendor/*</exclude-pattern>
+</ruleset>

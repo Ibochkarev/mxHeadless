@@ -1,0 +1,936 @@
+openapi: 3.1.0
+info:
+  title: mxHeadless API
+  version: 1.0.0
+  description: |
+    Universal REST API for MODX Revolution 3.
+
+    Responses use a `{ data, meta, links }` envelope. Errors follow RFC 9457 (`application/problem+json`).
+  license:
+    name: GPL-2.0-or-later
+    url: https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html
+servers:
+  - url: https://{host}/api/v1
+    variables:
+      host:
+        default: example.com
+        description: Your MODX site hostname
+tags:
+  - name: Discovery
+  - name: Health
+  - name: Schema
+  - name: Meta
+  - name: Contexts
+  - name: Chunks
+  - name: Resources
+  - name: Pages
+  - name: Objects
+security:
+  - bearerAuth: []
+  - {}
+paths:
+  /:
+    get:
+      tags: [Discovery]
+      summary: API discovery
+      operationId: discovery
+      security: []
+      responses:
+        '200':
+          description: API metadata
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DiscoveryResponse'
+  /health:
+    get:
+      tags: [Health]
+      summary: Health check
+      operationId: health
+      security: []
+      responses:
+        '200':
+          description: Service health
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+  /schema:
+    get:
+      tags: [Schema]
+      summary: Registered object schema
+      operationId: schema
+      security: []
+      responses:
+        '200':
+          description: Object definitions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SchemaResponse'
+  /meta/endpoints:
+    get:
+      tags: [Meta]
+      summary: Live endpoint catalog
+      operationId: metaEndpoints
+      security: []
+      responses:
+        '200':
+          description: Registered routes from RouteCollection
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      endpoints:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            name: { type: string }
+                            methods:
+                              type: array
+                              items: { type: string }
+                            pattern: { type: string }
+                            public: { type: boolean }
+                            permission: { type: string, nullable: true }
+                            object: { type: string, nullable: true }
+                  meta:
+                    type: object
+                    properties:
+                      count: { type: integer }
+  /meta/openapi:
+    get:
+      tags: [Meta]
+      summary: Live OpenAPI 3.0 document
+      operationId: metaOpenapi
+      security: []
+      responses:
+        '200':
+          description: OpenAPI generated from routes and ObjectRegistry
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    description: OpenAPI 3.0.3 document
+                  meta:
+                    type: object
+                    properties:
+                      routes: { type: integer }
+                      objects: { type: integer }
+  /contexts:
+    get:
+      tags: [Contexts]
+      summary: List accessible contexts
+      operationId: listContexts
+      parameters:
+        - $ref: '#/components/parameters/limit'
+        - $ref: '#/components/parameters/offset'
+        - $ref: '#/components/parameters/sort'
+        - $ref: '#/components/parameters/q'
+      responses:
+        '200':
+          description: Context collection
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectListResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /contexts/{key}:
+    get:
+      tags: [Contexts]
+      summary: Get context by key
+      operationId: getContext
+      parameters:
+        - name: key
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Single context
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectItemResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /contexts/{key}/settings:
+    get:
+      tags: [Contexts]
+      summary: Get public context settings
+      operationId: getContextSettings
+      parameters:
+        - name: key
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Context settings
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      key:
+                        type: string
+                      settings:
+                        type: object
+                        additionalProperties:
+                          type: string
+                  meta:
+                    type: object
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /chunks:
+    get:
+      tags: [Chunks]
+      summary: List chunks
+      operationId: listChunks
+      parameters:
+        - $ref: '#/components/parameters/limit'
+        - $ref: '#/components/parameters/offset'
+        - $ref: '#/components/parameters/fields'
+        - $ref: '#/components/parameters/sort'
+        - $ref: '#/components/parameters/q'
+      responses:
+        '200':
+          description: Chunk collection
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectListResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /chunks/{id}:
+    get:
+      tags: [Chunks]
+      summary: Get chunk by ID
+      operationId: getChunk
+      parameters:
+        - $ref: '#/components/parameters/objectId'
+        - $ref: '#/components/parameters/fields'
+      responses:
+        '200':
+          description: Single chunk
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectItemResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /resources:
+    get:
+      tags: [Resources]
+      summary: List resources
+      operationId: listResources
+      security:
+        - bearerAuth: []
+        - {}
+      parameters:
+        - $ref: '#/components/parameters/limit'
+        - $ref: '#/components/parameters/offset'
+        - $ref: '#/components/parameters/fields'
+        - $ref: '#/components/parameters/sort'
+        - $ref: '#/components/parameters/include'
+        - $ref: '#/components/parameters/q'
+        - $ref: '#/components/parameters/context'
+        - $ref: '#/components/parameters/contextHeader'
+        - $ref: '#/components/parameters/preview'
+        - $ref: '#/components/parameters/filterPublished'
+        - $ref: '#/components/parameters/filterParent'
+      responses:
+        '200':
+          description: Resource collection
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceListResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+    post:
+      tags: [Resources]
+      summary: Create resource
+      operationId: createResource
+      parameters:
+        - $ref: '#/components/parameters/contextHeader'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResourceWrite'
+      responses:
+        '201':
+          description: Created resource
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceItemResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+  /resources/{id}:
+    get:
+      tags: [Resources]
+      summary: Get resource by ID
+      operationId: getResource
+      security:
+        - bearerAuth: []
+        - {}
+      parameters:
+        - $ref: '#/components/parameters/resourceId'
+        - $ref: '#/components/parameters/fields'
+        - $ref: '#/components/parameters/include'
+        - $ref: '#/components/parameters/context'
+        - $ref: '#/components/parameters/contextHeader'
+        - $ref: '#/components/parameters/preview'
+      responses:
+        '200':
+          description: Single resource
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceItemResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      tags: [Resources]
+      summary: Replace resource
+      operationId: replaceResource
+      parameters:
+        - $ref: '#/components/parameters/resourceId'
+        - $ref: '#/components/parameters/contextHeader'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResourceWrite'
+      responses:
+        '200':
+          description: Updated resource
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceItemResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    patch:
+      tags: [Resources]
+      summary: Partially update resource
+      operationId: patchResource
+      parameters:
+        - $ref: '#/components/parameters/resourceId'
+        - $ref: '#/components/parameters/contextHeader'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResourcePatch'
+      responses:
+        '200':
+          description: Updated resource
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceItemResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      tags: [Resources]
+      summary: Delete resource
+      operationId: deleteResource
+      parameters:
+        - $ref: '#/components/parameters/resourceId'
+        - $ref: '#/components/parameters/contextHeader'
+      responses:
+        '204':
+          description: Deleted
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /pages/{uri}:
+    get:
+      tags: [Pages]
+      summary: Get resource by URI
+      operationId: getPageByUri
+      security:
+        - bearerAuth: []
+        - {}
+      parameters:
+        - name: uri
+          in: path
+          required: true
+          description: Resource URI path segment (e.g. about.html)
+          schema:
+            type: string
+        - $ref: '#/components/parameters/fields'
+        - $ref: '#/components/parameters/include'
+        - $ref: '#/components/parameters/context'
+        - $ref: '#/components/parameters/contextHeader'
+        - $ref: '#/components/parameters/preview'
+      responses:
+        '200':
+          description: Page resource
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceItemResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /objects/{name}:
+    get:
+      tags: [Objects]
+      summary: List registered objects
+      operationId: listObjects
+      security:
+        - bearerAuth: []
+        - {}
+      parameters:
+        - $ref: '#/components/parameters/objectName'
+        - $ref: '#/components/parameters/limit'
+        - $ref: '#/components/parameters/offset'
+        - $ref: '#/components/parameters/fields'
+        - $ref: '#/components/parameters/sort'
+        - $ref: '#/components/parameters/include'
+        - $ref: '#/components/parameters/q'
+        - $ref: '#/components/parameters/context'
+        - $ref: '#/components/parameters/contextHeader'
+        - $ref: '#/components/parameters/preview'
+      responses:
+        '200':
+          description: Object collection
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectListResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+    post:
+      tags: [Objects]
+      summary: Create registered object
+      operationId: createObject
+      parameters:
+        - $ref: '#/components/parameters/objectName'
+        - $ref: '#/components/parameters/contextHeader'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+      responses:
+        '201':
+          description: Created object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectItemResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /objects/{name}/{id}:
+    get:
+      tags: [Objects]
+      summary: Get registered object by ID
+      operationId: getObject
+      security:
+        - bearerAuth: []
+        - {}
+      parameters:
+        - $ref: '#/components/parameters/objectName'
+        - $ref: '#/components/parameters/objectId'
+        - $ref: '#/components/parameters/fields'
+        - $ref: '#/components/parameters/include'
+        - $ref: '#/components/parameters/context'
+        - $ref: '#/components/parameters/contextHeader'
+        - $ref: '#/components/parameters/preview'
+      responses:
+        '200':
+          description: Single object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectItemResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      tags: [Objects]
+      summary: Replace registered object
+      operationId: replaceObject
+      parameters:
+        - $ref: '#/components/parameters/objectName'
+        - $ref: '#/components/parameters/objectId'
+        - $ref: '#/components/parameters/contextHeader'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+      responses:
+        '200':
+          description: Updated object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectItemResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    patch:
+      tags: [Objects]
+      summary: Partially update registered object
+      operationId: patchObject
+      parameters:
+        - $ref: '#/components/parameters/objectName'
+        - $ref: '#/components/parameters/objectId'
+        - $ref: '#/components/parameters/contextHeader'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+      responses:
+        '200':
+          description: Updated object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectItemResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      tags: [Objects]
+      summary: Delete registered object
+      operationId: deleteObject
+      parameters:
+        - $ref: '#/components/parameters/objectName'
+        - $ref: '#/components/parameters/objectId'
+        - $ref: '#/components/parameters/contextHeader'
+      responses:
+        '204':
+          description: Deleted
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: API key format mxh_{lookupId}_{secret}
+  parameters:
+    resourceId:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+    objectName:
+      name: name
+      in: path
+      required: true
+      schema:
+        type: string
+        pattern: '^[a-z][a-z0-9_]*$'
+      description: Public name registered in ObjectRegistry
+    objectId:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+    limit:
+      name: limit
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 20
+    offset:
+      name: offset
+      in: query
+      schema:
+        type: integer
+        minimum: 0
+        default: 0
+    fields:
+      name: fields
+      in: query
+      schema:
+        type: string
+      description: Comma-separated sparse fieldset
+    sort:
+      name: sort
+      in: query
+      schema:
+        type: string
+      description: Comma-separated fields; prefix - for DESC, + for ASC
+    include:
+      name: include
+      in: query
+      schema:
+        type: string
+      description: Comma-separated relations (dot notation for nested)
+    q:
+      name: q
+      in: query
+      schema:
+        type: string
+      description: Search term across searchable fields
+    context:
+      name: context
+      in: query
+      schema:
+        type: string
+        default: web
+    contextHeader:
+      name: X-Context
+      in: header
+      schema:
+        type: string
+      description: Overrides context query parameter
+    preview:
+      name: preview
+      in: query
+      schema:
+        type: boolean
+        default: false
+      description: Include unpublished content when authorized
+    filterPublished:
+      name: filter[published][eq]
+      in: query
+      schema:
+        type: integer
+        enum: [0, 1]
+    filterParent:
+      name: filter[parent][eq]
+      in: query
+      schema:
+        type: integer
+  schemas:
+    EnvelopeMeta:
+      type: object
+      properties:
+        total:
+          type: integer
+        limit:
+          type: integer
+        offset:
+          type: integer
+        count:
+          type: integer
+      additionalProperties: true
+    EnvelopeLinks:
+      type: object
+      additionalProperties:
+        type: string
+    DiscoveryData:
+      type: object
+      required: [name, version, api]
+      properties:
+        name:
+          type: string
+          example: mxHeadless
+        version:
+          type: string
+          example: 1.0.0
+        api:
+          type: string
+          example: /api/v1
+    DiscoveryResponse:
+      type: object
+      required: [data, meta]
+      properties:
+        data:
+          $ref: '#/components/schemas/DiscoveryData'
+        meta:
+          $ref: '#/components/schemas/EnvelopeMeta'
+    HealthResponse:
+      type: object
+      required: [data, meta]
+      properties:
+        data:
+          type: object
+          properties:
+            status:
+              type: string
+              example: ok
+        meta:
+          $ref: '#/components/schemas/EnvelopeMeta'
+    ObjectSchema:
+      type: object
+      properties:
+        class:
+          type: string
+        fields:
+          type: array
+          items:
+            type: string
+        filterable:
+          type: array
+          items:
+            type: string
+        sortable:
+          type: array
+          items:
+            type: string
+        searchable:
+          type: array
+          items:
+            type: string
+        readable:
+          type: boolean
+        creatable:
+          type: boolean
+        updatable:
+          type: boolean
+        deletable:
+          type: boolean
+        relations:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              target:
+                type: string
+              type:
+                type: string
+                enum: [to_one, to_many]
+    SchemaResponse:
+      type: object
+      required: [data, meta]
+      properties:
+        data:
+          type: object
+          properties:
+            objects:
+              type: object
+              additionalProperties:
+                $ref: '#/components/schemas/ObjectSchema'
+        meta:
+          $ref: '#/components/schemas/EnvelopeMeta'
+    Resource:
+      type: object
+      properties:
+        id:
+          type: integer
+        pagetitle:
+          type: string
+        alias:
+          type: string
+        uri:
+          type: string
+        parent:
+          type: integer
+        published:
+          type: integer
+        content:
+          type: string
+      additionalProperties: true
+    ResourceWrite:
+      type: object
+      required: [pagetitle]
+      properties:
+        pagetitle:
+          type: string
+        parent:
+          type: integer
+        template:
+          type: integer
+        published:
+          type: integer
+        alias:
+          type: string
+        content:
+          type: string
+      additionalProperties: false
+    ResourcePatch:
+      type: object
+      properties:
+        pagetitle:
+          type: string
+        parent:
+          type: integer
+        template:
+          type: integer
+        published:
+          type: integer
+        alias:
+          type: string
+        content:
+          type: string
+      additionalProperties: false
+    ResourceListResponse:
+      type: object
+      required: [data, meta]
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Resource'
+        meta:
+          $ref: '#/components/schemas/EnvelopeMeta'
+        links:
+          $ref: '#/components/schemas/EnvelopeLinks'
+    ResourceItemResponse:
+      type: object
+      required: [data, meta]
+      properties:
+        data:
+          $ref: '#/components/schemas/Resource'
+        meta:
+          $ref: '#/components/schemas/EnvelopeMeta'
+    ObjectRecord:
+      type: object
+      additionalProperties: true
+    ObjectListResponse:
+      type: object
+      required: [data, meta]
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ObjectRecord'
+        meta:
+          $ref: '#/components/schemas/EnvelopeMeta'
+        links:
+          $ref: '#/components/schemas/EnvelopeLinks'
+    ObjectItemResponse:
+      type: object
+      required: [data, meta]
+      properties:
+        data:
+          $ref: '#/components/schemas/ObjectRecord'
+        meta:
+          $ref: '#/components/schemas/EnvelopeMeta'
+    ProblemDetails:
+      type: object
+      required: [type, title, status]
+      properties:
+        type:
+          type: string
+          format: uri
+        title:
+          type: string
+        status:
+          type: integer
+        detail:
+          type: string
+        instance:
+          type: string
+        errors:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+  responses:
+    Unauthorized:
+      description: Authentication required
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+          example:
+            type: https://mxheadless.dev/problems/unauthorized
+            title: Unauthorized
+            status: 401
+            detail: Authentication required
+    Forbidden:
+      description: Insufficient permission
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+    NotFound:
+      description: Resource not found
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+    ValidationError:
+      description: Validation failed
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'
+          example:
+            type: https://mxheadless.dev/problems/validation
+            title: Unprocessable Entity
+            status: 422
+            detail: Validation failed
+            errors:
+              filter:
+                - Field is not filterable

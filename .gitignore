@@ -1,0 +1,10 @@
+/vendor/
+.phpunit.cache/
+.DS_Store
+*.log
+.idea/
+.vscode/
+config.core.php
+_build/work/
+_build/*.transport.zip
+*.transport.zip

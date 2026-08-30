@@ -1,0 +1,66 @@
+Changelog for mxHeadless.
+
+1.0.12-pl
+- Manager UI: Components → mxHeadless (API keys grid create/update/revoke).
+- Lexicon EN/RU for settings labels and mgr strings.
+- Permission mxheadless_apikeys on Administrator policy.
+
+1.0.11-pl
+- List meta: count + has_more for Nuxt/Next pagination.
+- API responses no longer set PHPSESSID (ISR/CDN-friendly); session still read from Cookie.
+- Problem codes: not_found, validation_failed; discovery.cors.allowed_origins.
+- OpenAPI ProblemDetails enum extended.
+
+1.0.10-pl
+- Resources filterable: hidemenu, isfolder, menuindex (Nuxt/Next nav menus).
+- HEAD authorized like GET; ETag on GET/HEAD for anonymous and API-key clients (Nuxt/Next SSR).
+- ResponseEmitter replaces headers (Content-Type/ETag) and skips body on HEAD.
+- OpenAPI info.version follows Version::STRING.
+
+1.0.9-pl
+- Page URI aliases for Nuxt/Next: /pages/about resolves about.html; index/empty → index.html.
+- meta.resolved_uri on page responses; discovery exposes cors.enabled and pages link.
+- CORS: expose ETag/rate-limit/idempotency headers; Idempotency-Key in allow list; Max-Age on preflight.
+- Docs: pages aliases, CORS for browser fetch, preview scope for Draft Mode.
+
+1.0.8-pl
+- Qualify SELECT/ORDER columns with table alias so reserved names like context `key` hydrate correctly.
+- Reject unknown/hidden `fields` with 422 (docs contract); honor `fields` on single-object GET/pages.
+
+1.0.7-pl
+- Fix query parsing when QUERY_STRING is HTML-entity-encoded (&amp;) — prefer $_GET.
+- Strip MODX friendly-URL `q` path from query params so it does not become a search term.
+- Include query string in anonymous HTTP cache keys (sort/filter/fields no longer collide).
+- Discovery version comes from Version::STRING (was hardcoded 1.0.0).
+- Unknown /objects/{name} returns 404 instead of 403.
+- POST *.create routes return 201 Created.
+- Support filter[field]=value shorthand as eq.
+
+1.0.6-pl
+- Rate-limit response headers (X-RateLimit-Limit/Remaining/Reset) and Retry-After on 429.
+- Fix audit-prune CLI (array criteria for removeCollection) and --help/--days.
+- CLI bin/webhook-subscribe.php to create webhook subscriptions.
+- Docs: webhook subscribe CLI (EN/RU).
+
+1.0.5-pl
+- Built-in curl PSR-18 client for webhook delivery.
+- Setting mxheadless.webhook.allow_private_urls for local webhook targets.
+- CLI bin/api-key-create.php for long-lived mxh_* keys.
+- Local webhook catcher asset for smoke testing.
+
+1.0.4-pl
+- Fix resource listing: drop removed MODX columns from schema; use xPDO where() without broken table alias.
+- Use getCount() for list totals.
+- Allow update/delete of unpublished resources (mutation lookup skips published filter).
+- Do not overwrite existing system settings on package update.
+- Add id to resources filterable fields.
+
+1.0.3-pl
+- Fix HTTP gateway recursion (plugin no longer binds OnMxHeadlessRegister).
+- Fix xPDO model lookups (use MxHeadless\Model\modMxHeadless* base classes).
+- Allow public POST routes (OAuth token endpoint).
+- OPTIONS preflight returns 204 even when CORS is disabled.
+- Fix oauth-client-create CLI model class.
+
+1.0.0-pl
+- Initial release: REST API, API keys, OAuth tokens, audit log, webhooks, idempotency.
