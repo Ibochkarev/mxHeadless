@@ -169,4 +169,10 @@ return [
         'value' => false,
         'area' => 'mxheadless_oauth',
     ],
+    'swagger.enabled' => [
+        'key' => 'mxheadless.swagger.enabled',
+        'xtype' => 'combo-boolean',
+        'value' => true,
+        'area' => 'mxheadless_main',
+    ],
 ];

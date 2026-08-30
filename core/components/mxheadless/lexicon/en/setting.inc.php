@@ -89,3 +89,6 @@ $_lang['setting_mxheadless.oauth.token_ttl_desc'] = 'Default lifetime for issued
 
 $_lang['setting_mxheadless.oauth.password_grant_enabled'] = 'Password grant';
 $_lang['setting_mxheadless.oauth.password_grant_enabled_desc'] = 'Allow resource-owner password credentials (usually leave No).';
+
+$_lang['setting_mxheadless.swagger.enabled'] = 'Swagger UI';
+$_lang['setting_mxheadless.swagger.enabled_desc'] = 'Serve interactive docs at GET /api/v1/docs. Raw OpenAPI JSON stays available when disabled.';

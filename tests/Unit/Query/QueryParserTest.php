@@ -114,15 +114,16 @@ final class QueryParserTest extends TestCase
         self::assertSame(20, $query->pagination()->offset());
     }
 
-    public function testExplicitOffsetWinsOverPage(): void
+    public function testPageAndOffsetTogetherThrows(): void
     {
-        $query = $this->parser->parse('articles', [
+        $this->expectException(ValidationException::class);
+        $this->expectExceptionMessage('Conflicting pagination parameters');
+
+        $this->parser->parse('articles', [
             'limit' => '10',
             'page' => '3',
             'offset' => '7',
         ]);
-
-        self::assertSame(7, $query->pagination()->offset());
     }
 
     public function testLimitIsCappedAtMax(): void
@@ -173,6 +174,16 @@ final class QueryParserTest extends TestCase
         $this->parser->parse('articles', [
             'filter' => ['id' => ['drop_table' => '1']],
         ]);
+    }
+
+    public function testNeFilterOperatorAliasMapsToNeq(): void
+    {
+        $query = $this->parser->parse('articles', [
+            'filter' => ['id' => ['ne' => '5']],
+        ]);
+
+        self::assertSame(FilterOperator::Neq, $query->filters()[0]->operator());
+        self::assertSame('5', $query->filters()[0]->value());
     }
 
     public function testParsesIncludeDeletedAliases(): void

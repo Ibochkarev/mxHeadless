@@ -45,6 +45,34 @@ final class AuthorizerEndpointTest extends TestCase
         $authorizer->authorizeEndpoint($request, $route);
     }
 
+    public function testPublicGetAllowsSessionWithoutApiScope(): void
+    {
+        $authorizer = new Authorizer(new modX());
+        $route = new Route(
+            'resources.list',
+            ['GET'],
+            '/resources',
+            static fn (): array => ['data' => [], 'meta' => []],
+            'resources.read',
+            true,
+        );
+
+        $identity = new Identity(
+            Identity::TYPE_SESSION,
+            'session:1',
+            new ApiKeyPermissionChecker([]),
+            1,
+        );
+
+        $request = (new ServerRequest('GET', '/api/v1/resources'))
+            ->withAttribute('identity', $identity)
+            ->withAttribute('route', $route)
+            ->withAttribute('route_params', []);
+
+        $authorizer->authorizeEndpoint($request, $route);
+        $this->addToAssertionCount(1);
+    }
+
     public function testPublicHeadWithPermissionAllowsAnonymous(): void
     {
         $authorizer = new Authorizer(new modX());

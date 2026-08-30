@@ -20,6 +20,10 @@ enum FilterOperator: string
 
     public static function fromString(string $value): self
     {
+        if ($value === 'ne') {
+            return self::Neq;
+        }
+
         return self::tryFrom($value) ?? throw new \InvalidArgumentException('Unknown filter operator: ' . $value);
     }
 }

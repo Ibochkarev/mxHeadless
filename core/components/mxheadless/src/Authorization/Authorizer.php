@@ -55,7 +55,13 @@ final class Authorizer
                 return;
             }
 
-            if ($permission !== null && !$identity->allows($permission)) {
+            // Explicit API credentials must carry the route scope. Browser/session
+            // identities (mgr cookies while using /docs) fall back to public read.
+            if (
+                $permission !== null
+                && in_array($identity->type(), [Identity::TYPE_API_KEY, Identity::TYPE_OAUTH_TOKEN], true)
+                && !$identity->allows($permission)
+            ) {
                 throw new ForbiddenException('Insufficient permissions');
             }
 

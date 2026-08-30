@@ -144,4 +144,31 @@ final class XpdoQueryCompilerTest extends TestCase
         self::assertNull($xpdoQuery->limitValue);
         self::assertContains(['published' => 1], $xpdoQuery->wheres);
     }
+
+    public function testNormalizesBooleanFilterStrings(): void
+    {
+        $definition = TestDefinitions::article();
+        $query = new ObjectQuery(
+            'articles',
+            [new Filter('published', FilterOperator::Eq, 'true')],
+        );
+
+        $xpdoQuery = $this->compiler->compile($definition, $query, ['id']);
+
+        self::assertContains(['published' => 1], $xpdoQuery->wheres);
+    }
+
+    public function testRejectsInvalidBooleanFilterString(): void
+    {
+        $definition = TestDefinitions::article();
+        $query = new ObjectQuery(
+            'articles',
+            [new Filter('published', FilterOperator::Eq, 'maybe')],
+        );
+
+        $this->expectException(ValidationException::class);
+        $this->expectExceptionMessage('Invalid filter value');
+
+        $this->compiler->compile($definition, $query, ['id']);
+    }
 }

@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: mxHeadless API
-  version: 1.0.0
+  version: 1.0.41
   description: |
     Universal REST API for MODX Revolution 3.
 
@@ -20,8 +20,14 @@ tags:
   - name: Health
   - name: Schema
   - name: Meta
+  - name: Auth
   - name: Contexts
   - name: Chunks
+  - name: Templates
+  - name: Snippets
+  - name: TVs
+  - name: Categories
+  - name: ContentTypes
   - name: Resources
   - name: Pages
   - name: Objects
@@ -124,6 +130,61 @@ paths:
                     properties:
                       routes: { type: integer }
                       objects: { type: integer }
+  /meta/openapi.json:
+    get:
+      tags: [Meta]
+      summary: Raw OpenAPI 3.0 JSON
+      operationId: metaOpenapiRaw
+      security: []
+      responses:
+        '200':
+          description: OpenAPI document without envelope (for Swagger UI and code generators)
+          content:
+            application/openapi+json:
+              schema:
+                type: object
+                description: OpenAPI 3.0.3 document
+  /docs:
+    get:
+      tags: [Meta]
+      summary: Swagger UI
+      operationId: docs
+      security: []
+      responses:
+        '200':
+          description: Interactive Swagger UI HTML (requires mxheadless.swagger.enabled)
+          content:
+            text/html:
+              schema:
+                type: string
+        '404':
+          description: Swagger UI disabled
+  /auth/token:
+    post:
+      tags: [Auth]
+      summary: Issue a short-lived OAuth access token
+      operationId: authToken
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OAuthTokenRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/OAuthTokenRequest'
+      responses:
+        '200':
+          description: Access token envelope
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectItemResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '422':
+          $ref: '#/components/responses/ValidationError'
   /contexts:
     get:
       tags: [Contexts]
@@ -238,6 +299,221 @@ paths:
       responses:
         '200':
           description: Single chunk
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectItemResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /templates:
+    get:
+      tags: [Templates]
+      summary: List templates
+      operationId: listTemplates
+      parameters:
+        - $ref: '#/components/parameters/limit'
+        - $ref: '#/components/parameters/offset'
+        - $ref: '#/components/parameters/fields'
+        - $ref: '#/components/parameters/sort'
+        - $ref: '#/components/parameters/q'
+      responses:
+        '200':
+          description: Template collection
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectListResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /templates/{id}:
+    get:
+      tags: [Templates]
+      summary: Get template by ID
+      operationId: getTemplate
+      parameters:
+        - $ref: '#/components/parameters/objectId'
+        - $ref: '#/components/parameters/fields'
+      responses:
+        '200':
+          description: Single template
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectItemResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /snippets:
+    get:
+      tags: [Snippets]
+      summary: List snippets
+      operationId: listSnippets
+      parameters:
+        - $ref: '#/components/parameters/limit'
+        - $ref: '#/components/parameters/offset'
+        - $ref: '#/components/parameters/fields'
+        - $ref: '#/components/parameters/sort'
+        - $ref: '#/components/parameters/q'
+      responses:
+        '200':
+          description: Snippet collection
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectListResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /snippets/{id}:
+    get:
+      tags: [Snippets]
+      summary: Get snippet by ID
+      operationId: getSnippet
+      parameters:
+        - $ref: '#/components/parameters/objectId'
+        - $ref: '#/components/parameters/fields'
+      responses:
+        '200':
+          description: Single snippet
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectItemResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /tvs:
+    get:
+      tags: [TVs]
+      summary: List template variable definitions
+      operationId: listTvs
+      parameters:
+        - $ref: '#/components/parameters/limit'
+        - $ref: '#/components/parameters/offset'
+        - $ref: '#/components/parameters/fields'
+        - $ref: '#/components/parameters/sort'
+        - $ref: '#/components/parameters/q'
+      responses:
+        '200':
+          description: TV definition collection
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectListResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /tvs/{id}:
+    get:
+      tags: [TVs]
+      summary: Get TV definition by ID
+      operationId: getTv
+      parameters:
+        - $ref: '#/components/parameters/objectId'
+        - $ref: '#/components/parameters/fields'
+      responses:
+        '200':
+          description: Single TV definition
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectItemResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /categories:
+    get:
+      tags: [Categories]
+      summary: List element categories
+      operationId: listCategories
+      parameters:
+        - $ref: '#/components/parameters/limit'
+        - $ref: '#/components/parameters/offset'
+        - $ref: '#/components/parameters/fields'
+        - $ref: '#/components/parameters/sort'
+        - $ref: '#/components/parameters/q'
+      responses:
+        '200':
+          description: Category collection
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectListResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /categories/{id}:
+    get:
+      tags: [Categories]
+      summary: Get category by ID
+      operationId: getCategory
+      parameters:
+        - $ref: '#/components/parameters/objectId'
+        - $ref: '#/components/parameters/fields'
+      responses:
+        '200':
+          description: Single category
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectItemResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /content_types:
+    get:
+      tags: [ContentTypes]
+      summary: List content types
+      operationId: listContentTypes
+      parameters:
+        - $ref: '#/components/parameters/limit'
+        - $ref: '#/components/parameters/offset'
+        - $ref: '#/components/parameters/fields'
+        - $ref: '#/components/parameters/sort'
+        - $ref: '#/components/parameters/q'
+      responses:
+        '200':
+          description: Content type collection
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectListResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /content_types/{id}:
+    get:
+      tags: [ContentTypes]
+      summary: Get content type by ID
+      operationId: getContentType
+      parameters:
+        - $ref: '#/components/parameters/objectId'
+        - $ref: '#/components/parameters/fields'
+      responses:
+        '200':
+          description: Single content type
           content:
             application/json:
               schema:
@@ -896,6 +1172,23 @@ components:
             type: array
             items:
               type: string
+    OAuthTokenRequest:
+      type: object
+      required: [grant_type, client_id, client_secret]
+      properties:
+        grant_type:
+          type: string
+          enum: [client_credentials, password]
+        client_id:
+          type: string
+        client_secret:
+          type: string
+        username:
+          type: string
+        password:
+          type: string
+        scope:
+          type: string
   responses:
     Unauthorized:
       description: Authentication required
@@ -934,3 +1227,9 @@ components:
             errors:
               filter:
                 - Field is not filterable
+    BadRequest:
+      description: Invalid grant or malformed token request
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetails'

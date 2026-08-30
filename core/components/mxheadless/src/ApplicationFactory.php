@@ -41,6 +41,7 @@ use MxHeadless\Services\MutationHooks;
 use MxHeadless\Services\ObjectService;
 use MxHeadless\Services\OpenApiGenerator;
 use MxHeadless\Services\SchemaService;
+use MxHeadless\Services\SwaggerUiService;
 use MxHeadless\Services\TokenService;
 use MxHeadless\Tv\ModxTvProvider;
 use MxHeadless\Webhook\WebhookDispatcher;
@@ -106,6 +107,7 @@ final class ApplicationFactory
         $endpointCatalog = new EndpointCatalogService($routes);
         $openApiGenerator = new OpenApiGenerator($routes, $registry, $apiPrefix);
         $tokenService = new TokenService($this->modx, $oauthClientRepo, $oauthTokenRepo);
+        $swaggerUi = new SwaggerUiService($this->modx, $apiPrefix);
 
         $routesRegistrar = new RoutesRegistrar(
             $discoveryService,
@@ -115,6 +117,7 @@ final class ApplicationFactory
             $endpointCatalog,
             $openApiGenerator,
             $tokenService,
+            $swaggerUi,
         );
         $routesRegistrar->register($routes);
 

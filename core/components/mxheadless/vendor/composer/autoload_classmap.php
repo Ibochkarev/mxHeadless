@@ -118,6 +118,7 @@ return array(
     'MxHeadless\\Services\\ObjectService' => $baseDir . '/src/Services/ObjectService.php',
     'MxHeadless\\Services\\OpenApiGenerator' => $baseDir . '/src/Services/OpenApiGenerator.php',
     'MxHeadless\\Services\\SchemaService' => $baseDir . '/src/Services/SchemaService.php',
+    'MxHeadless\\Services\\SwaggerUiService' => $baseDir . '/src/Services/SwaggerUiService.php',
     'MxHeadless\\Services\\TokenService' => $baseDir . '/src/Services/TokenService.php',
     'MxHeadless\\Tv\\ModxTvProvider' => $baseDir . '/src/Tv/ModxTvProvider.php',
     'MxHeadless\\Tv\\TvProviderInterface' => $baseDir . '/src/Tv/TvProviderInterface.php',

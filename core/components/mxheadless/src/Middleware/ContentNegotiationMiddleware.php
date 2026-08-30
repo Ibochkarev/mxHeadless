@@ -27,10 +27,28 @@ final class ContentNegotiationMiddleware implements MiddlewareInterface
         }
 
         $accept = $request->getHeaderLine('Accept');
-        if ($accept !== '' && !str_contains($accept, 'application/json') && !str_contains($accept, '*/*')) {
+        if ($accept !== '' && !$this->acceptsJsonOrWildcard($accept) && !$this->allowsHtmlDocs($request, $accept)) {
             throw new HttpException('Not acceptable', 406, 'Not Acceptable');
         }
 
         return $handler->handle($request);
+    }
+
+    private function acceptsJsonOrWildcard(string $accept): bool
+    {
+        return str_contains($accept, 'application/json')
+            || str_contains($accept, 'application/openapi+json')
+            || str_contains($accept, '*/*');
+    }
+
+    private function allowsHtmlDocs(ServerRequestInterface $request, string $accept): bool
+    {
+        if (!str_contains($accept, 'text/html')) {
+            return false;
+        }
+
+        $path = parse_url((string) $request->getUri(), PHP_URL_PATH) ?: '';
+
+        return str_ends_with(rtrim($path, '/'), '/docs');
     }
 }

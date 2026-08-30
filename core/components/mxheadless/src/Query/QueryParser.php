@@ -211,11 +211,28 @@ final class QueryParser
      */
     private function resolveOffset(array $queryParams, int $limit, int $maxOffset): int
     {
-        if (array_key_exists('offset', $queryParams) && $queryParams['offset'] !== '' && $queryParams['offset'] !== null) {
+        $hasOffset = array_key_exists('offset', $queryParams)
+            && $queryParams['offset'] !== ''
+            && $queryParams['offset'] !== null;
+        $hasPage = array_key_exists('page', $queryParams)
+            && $queryParams['page'] !== ''
+            && $queryParams['page'] !== null;
+
+        if ($hasOffset && $hasPage) {
+            throw new ValidationException(
+                'Conflicting pagination parameters',
+                [
+                    'page' => ['Use either page or offset, not both'],
+                    'offset' => ['Use either page or offset, not both'],
+                ],
+            );
+        }
+
+        if ($hasOffset) {
             return min($this->parseNonNegativeInt($queryParams['offset'], 'offset'), $maxOffset);
         }
 
-        if (!array_key_exists('page', $queryParams) || $queryParams['page'] === '' || $queryParams['page'] === null) {
+        if (!$hasPage) {
             return 0;
         }
 

@@ -166,6 +166,7 @@ class ComposerStaticInite22069fa52f9eb3f0aa41ceefb433d8c
         'MxHeadless\\Services\\ObjectService' => __DIR__ . '/../..' . '/src/Services/ObjectService.php',
         'MxHeadless\\Services\\OpenApiGenerator' => __DIR__ . '/../..' . '/src/Services/OpenApiGenerator.php',
         'MxHeadless\\Services\\SchemaService' => __DIR__ . '/../..' . '/src/Services/SchemaService.php',
+        'MxHeadless\\Services\\SwaggerUiService' => __DIR__ . '/../..' . '/src/Services/SwaggerUiService.php',
         'MxHeadless\\Services\\TokenService' => __DIR__ . '/../..' . '/src/Services/TokenService.php',
         'MxHeadless\\Tv\\ModxTvProvider' => __DIR__ . '/../..' . '/src/Tv/ModxTvProvider.php',
         'MxHeadless\\Tv\\TvProviderInterface' => __DIR__ . '/../..' . '/src/Tv/TvProviderInterface.php',

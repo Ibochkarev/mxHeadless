@@ -48,12 +48,21 @@ final class HttpCacheMiddleware implements MiddlewareInterface
         $cacheKey = $this->buildCacheKey($request);
         $cached = $this->cache->get($cacheKey, 'response');
         if (is_array($cached) && isset($cached['body'], $cached['etag'])) {
+            $contentType = is_string($cached['content_type'] ?? null)
+                ? $cached['content_type']
+                : 'application/json; charset=utf-8';
             $ifNoneMatch = $request->getHeaderLine('If-None-Match');
             if ($ifNoneMatch !== '' && trim($ifNoneMatch, '"') === $cached['etag']) {
-                return $this->cachedResponse(304, $cached['etag']);
+                return $this->cachedResponse(304, $cached['etag'], null, false, $contentType);
             }
 
-            return $this->cachedResponse(200, $cached['etag'], $method === 'HEAD' ? null : $cached['body']);
+            return $this->cachedResponse(
+                200,
+                $cached['etag'],
+                $method === 'HEAD' ? null : $cached['body'],
+                false,
+                $contentType,
+            );
         }
 
         $response = $handler->handle($effective);
@@ -65,11 +74,19 @@ final class HttpCacheMiddleware implements MiddlewareInterface
         $body = (string) $response->getBody();
         $etag = hash('sha256', $body);
         $ttl = $this->cacheTtl();
-        $this->cache->set($cacheKey, ['body' => $body, 'etag' => $etag], $ttl, 'response');
+        $contentType = $response->getHeaderLine('Content-Type');
+        if ($contentType === '') {
+            $contentType = 'application/json; charset=utf-8';
+        }
+        $this->cache->set($cacheKey, [
+            'body' => $body,
+            'etag' => $etag,
+            'content_type' => $contentType,
+        ], $ttl, 'response');
 
         $ifNoneMatch = $request->getHeaderLine('If-None-Match');
         if ($ifNoneMatch !== '' && trim($ifNoneMatch, '"') === $etag) {
-            return $this->cachedResponse(304, $etag);
+            return $this->cachedResponse(304, $etag, null, false, $contentType);
         }
 
         return $this->maybeHead(
@@ -100,7 +117,12 @@ final class HttpCacheMiddleware implements MiddlewareInterface
         $etag = hash('sha256', $body);
         $ifNoneMatch = $request->getHeaderLine('If-None-Match');
         if ($ifNoneMatch !== '' && trim($ifNoneMatch, '"') === $etag) {
-            return $this->cachedResponse(304, $etag, null, $private);
+            $contentType = $response->getHeaderLine('Content-Type');
+            if ($contentType === '') {
+                $contentType = 'application/json; charset=utf-8';
+            }
+
+            return $this->cachedResponse(304, $etag, null, $private, $contentType);
         }
 
         $cacheControl = $private
@@ -130,15 +152,19 @@ final class HttpCacheMiddleware implements MiddlewareInterface
         return (int) $this->modx->getOption('mxheadless.cache_ttl', null, 300);
     }
 
-    private function cachedResponse(int $status, string $etag, ?string $body = null, bool $private = false): ResponseInterface
-    {
+    private function cachedResponse(
+        int $status,
+        string $etag,
+        ?string $body = null,
+        bool $private = false,
+        string $contentType = 'application/json; charset=utf-8',
+    ): ResponseInterface {
         $headers = [
             'ETag' => '"' . $etag . '"',
             'Cache-Control' => $private
                 ? 'private, no-store'
                 : 'public, max-age=' . $this->cacheTtl(),
-            // Keep JSON content-type on HEAD/304 so clients do not inherit MODX text/html.
-            'Content-Type' => 'application/json; charset=utf-8',
+            'Content-Type' => $contentType,
         ];
 
         return Psr7Factory::createResponse($status, $headers, $body);

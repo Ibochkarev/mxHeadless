@@ -10,6 +10,7 @@ use MxHeadless\Services\HealthService;
 use MxHeadless\Services\ObjectService;
 use MxHeadless\Services\OpenApiGenerator;
 use MxHeadless\Services\SchemaService;
+use MxHeadless\Services\SwaggerUiService;
 use MxHeadless\Services\TokenService;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -23,6 +24,7 @@ final class RoutesRegistrar
         private readonly EndpointCatalogService $endpoints,
         private readonly OpenApiGenerator $openApi,
         private readonly TokenService $tokens,
+        private readonly SwaggerUiService $swaggerUi,
     ) {
     }
 
@@ -31,6 +33,19 @@ final class RoutesRegistrar
         $routes->add(new Route('discovery', ['GET'], '/', fn () => $this->discovery->handle(), null, true));
         $routes->add(new Route('health', ['GET'], '/health', fn () => $this->health->handle(), null, true));
         $routes->add(new Route('schema', ['GET'], '/schema', fn () => $this->schema->handle(), null, true));
+        $routes->add(new Route(
+            'docs',
+            ['GET'],
+            '/docs',
+            fn () => $this->swaggerUi->handle(),
+            null,
+            true,
+            [],
+            null,
+            null,
+            'Interactive Swagger UI for the live OpenAPI document',
+            ['Meta'],
+        ));
         $routes->add(new Route(
             'auth.token',
             ['POST'],
@@ -60,6 +75,19 @@ final class RoutesRegistrar
             null,
             true,
         ));
+        $routes->add(new Route(
+            'meta.openapi.json',
+            ['GET'],
+            '/meta/openapi.json',
+            fn () => $this->openApi->handleRaw(),
+            null,
+            true,
+            [],
+            null,
+            null,
+            'Raw OpenAPI 3.0 JSON without envelope',
+            ['Meta'],
+        ));
 
         $this->registerCrud(
             $routes,
@@ -79,6 +107,7 @@ final class RoutesRegistrar
             '/contexts',
             'contexts',
             'contexts.read',
+            'key',
         );
 
         $this->registerReadOnly(
@@ -87,6 +116,46 @@ final class RoutesRegistrar
             '/chunks',
             'chunks',
             'chunks.read',
+        );
+
+        $this->registerReadOnly(
+            $routes,
+            'templates',
+            '/templates',
+            'templates',
+            'templates.read',
+        );
+
+        $this->registerReadOnly(
+            $routes,
+            'snippets',
+            '/snippets',
+            'snippets',
+            'snippets.read',
+        );
+
+        $this->registerReadOnly(
+            $routes,
+            'tvs',
+            '/tvs',
+            'tvs',
+            'tvs.read',
+        );
+
+        $this->registerReadOnly(
+            $routes,
+            'categories',
+            '/categories',
+            'categories',
+            'categories.read',
+        );
+
+        $this->registerReadOnly(
+            $routes,
+            'content_types',
+            '/content_types',
+            'content_types',
+            'content_types.read',
         );
 
         $routes->add(new Route(
@@ -170,6 +239,7 @@ final class RoutesRegistrar
         string $path,
         string $objectName,
         string $readPermission,
+        string $idParam = 'id',
     ): void {
         $routes->add(new Route(
             $prefix . '.list',
@@ -186,8 +256,8 @@ final class RoutesRegistrar
         $routes->add(new Route(
             $prefix . '.get',
             ['GET'],
-            $path . '/{id}',
-            fn ($request, $params) => $this->objects->get($request, $objectName, (string) $params['id']),
+            $path . '/{' . $idParam . '}',
+            fn ($request, $params) => $this->objects->get($request, $objectName, (string) $params[$idParam]),
             $readPermission,
             false,
             [],
@@ -237,6 +307,10 @@ final class RoutesRegistrar
             $path,
             fn ($request) => $this->objects->create($request, $objectName),
             $createPermission,
+            false,
+            [],
+            null,
+            $objectName,
         ));
 
         $routes->add(new Route(
@@ -245,6 +319,10 @@ final class RoutesRegistrar
             $path . '/{id}',
             fn ($request, $params) => $this->objects->update($request, $objectName, (string) $params['id']),
             $updatePermission,
+            false,
+            [],
+            null,
+            $objectName,
         ));
 
         $routes->add(new Route(
@@ -253,6 +331,10 @@ final class RoutesRegistrar
             $path . '/{id}',
             fn ($request, $params) => $this->objects->delete($request, $objectName, (string) $params['id']),
             $deletePermission,
+            false,
+            [],
+            null,
+            $objectName,
         ));
     }
 }

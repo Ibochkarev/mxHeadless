@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MxHeadless\Routing;
 
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 final class Route
@@ -11,7 +12,7 @@ final class Route
     /**
      * @param list<string> $methods
      * @param array<string, string> $defaults
-     * @param callable(ServerRequestInterface, array<string, string>): array<string, mixed> $handler
+     * @param callable(ServerRequestInterface, array<string, string>): (array<string, mixed>|ResponseInterface) $handler
      * @param callable(array<string, string>): string|null $permissionResolver
      * @param list<RouteParameter> $parameters
      */
@@ -53,7 +54,7 @@ final class Route
     }
 
     /**
-     * @return callable(ServerRequestInterface, array<string, string>): array<string, mixed>
+     * @return callable(ServerRequestInterface, array<string, string>): (array<string, mixed>|ResponseInterface)
      */
     public function handler(): callable
     {
@@ -154,6 +155,7 @@ final class Route
         return [
             'name' => $this->name,
             'methods' => $this->methods,
+            'path' => $this->pattern,
             'pattern' => $this->pattern,
             'public' => $this->public,
             'permission' => $this->permission,

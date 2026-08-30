@@ -11,9 +11,9 @@ if (!defined('MODX_CORE_PATH')) {
 return [
     'name' => 'mxHeadless',
     'name_lower' => 'mxheadless',
-    'version' => '1.0.28',
+    'version' => '1.0.41',
     'release' => 'pl',
-    'install' => true,
+    'install' => false,
     'update' => [
         'plugins' => true,
         'settings' => false,

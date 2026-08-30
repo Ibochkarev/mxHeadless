@@ -12,6 +12,20 @@ use xPDOQuery;
 
 final class XpdoQueryCompiler
 {
+    /** @var list<string> */
+    private const BOOLEAN_FILTER_FIELDS = [
+        'published',
+        'deleted',
+        'hidemenu',
+        'isfolder',
+        'richtext',
+        'searchable',
+        'cacheable',
+        'uri_override',
+        'hide_children_in_tree',
+        'show_in_tree',
+    ];
+
     public function __construct(
         private readonly modX $modx,
         private readonly VisibilityPolicy $visibility,
@@ -106,16 +120,17 @@ final class XpdoQueryCompiler
             }
 
             $safeField = $this->escapeIdentifier($field);
+            $value = $this->normalizeFilterValue($field, $filter->value());
             $criteria = match ($filter->operator()) {
-                FilterOperator::Eq => [$safeField => $filter->value()],
-                FilterOperator::Neq => [$safeField . ':!=' => $filter->value()],
-                FilterOperator::Gt => [$safeField . ':>' => $filter->value()],
-                FilterOperator::Gte => [$safeField . ':>=' => $filter->value()],
-                FilterOperator::Lt => [$safeField . ':<' => $filter->value()],
-                FilterOperator::Lte => [$safeField . ':<=' => $filter->value()],
-                FilterOperator::Like => [$safeField . ':LIKE' => $filter->value()],
-                FilterOperator::In => [$safeField . ':IN' => array_values((array) $filter->value())],
-                FilterOperator::NotIn => [$safeField . ':NOT IN' => array_values((array) $filter->value())],
+                FilterOperator::Eq => [$safeField => $value],
+                FilterOperator::Neq => [$safeField . ':!=' => $value],
+                FilterOperator::Gt => [$safeField . ':>' => $value],
+                FilterOperator::Gte => [$safeField . ':>=' => $value],
+                FilterOperator::Lt => [$safeField . ':<' => $value],
+                FilterOperator::Lte => [$safeField . ':<=' => $value],
+                FilterOperator::Like => [$safeField . ':LIKE' => $value],
+                FilterOperator::In => [$safeField . ':IN' => array_values((array) $value)],
+                FilterOperator::NotIn => [$safeField . ':NOT IN' => array_values((array) $value)],
                 FilterOperator::Null => [$safeField . ':IS' => null],
                 FilterOperator::NotNull => [$safeField . ':IS NOT' => null],
             };
@@ -203,5 +218,48 @@ final class XpdoQueryCompiler
     private function escapeIdentifier(string $field): string
     {
         return str_replace(['`', '.', ' '], '', $field);
+    }
+
+    private function normalizeFilterValue(string $field, mixed $value): mixed
+    {
+        if (!in_array($field, self::BOOLEAN_FILTER_FIELDS, true)) {
+            return $value;
+        }
+
+        if (is_array($value)) {
+            $normalized = [];
+            foreach ($value as $item) {
+                $normalized[] = $this->normalizeBooleanFilterScalar($field, $item);
+            }
+
+            return $normalized;
+        }
+
+        return $this->normalizeBooleanFilterScalar($field, $value);
+    }
+
+    private function normalizeBooleanFilterScalar(string $field, mixed $value): int
+    {
+        if (is_bool($value)) {
+            return $value ? 1 : 0;
+        }
+
+        if (is_int($value) || is_float($value)) {
+            return ((int) $value) !== 0 ? 1 : 0;
+        }
+
+        if (!is_string($value)) {
+            throw new ValidationException('Invalid filter value', [
+                $field => ['Must be a boolean (0, 1, true, false)'],
+            ]);
+        }
+
+        return match (strtolower(trim($value))) {
+            '1', 'true', 'yes', 'on' => 1,
+            '0', 'false', 'no', 'off', '' => 0,
+            default => throw new ValidationException('Invalid filter value', [
+                $field => ['Must be a boolean (0, 1, true, false)'],
+            ]),
+        };
     }
 }

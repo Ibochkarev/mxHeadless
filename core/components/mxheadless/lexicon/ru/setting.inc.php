@@ -89,3 +89,6 @@ $_lang['setting_mxheadless.oauth.token_ttl_desc'] = 'Время жизни вы�
 
 $_lang['setting_mxheadless.oauth.password_grant_enabled'] = 'Password grant';
 $_lang['setting_mxheadless.oauth.password_grant_enabled_desc'] = 'Разрешить password credentials (обычно оставьте «Нет»).';
+
+$_lang['setting_mxheadless.swagger.enabled'] = 'Swagger UI';
+$_lang['setting_mxheadless.swagger.enabled_desc'] = 'Интерактивная документация на GET /api/v1/docs. Сырой OpenAPI JSON остаётся доступен при отключении.';

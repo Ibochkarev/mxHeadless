@@ -81,7 +81,7 @@ final class ObjectService
         $definition = $this->requireDefinition($name);
         $query = $this->queryParser->parse($name, $request->getQueryParams(), $request->getHeaderLine('X-Context'));
         $this->assertReadAccess($request, $definition, $query);
-        $this->assertRequestedFields($definition, $query);
+        $this->assertRequestedFields($request, $definition, $query);
         $this->assertRequestedIncludes($definition, $query);
 
         $fields = $this->authorizer->resolveReadableFields(
@@ -128,7 +128,7 @@ final class ObjectService
         $definition = $this->requireDefinition($name);
         $query = $this->queryParser->parse($name, $request->getQueryParams(), $request->getHeaderLine('X-Context'));
         $this->assertReadAccess($request, $definition, $query);
-        $this->assertRequestedFields($definition, $query);
+        $this->assertRequestedFields($request, $definition, $query);
         $this->assertRequestedIncludes($definition, $query);
 
         $object = $this->findObject(
@@ -160,7 +160,7 @@ final class ObjectService
         $definition = $this->requireDefinition($name);
         $query = $this->queryParser->parse($name, $request->getQueryParams(), $request->getHeaderLine('X-Context'));
         $this->assertReadAccess($request, $definition, $query);
-        $this->assertRequestedFields($definition, $query);
+        $this->assertRequestedFields($request, $definition, $query);
         $this->assertRequestedIncludes($definition, $query);
 
         if ($field === 'uri') {
@@ -308,6 +308,10 @@ final class ObjectService
 
         $force = filter_var($request->getQueryParams()['force'] ?? false, FILTER_VALIDATE_BOOLEAN);
         $supportsSoftDelete = in_array('deleted', $definition->getFields(), true);
+        $permanent = $force || !$supportsSoftDelete;
+        // Soft-delete only active rows (second DELETE → 404). Permanent purge may target
+        // already soft-deleted rows when ?force=1.
+        $includeDeleted = $permanent && $supportsSoftDelete;
         $object = $this->findObject(
             $request,
             $definition,
@@ -315,9 +319,8 @@ final class ObjectService
             $definition->getPrimaryKey(),
             $id,
             true,
-            $supportsSoftDelete,
+            $includeDeleted,
         );
-        $permanent = $force || !$supportsSoftDelete;
 
         if ($permanent) {
             if (!$object->remove()) {
@@ -351,6 +354,7 @@ final class ObjectService
     }
 
     private function assertRequestedFields(
+        ServerRequestInterface $request,
         \MxHeadless\Definition\ObjectDefinition $definition,
         ObjectQuery $query,
     ): void {
@@ -360,8 +364,16 @@ final class ObjectService
 
         $allowed = $definition->getFields();
         $hidden = $definition->getHiddenFields();
+        $protected = $definition->getProtectedFields();
         foreach ($query->fields()->fields() as $field) {
             if (!in_array($field, $allowed, true) || in_array($field, $hidden, true)) {
+                throw new ValidationException('Field not allowed', [$field => ['Field is not readable']]);
+            }
+
+            if (
+                in_array($field, $protected, true)
+                && !$this->authorizer->canReadField($request, $definition, $field, true)
+            ) {
                 throw new ValidationException('Field not allowed', [$field => ['Field is not readable']]);
             }
         }
@@ -928,6 +940,15 @@ final class ObjectService
         if (!$parent instanceof xPDOObject) {
             throw new ValidationException('Invalid field value', [
                 'parent' => ['Parent resource not found'],
+            ]);
+        }
+
+        if (
+            in_array('deleted', $definition->getFields(), true)
+            && (bool) $parent->get('deleted')
+        ) {
+            throw new ValidationException('Invalid field value', [
+                'parent' => ['Parent resource is deleted'],
             ]);
         }
 
