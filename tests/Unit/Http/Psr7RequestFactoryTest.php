@@ -79,4 +79,80 @@ final class Psr7RequestFactoryTest extends TestCase
         self::assertSame('3', $request->getQueryParams()['limit'] ?? null);
         self::assertSame('-id', $request->getQueryParams()['sort'] ?? null);
     }
+
+    public function testFallbackApiPhpBareMapsToVersionRoot(): void
+    {
+        $_SERVER = [
+            'REQUEST_METHOD' => 'GET',
+            'HTTP_HOST' => 'example.test',
+            'HTTPS' => 'on',
+            'SCRIPT_NAME' => '/assets/components/mxheadless/api.php',
+            'REQUEST_URI' => '/assets/components/mxheadless/api.php',
+            'QUERY_STRING' => '',
+            'PATH_INFO' => '',
+        ];
+        $_GET = [];
+
+        $request = (new Psr7RequestFactory(new modX()))->createFromGlobals();
+
+        self::assertSame('/api/v1', $request->getUri()->getPath());
+    }
+
+    public function testFallbackApiPhpPathInfoMapsOntoPrefix(): void
+    {
+        $_SERVER = [
+            'REQUEST_METHOD' => 'GET',
+            'HTTP_HOST' => 'example.test',
+            'SCRIPT_NAME' => '/assets/components/mxheadless/api.php',
+            'REQUEST_URI' => '/assets/components/mxheadless/api.php/v1/health',
+            'PATH_INFO' => '/v1/health',
+            'QUERY_STRING' => '',
+        ];
+        $_GET = [];
+
+        $request = (new Psr7RequestFactory(new modX()))->createFromGlobals();
+
+        self::assertSame('/api/v1/health', $request->getUri()->getPath());
+    }
+
+    public function testFallbackApiPhpRouteQueryMapsOntoPrefix(): void
+    {
+        $_SERVER = [
+            'REQUEST_METHOD' => 'GET',
+            'HTTP_HOST' => 'example.test',
+            'SCRIPT_NAME' => '/assets/components/mxheadless/api.php',
+            'REQUEST_URI' => '/assets/components/mxheadless/api.php?route=/v1/health&limit=1',
+            'QUERY_STRING' => 'route=/v1/health&limit=1',
+            'PATH_INFO' => '',
+        ];
+        $_GET = [
+            'route' => '/v1/health',
+            'limit' => '1',
+        ];
+
+        $request = (new Psr7RequestFactory(new modX()))->createFromGlobals();
+
+        self::assertSame('/api/v1/health', $request->getUri()->getPath());
+        self::assertSame('1', $request->getQueryParams()['limit'] ?? null);
+        self::assertArrayNotHasKey('route', $request->getQueryParams());
+    }
+
+    public function testFallbackApiPhpAbsoluteRouteQuery(): void
+    {
+        $_SERVER = [
+            'REQUEST_METHOD' => 'GET',
+            'HTTP_HOST' => 'example.test',
+            'SCRIPT_NAME' => '/assets/components/mxheadless/api.php',
+            'REQUEST_URI' => '/assets/components/mxheadless/api.php?route=/api/v1/resources',
+            'QUERY_STRING' => 'route=/api/v1/resources',
+            'PATH_INFO' => '',
+        ];
+        $_GET = [
+            'route' => '/api/v1/resources',
+        ];
+
+        $request = (new Psr7RequestFactory(new modX()))->createFromGlobals();
+
+        self::assertSame('/api/v1/resources', $request->getUri()->getPath());
+    }
 }
