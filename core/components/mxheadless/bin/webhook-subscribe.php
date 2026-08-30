@@ -46,13 +46,9 @@ if (!preg_match('#^https?://#i', $url)) {
     exit(1);
 }
 
-$root = dirname(__DIR__, 4);
+require_once __DIR__ . '/bootstrap-cli.php';
+$root = mxheadlessResolveCliModxRoot();
 $corePath = $root . '/core/';
-if (!is_file($corePath . 'config/config.inc.php')) {
-    fwrite(STDERR, "MODX core not found at {$corePath}\n");
-    exit(1);
-}
-
 require_once $corePath . 'config/config.inc.php';
 require_once MODX_CORE_PATH . 'vendor/autoload.php';
 require_once MODX_CORE_PATH . 'model/modx/modx.class.php';
