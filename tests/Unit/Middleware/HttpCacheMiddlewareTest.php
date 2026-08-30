@@ -21,8 +21,8 @@ final class HttpCacheMiddlewareTest extends TestCase
     public function testAnonymousGetWithCacheEnabledSetsPublicCacheControlAndEtag(): void
     {
         $modx = new modX([
-            'mxheadless.cache.enabled' => true,
-            'mxheadless.cache_ttl' => 300,
+            'mxheadless_cache_enabled' => true,
+            'mxheadless_cache_ttl' => 300,
         ]);
         $middleware = new HttpCacheMiddleware($modx, new ModxCacheAdapter($modx));
         $handler = new CountingHandler(new Response(200, [], '{"items":[]}'));
@@ -40,8 +40,8 @@ final class HttpCacheMiddlewareTest extends TestCase
     public function testSecondAnonymousGetHitsCacheWithoutCallingHandler(): void
     {
         $modx = new modX([
-            'mxheadless.cache.enabled' => true,
-            'mxheadless.cache_ttl' => 300,
+            'mxheadless_cache_enabled' => true,
+            'mxheadless_cache_ttl' => 300,
         ]);
         $middleware = new HttpCacheMiddleware($modx, new ModxCacheAdapter($modx));
         $handler = new CountingHandler(new Response(200, [], '{"cached":true}'));
@@ -60,8 +60,8 @@ final class HttpCacheMiddlewareTest extends TestCase
     public function testAuthenticatedIdentityGetsPrivateNoStore(): void
     {
         $modx = new modX([
-            'mxheadless.cache.enabled' => true,
-            'mxheadless.cache_ttl' => 300,
+            'mxheadless_cache_enabled' => true,
+            'mxheadless_cache_ttl' => 300,
         ]);
         $middleware = new HttpCacheMiddleware($modx, new ModxCacheAdapter($modx));
         $identity = new Identity(Identity::TYPE_API_KEY, 'api_key:abc', new AnonymousPermissionChecker());
@@ -76,8 +76,8 @@ final class HttpCacheMiddlewareTest extends TestCase
     public function testIfNoneMatchMatchingReturns304(): void
     {
         $modx = new modX([
-            'mxheadless.cache.enabled' => true,
-            'mxheadless.cache_ttl' => 300,
+            'mxheadless_cache_enabled' => true,
+            'mxheadless_cache_ttl' => 300,
         ]);
         $middleware = new HttpCacheMiddleware($modx, new ModxCacheAdapter($modx));
         $body = '{"items":[]}';
@@ -96,8 +96,8 @@ final class HttpCacheMiddlewareTest extends TestCase
     public function testHeadReturnsEmptyBodyWithEtag(): void
     {
         $modx = new modX([
-            'mxheadless.cache.enabled' => true,
-            'mxheadless.cache_ttl' => 300,
+            'mxheadless_cache_enabled' => true,
+            'mxheadless_cache_ttl' => 300,
         ]);
         $middleware = new HttpCacheMiddleware($modx, new ModxCacheAdapter($modx));
         $body = '{"head":true}';

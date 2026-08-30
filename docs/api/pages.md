@@ -28,7 +28,7 @@ curl -s 'https://example.com/api/v1/pages/about?fields=id,pagetitle,content'
 curl -s 'https://example.com/api/v1/pages/about.html?fields=id,pagetitle,content'
 ```
 
-Encode path segments. Very long URIs hit `mxheadless.max_uri_bytes` (default 2048).
+Encode path segments. Very long URIs hit `mxheadless_max_uri_bytes` (default 2048).
 
 ## Query parameters
 
@@ -41,7 +41,7 @@ curl -s 'https://example.com/api/v1/pages/about?fields=id,pagetitle,content&incl
 
 ## Context
 
-Pass the MODX context with the `X-Context` header or `context` query parameter. Only values from `mxheadless.allowed_contexts` are accepted (default `web,mgr`).
+Pass the MODX context with the `X-Context` header or `context` query parameter. Only values from `mxheadless_allowed_contexts` are accepted (default `web,mgr`).
 
 ## Response
 

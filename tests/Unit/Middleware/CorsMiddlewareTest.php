@@ -17,7 +17,7 @@ final class CorsMiddlewareTest extends TestCase
 {
     public function testOptionsWithCorsDisabledReturns204WithoutAcao(): void
     {
-        $middleware = new CorsMiddleware(new modX(['mxheadless.cors.enabled' => false]));
+        $middleware = new CorsMiddleware(new modX(['mxheadless_cors_enabled' => false]));
         $request = new ServerRequest('OPTIONS', 'https://example.test/api/v1/resources');
 
         $response = $middleware->process($request, $this->okHandler());
@@ -29,8 +29,8 @@ final class CorsMiddlewareTest extends TestCase
     public function testOptionsWithAllowlistedOriginReturns204WithAcao(): void
     {
         $middleware = new CorsMiddleware(new modX([
-            'mxheadless.cors.enabled' => true,
-            'mxheadless.cors.allowed_origins' => 'https://app.example.test,https://other.example.test',
+            'mxheadless_cors_enabled' => true,
+            'mxheadless_cors_allowed_origins' => 'https://app.example.test,https://other.example.test',
         ]));
         $request = (new ServerRequest('OPTIONS', 'https://example.test/api/v1/resources'))
             ->withHeader('Origin', 'https://app.example.test');
@@ -44,8 +44,8 @@ final class CorsMiddlewareTest extends TestCase
     public function testOptionsWithEvilOriginReturns204WithoutAcao(): void
     {
         $middleware = new CorsMiddleware(new modX([
-            'mxheadless.cors.enabled' => true,
-            'mxheadless.cors.allowed_origins' => 'https://app.example.test',
+            'mxheadless_cors_enabled' => true,
+            'mxheadless_cors_allowed_origins' => 'https://app.example.test',
         ]));
         $request = (new ServerRequest('OPTIONS', 'https://example.test/api/v1/resources'))
             ->withHeader('Origin', 'https://evil.example.test');
@@ -59,8 +59,8 @@ final class CorsMiddlewareTest extends TestCase
     public function testGetWithAllowlistedOriginAddsAcaoToHandlerResponse(): void
     {
         $middleware = new CorsMiddleware(new modX([
-            'mxheadless.cors.enabled' => true,
-            'mxheadless.cors.allowed_origins' => 'https://app.example.test',
+            'mxheadless_cors_enabled' => true,
+            'mxheadless_cors_allowed_origins' => 'https://app.example.test',
         ]));
         $request = (new ServerRequest('GET', 'https://example.test/api/v1/resources'))
             ->withHeader('Origin', 'https://app.example.test');

@@ -6,8 +6,8 @@ mxHeadless caches anonymous GET responses in the MODX cache manager. Mutations b
 
 | Key | Default | Role |
 |-----|---------|------|
-| `mxheadless.cache.enabled` | `true` | Shared cache for anonymous GET |
-| `mxheadless.cache_ttl` | `300` | `max-age` and entry TTL (seconds) |
+| `mxheadless_cache_enabled` | `true` | Shared cache for anonymous GET |
+| `mxheadless_cache_ttl` | `300` | `max-age` and entry TTL (seconds) |
 
 Authenticated requests, API keys, and preview mode always get `Cache-Control: private, no-store`. See [HTTP caching](../api/http-caching.md).
 
@@ -47,11 +47,11 @@ Do not cache authenticated JSON at a shared edge.
 
 | Goal | Action |
 |------|--------|
-| Dev debugging | Set `mxheadless.cache.enabled` to `false` |
-| Faster content updates | Lower `mxheadless.cache_ttl` |
+| Dev debugging | Set `mxheadless_cache_enabled` to `false` |
+| Faster content updates | Lower `mxheadless_cache_ttl` |
 | Immediate API freshness | Disable cache; keep webhooks for the frontend |
 
-Revoking an API key does not purge cache instantly. Entries expire within `mxheadless.cache_ttl`.
+Revoking an API key does not purge cache instantly. Entries expire within `mxheadless_cache_ttl`.
 
 ## Related
 

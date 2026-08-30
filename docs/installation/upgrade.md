@@ -11,6 +11,10 @@
 
 Table resolvers in the package create or ensure `{prefix}mxheadless_*` tables on install/upgrade.
 
+### 1.0.42 — system setting keys
+
+Keys moved from dotted form (`mxheadless.cors.enabled`) to underscores (`mxheadless_cors_enabled`). The upgrade resolver copies values and removes the old rows. Clear the MODX cache after upgrade so Manager shows the new keys.
+
 ## Breaking changes
 
 Breaking HTTP changes do not ship inside `/api/v1`. A new major API uses `/api/v2` and a semver major package bump.

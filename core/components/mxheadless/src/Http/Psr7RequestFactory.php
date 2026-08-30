@@ -129,7 +129,7 @@ final class Psr7RequestFactory
         }
 
         $relative = $this->fallbackRelativePath($path);
-        $base = rtrim((string) $this->modx->getOption('mxheadless.api.prefix', null, '/api'), '/');
+        $base = rtrim((string) $this->modx->getOption('mxheadless_api_prefix', null, '/api'), '/');
         if ($base === '') {
             $base = '/api';
         }

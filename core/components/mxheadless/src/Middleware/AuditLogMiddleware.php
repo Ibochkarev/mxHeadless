@@ -25,7 +25,7 @@ final class AuditLogMiddleware implements MiddlewareInterface
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        if (!(bool) $this->modx->getOption('mxheadless.audit.enabled', null, false)) {
+        if (!(bool) $this->modx->getOption('mxheadless_audit_enabled', null, false)) {
             return $handler->handle($request);
         }
 
@@ -63,7 +63,7 @@ final class AuditLogMiddleware implements MiddlewareInterface
         }
 
         return $method === 'GET'
-            && (bool) $this->modx->getOption('mxheadless.audit.log_get', null, false);
+            && (bool) $this->modx->getOption('mxheadless_audit_log_get', null, false);
     }
 
     private function apiKeyId(ServerRequestInterface $request): ?int

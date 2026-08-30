@@ -6,9 +6,9 @@ Optional short-lived bearer tokens for machine clients. Static `mxh_*` API keys 
 
 | Setting | Default | Description |
 |---------|---------|-------------|
-| `mxheadless.oauth.enabled` | `false` | Master switch for `POST /auth/token` |
-| `mxheadless.oauth.token_ttl` | `3600` | Access token lifetime in seconds |
-| `mxheadless.oauth.password_grant_enabled` | `false` | Allow `grant_type=password` |
+| `mxheadless_oauth_enabled` | `false` | Master switch for `POST /auth/token` |
+| `mxheadless_oauth_token_ttl` | `3600` | Access token lifetime in seconds |
+| `mxheadless_oauth_password_grant_enabled` | `false` | Allow `grant_type=password` |
 
 Create OAuth clients in `{prefix}mxheadless_oauth_clients` (hashed secret, scopes, allowed grant types). See [OAuth clients CLI](../operations/oauth-clients.md).
 

@@ -153,9 +153,9 @@ Run after automatic gates are green on the target host.
 - [ ] Pretty URL `/api/v1/*` or `assets/components/mxheadless/api.php` fallback (`?route=/v1/health` on nginx without PATH_INFO)
 - [ ] `GET /api/v1` returns name, version, links (resources, pages, elements, docs, openapi, auth_token)
 - [ ] `GET /api/v1/health` → `database: true`
-- [ ] Kill switch: `mxheadless.enabled=false` → only discovery/health; other routes → service disabled (`code=service_disabled`)
-- [ ] `mxheadless.api.prefix` change still routes correctly
-- [ ] `mxheadless.debug=false` → no stack traces / secrets in problem details
+- [ ] Kill switch: `mxheadless_enabled=false` → only discovery/health; other routes → service disabled (`code=service_disabled`)
+- [ ] `mxheadless_api_prefix` change still routes correctly
+- [ ] `mxheadless_debug=false` → no stack traces / secrets in problem details
 
 ### 2.2 Discovery, schema, meta
 
@@ -226,7 +226,7 @@ For each of `chunks`, `templates`, `snippets`, `tvs`, `categories`, `content_typ
 - [ ] `GET /contexts`, `/contexts/{key}`, `/contexts/{key}/settings`
 - [ ] Settings allowlist only (no secrets)
 - [ ] OpenAPI `/contexts/{key}`
-- [ ] `mxheadless.allowed_contexts` rejects other keys with 422
+- [ ] `mxheadless_allowed_contexts` rejects other keys with 422
 
 ### 2.8 Generic `/objects` and Extension API
 
@@ -258,7 +258,7 @@ For each of `chunks`, `templates`, `snippets`, `tvs`, `categories`, `content_typ
 - [ ] Loads (CDN assets); Authorize; Try it out
 - [ ] Object-aware query params; tags (`Templates`, `TVs`, `ContentTypes`, …)
 - [ ] Optional bearer: public GET still works after Authorize
-- [ ] `mxheadless.swagger.enabled=false` → not found
+- [ ] `mxheadless_swagger_enabled=false` → not found
 
 ### 2.12 Cache and performance
 

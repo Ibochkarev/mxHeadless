@@ -38,7 +38,7 @@ php core/components/mxheadless/bin/api-key-create.php \
 
 ## Отзыв
 
-Мгновенный. Кэш по старой identity уйдёт в пределах `mxheadless.cache_ttl`.
+Мгновенный. Кэш по старой identity уйдёт в пределах `mxheadless_cache_ttl`.
 
 ## См. также
 

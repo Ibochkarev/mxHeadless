@@ -27,7 +27,7 @@
 | Префикс по умолчанию | `/mxapi/v1` | `/api/v1` |
 | Content API из коробки | нет | да |
 | Bearer | непрозрачные токены в БД (`sha256`) | API keys `mxh_*` + OAuth `mxt_*` + сессия + anonymous |
-| Token endpoint | `POST /auth/token` | `POST /auth/token` при `mxheadless.oauth.enabled` |
+| Token endpoint | `POST /auth/token` | `POST /auth/token` при `mxheadless_oauth_enabled` |
 | Scope + MODX ACL | да (политики `mxapi`) | да (scope ключа/токена + права MODX) |
 | Rate limit | на клиента интеграции | глобально + per-key + per OAuth client |
 | Idempotency | `Idempotency-Key` | `Idempotency-Key` на `POST` (кэш только `2xx`) |

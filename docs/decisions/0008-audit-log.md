@@ -37,9 +37,9 @@ Package uninstall **does not drop** the table (same policy as mxApi log and webh
 
 | Key | Default | Purpose |
 |-----|---------|---------|
-| `mxheadless.audit.enabled` | `false` | Master switch |
-| `mxheadless.audit.retention_days` | `90` | Cron or worker prunes older rows |
-| `mxheadless.audit.log_get` | `false` | When false, only mutating methods (`POST`, `PUT`, `PATCH`, `DELETE`) are logged |
+| `mxheadless_audit_enabled` | `false` | Master switch |
+| `mxheadless_audit_retention_days` | `90` | Cron or worker prunes older rows |
+| `mxheadless_audit_log_get` | `false` | When false, only mutating methods (`POST`, `PUT`, `PATCH`, `DELETE`) are logged |
 
 ### What we log
 

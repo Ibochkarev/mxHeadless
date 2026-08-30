@@ -1,178 +1,184 @@
 <?php
 
 return [
-    'api.prefix' => [
-        'key' => 'mxheadless.api.prefix',
+    'api_prefix' => [
+        'key' => 'mxheadless_api_prefix',
         'xtype' => 'textfield',
         'value' => '/api',
         'area' => 'mxheadless_api',
     ],
     'debug' => [
-        'key' => 'mxheadless.debug',
+        'key' => 'mxheadless_debug',
         'xtype' => 'combo-boolean',
         'value' => false,
         'area' => 'mxheadless_main',
     ],
     'enabled' => [
-        'key' => 'mxheadless.enabled',
+        'key' => 'mxheadless_enabled',
         'xtype' => 'combo-boolean',
         'value' => true,
         'area' => 'mxheadless_main',
     ],
-    'cache.enabled' => [
-        'key' => 'mxheadless.cache.enabled',
+    'swagger_enabled' => [
+        'key' => 'mxheadless_swagger_enabled',
+        'xtype' => 'combo-boolean',
+        'value' => true,
+        'area' => 'mxheadless_main',
+    ],
+    'cache_enabled' => [
+        'key' => 'mxheadless_cache_enabled',
         'xtype' => 'combo-boolean',
         'value' => true,
         'area' => 'mxheadless_cache',
     ],
     'cache_ttl' => [
-        'key' => 'mxheadless.cache_ttl',
+        'key' => 'mxheadless_cache_ttl',
         'xtype' => 'numberfield',
         'value' => 300,
         'area' => 'mxheadless_cache',
     ],
-    'rate_limit.enabled' => [
-        'key' => 'mxheadless.rate_limit.enabled',
+    'rate_limit_enabled' => [
+        'key' => 'mxheadless_rate_limit_enabled',
         'xtype' => 'combo-boolean',
         'value' => true,
         'area' => 'mxheadless_rate_limit',
     ],
-    'rate_limit.max_requests' => [
-        'key' => 'mxheadless.rate_limit.max_requests',
+    'rate_limit_max_requests' => [
+        'key' => 'mxheadless_rate_limit_max_requests',
         'xtype' => 'numberfield',
         'value' => 120,
         'area' => 'mxheadless_rate_limit',
     ],
-    'rate_limit.window_seconds' => [
-        'key' => 'mxheadless.rate_limit.window_seconds',
+    'rate_limit_window_seconds' => [
+        'key' => 'mxheadless_rate_limit_window_seconds',
         'xtype' => 'numberfield',
         'value' => 60,
         'area' => 'mxheadless_rate_limit',
     ],
-    'cors.enabled' => [
-        'key' => 'mxheadless.cors.enabled',
+    'cors_enabled' => [
+        'key' => 'mxheadless_cors_enabled',
         'xtype' => 'combo-boolean',
         'value' => false,
         'area' => 'mxheadless_cors',
     ],
-    'cors.allowed_origins' => [
-        'key' => 'mxheadless.cors.allowed_origins',
+    'cors_allowed_origins' => [
+        'key' => 'mxheadless_cors_allowed_origins',
         'xtype' => 'textarea',
         'value' => '',
         'area' => 'mxheadless_cors',
     ],
-    'cors.allowed_methods' => [
-        'key' => 'mxheadless.cors.allowed_methods',
+    'cors_allowed_methods' => [
+        'key' => 'mxheadless_cors_allowed_methods',
         'xtype' => 'textfield',
         'value' => 'GET,POST,PUT,PATCH,DELETE,OPTIONS',
         'area' => 'mxheadless_cors',
     ],
-    'cors.allowed_headers' => [
-        'key' => 'mxheadless.cors.allowed_headers',
+    'cors_allowed_headers' => [
+        'key' => 'mxheadless_cors_allowed_headers',
         'xtype' => 'textfield',
         'value' => 'Authorization,Content-Type,X-Request-ID,X-CSRF-Token,X-Context,X-API-Key,Idempotency-Key',
         'area' => 'mxheadless_cors',
     ],
-    'cors.expose_headers' => [
-        'key' => 'mxheadless.cors.expose_headers',
+    'cors_expose_headers' => [
+        'key' => 'mxheadless_cors_expose_headers',
         'xtype' => 'textfield',
         'value' => 'ETag,X-Request-ID,X-RateLimit-Limit,X-RateLimit-Remaining,X-RateLimit-Reset,Idempotency-Replayed',
         'area' => 'mxheadless_cors',
     ],
-    'cors.allow_credentials' => [
-        'key' => 'mxheadless.cors.allow_credentials',
+    'cors_allow_credentials' => [
+        'key' => 'mxheadless_cors_allow_credentials',
         'xtype' => 'combo-boolean',
         'value' => false,
         'area' => 'mxheadless_cors',
     ],
     'max_body_bytes' => [
-        'key' => 'mxheadless.max_body_bytes',
+        'key' => 'mxheadless_max_body_bytes',
         'xtype' => 'numberfield',
         'value' => 1048576,
         'area' => 'mxheadless_security',
     ],
     'max_uri_bytes' => [
-        'key' => 'mxheadless.max_uri_bytes',
+        'key' => 'mxheadless_max_uri_bytes',
         'xtype' => 'numberfield',
         'value' => 2048,
         'area' => 'mxheadless_security',
     ],
     'trusted_proxies' => [
-        'key' => 'mxheadless.trusted_proxies',
+        'key' => 'mxheadless_trusted_proxies',
         'xtype' => 'textarea',
         'value' => '',
         'area' => 'mxheadless_security',
     ],
-    'idempotency.enabled' => [
-        'key' => 'mxheadless.idempotency.enabled',
+    'csrf_enabled' => [
+        'key' => 'mxheadless_csrf_enabled',
+        'xtype' => 'combo-boolean',
+        'value' => true,
+        'area' => 'mxheadless_security',
+    ],
+    'idempotency_enabled' => [
+        'key' => 'mxheadless_idempotency_enabled',
         'xtype' => 'combo-boolean',
         'value' => true,
         'area' => 'mxheadless_security',
     ],
     'idempotency_ttl' => [
-        'key' => 'mxheadless.idempotency_ttl',
+        'key' => 'mxheadless_idempotency_ttl',
         'xtype' => 'numberfield',
         'value' => 86400,
         'area' => 'mxheadless_security',
     ],
-    'webhook.max_attempts' => [
-        'key' => 'mxheadless.webhook.max_attempts',
+    'webhook_max_attempts' => [
+        'key' => 'mxheadless_webhook_max_attempts',
         'xtype' => 'numberfield',
         'value' => 5,
         'area' => 'mxheadless_webhooks',
     ],
-    'webhook.worker_limit' => [
-        'key' => 'mxheadless.webhook.worker_limit',
+    'webhook_worker_limit' => [
+        'key' => 'mxheadless_webhook_worker_limit',
         'xtype' => 'numberfield',
         'value' => 50,
         'area' => 'mxheadless_webhooks',
     ],
-    'webhook.allow_private_urls' => [
-        'key' => 'mxheadless.webhook.allow_private_urls',
+    'webhook_allow_private_urls' => [
+        'key' => 'mxheadless_webhook_allow_private_urls',
         'xtype' => 'combo-boolean',
         'value' => false,
         'area' => 'mxheadless_webhooks',
     ],
-    'audit.enabled' => [
-        'key' => 'mxheadless.audit.enabled',
+    'audit_enabled' => [
+        'key' => 'mxheadless_audit_enabled',
         'xtype' => 'combo-boolean',
         'value' => false,
         'area' => 'mxheadless_audit',
     ],
-    'audit.retention_days' => [
-        'key' => 'mxheadless.audit.retention_days',
+    'audit_retention_days' => [
+        'key' => 'mxheadless_audit_retention_days',
         'xtype' => 'numberfield',
         'value' => 90,
         'area' => 'mxheadless_audit',
     ],
-    'audit.log_get' => [
-        'key' => 'mxheadless.audit.log_get',
+    'audit_log_get' => [
+        'key' => 'mxheadless_audit_log_get',
         'xtype' => 'combo-boolean',
         'value' => false,
         'area' => 'mxheadless_audit',
     ],
-    'oauth.enabled' => [
-        'key' => 'mxheadless.oauth.enabled',
+    'oauth_enabled' => [
+        'key' => 'mxheadless_oauth_enabled',
         'xtype' => 'combo-boolean',
         'value' => false,
         'area' => 'mxheadless_oauth',
     ],
-    'oauth.token_ttl' => [
-        'key' => 'mxheadless.oauth.token_ttl',
+    'oauth_token_ttl' => [
+        'key' => 'mxheadless_oauth_token_ttl',
         'xtype' => 'numberfield',
         'value' => 3600,
         'area' => 'mxheadless_oauth',
     ],
-    'oauth.password_grant_enabled' => [
-        'key' => 'mxheadless.oauth.password_grant_enabled',
+    'oauth_password_grant_enabled' => [
+        'key' => 'mxheadless_oauth_password_grant_enabled',
         'xtype' => 'combo-boolean',
         'value' => false,
         'area' => 'mxheadless_oauth',
-    ],
-    'swagger.enabled' => [
-        'key' => 'mxheadless.swagger.enabled',
-        'xtype' => 'combo-boolean',
-        'value' => true,
-        'area' => 'mxheadless_main',
     ],
 ];

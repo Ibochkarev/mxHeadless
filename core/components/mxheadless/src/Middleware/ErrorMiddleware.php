@@ -38,7 +38,7 @@ final class ErrorMiddleware implements MiddlewareInterface
                 ),
             );
 
-            $debug = (bool) $this->modx->getOption('mxheadless.debug', null, false);
+            $debug = (bool) $this->modx->getOption('mxheadless_debug', null, false);
             $extra = $debug ? [
                 'debug' => [
                     'message' => $e->getMessage(),

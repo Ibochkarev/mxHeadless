@@ -226,7 +226,7 @@ final class Authorizer
     {
         $allowed = array_map(
             'trim',
-            explode(',', (string) $this->modx->getOption('mxheadless.allowed_contexts', null, 'web,mgr')),
+            explode(',', (string) $this->modx->getOption('mxheadless_allowed_contexts', null, 'web,mgr')),
         );
         $keys = [];
         foreach ($allowed as $key) {

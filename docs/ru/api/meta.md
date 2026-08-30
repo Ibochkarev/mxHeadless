@@ -36,7 +36,7 @@ Content-Type: `application/openapi+json`.
 open https://example.com/api/v1/docs
 ```
 
-Интерактивная документация (CDN Swagger UI) грузит `/meta/openapi.json`. Выключатель: настройка `mxheadless.swagger.enabled` (по умолчанию Да). При «Нет» `/docs` отдаёт `404`; сырой OpenAPI остаётся.
+Интерактивная документация (CDN Swagger UI) грузит `/meta/openapi.json`. Выключатель: настройка `mxheadless_swagger_enabled` (по умолчанию Да). При «Нет» `/docs` отдаёт `404`; сырой OpenAPI остаётся.
 
 ## См. также
 

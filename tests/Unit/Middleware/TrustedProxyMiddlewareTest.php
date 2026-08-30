@@ -32,7 +32,7 @@ final class TrustedProxyMiddlewareTest extends TestCase
     public function testNoTrustedProxiesUsesRemoteAddr(): void
     {
         $_SERVER['REMOTE_ADDR'] = '203.0.113.10';
-        $middleware = new TrustedProxyMiddleware(new modX(['mxheadless.trusted_proxies' => '']));
+        $middleware = new TrustedProxyMiddleware(new modX(['mxheadless_trusted_proxies' => '']));
         $request = (new ServerRequest('GET', 'https://example.test/api/v1/resources'))
             ->withHeader('X-Forwarded-For', '198.51.100.5, 203.0.113.1');
 
@@ -45,7 +45,7 @@ final class TrustedProxyMiddlewareTest extends TestCase
     public function testTrustedProxyUsesFirstForwardedForIp(): void
     {
         $_SERVER['REMOTE_ADDR'] = '10.0.0.1';
-        $middleware = new TrustedProxyMiddleware(new modX(['mxheadless.trusted_proxies' => '10.0.0.1']));
+        $middleware = new TrustedProxyMiddleware(new modX(['mxheadless_trusted_proxies' => '10.0.0.1']));
         $request = (new ServerRequest('GET', 'https://example.test/api/v1/resources'))
             ->withHeader('X-Forwarded-For', '198.51.100.5, 203.0.113.1');
 
@@ -58,7 +58,7 @@ final class TrustedProxyMiddlewareTest extends TestCase
     public function testUntrustedProxyIgnoresForwardedFor(): void
     {
         $_SERVER['REMOTE_ADDR'] = '203.0.113.10';
-        $middleware = new TrustedProxyMiddleware(new modX(['mxheadless.trusted_proxies' => '10.0.0.1']));
+        $middleware = new TrustedProxyMiddleware(new modX(['mxheadless_trusted_proxies' => '10.0.0.1']));
         $request = (new ServerRequest('GET', 'https://example.test/api/v1/resources'))
             ->withHeader('X-Forwarded-For', '198.51.100.5');
 

@@ -22,7 +22,7 @@ final class RateLimitMiddleware implements MiddlewareInterface
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        if (!(bool) $this->modx->getOption('mxheadless.rate_limit.enabled', null, true)) {
+        if (!(bool) $this->modx->getOption('mxheadless_rate_limit_enabled', null, true)) {
             return $handler->handle($request);
         }
 
@@ -32,8 +32,8 @@ final class RateLimitMiddleware implements MiddlewareInterface
 
         $limit = $request->getAttribute('rate_limit_max');
         $window = $request->getAttribute('rate_limit_window');
-        $limit = $limit !== null ? (int) $limit : (int) $this->modx->getOption('mxheadless.rate_limit.max_requests', null, 120);
-        $window = $window !== null ? (int) $window : (int) $this->modx->getOption('mxheadless.rate_limit.window_seconds', null, 60);
+        $limit = $limit !== null ? (int) $limit : (int) $this->modx->getOption('mxheadless_rate_limit_max_requests', null, 120);
+        $window = $window !== null ? (int) $window : (int) $this->modx->getOption('mxheadless_rate_limit_window_seconds', null, 60);
 
         $decision = $this->rateLimiter->attempt($key, $limit, $window);
         if (!$decision->allowed) {

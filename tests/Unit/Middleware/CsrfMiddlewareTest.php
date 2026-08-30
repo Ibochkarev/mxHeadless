@@ -26,7 +26,7 @@ final class CsrfMiddlewareTest extends TestCase
 
     public function testPassesWhenCsrfDisabled(): void
     {
-        $middleware = new CsrfMiddleware(new modX(['mxheadless.csrf.enabled' => false]));
+        $middleware = new CsrfMiddleware(new modX(['mxheadless_csrf_enabled' => false]));
         $request = (new ServerRequest('POST', 'https://example.test/api/v1/resources'))
             ->withAttribute('identity', $this->sessionIdentity());
 
@@ -36,7 +36,7 @@ final class CsrfMiddlewareTest extends TestCase
 
     public function testGetAlwaysPasses(): void
     {
-        $middleware = new CsrfMiddleware(new modX(['mxheadless.csrf.enabled' => true]));
+        $middleware = new CsrfMiddleware(new modX(['mxheadless_csrf_enabled' => true]));
         $request = (new ServerRequest('GET', 'https://example.test/api/v1/resources'))
             ->withAttribute('identity', $this->sessionIdentity());
 
@@ -46,7 +46,7 @@ final class CsrfMiddlewareTest extends TestCase
 
     public function testApiKeyIdentityPostPassesWithoutCsrf(): void
     {
-        $middleware = new CsrfMiddleware(new modX(['mxheadless.csrf.enabled' => true]));
+        $middleware = new CsrfMiddleware(new modX(['mxheadless_csrf_enabled' => true]));
         $identity = new Identity(Identity::TYPE_API_KEY, 'api_key:abc', new AnonymousPermissionChecker());
         $request = (new ServerRequest('POST', 'https://example.test/api/v1/resources'))
             ->withAttribute('identity', $identity);
@@ -57,7 +57,7 @@ final class CsrfMiddlewareTest extends TestCase
 
     public function testSessionIdentityPostWithoutTokenThrowsForbidden(): void
     {
-        $middleware = new CsrfMiddleware(new modX(['mxheadless.csrf.enabled' => true]));
+        $middleware = new CsrfMiddleware(new modX(['mxheadless_csrf_enabled' => true]));
         $request = (new ServerRequest('POST', 'https://example.test/api/v1/resources'))
             ->withAttribute('identity', $this->sessionIdentity());
 
@@ -69,7 +69,7 @@ final class CsrfMiddlewareTest extends TestCase
     public function testSessionIdentityPostWithMatchingTokenPasses(): void
     {
         $_SESSION['mxheadless.csrf_token'] = 'valid-csrf-token';
-        $middleware = new CsrfMiddleware(new modX(['mxheadless.csrf.enabled' => true]));
+        $middleware = new CsrfMiddleware(new modX(['mxheadless_csrf_enabled' => true]));
         $request = (new ServerRequest('POST', 'https://example.test/api/v1/resources'))
             ->withAttribute('identity', $this->sessionIdentity())
             ->withHeader('X-CSRF-Token', 'valid-csrf-token');

@@ -25,7 +25,7 @@ final class WebhookDispatcherUrlTest extends TestCase
 
     public function testAllowsPrivateHostsWhenSettingEnabled(): void
     {
-        $modx = new modX(['mxheadless.webhook.allow_private_urls' => true]);
+        $modx = new modX(['mxheadless_webhook_allow_private_urls' => true]);
         $dispatcher = new WebhookDispatcher($modx, new WebhookOutbox($modx), new WebhookSigner());
         $method = new ReflectionMethod(WebhookDispatcher::class, 'isSafeUrl');
 

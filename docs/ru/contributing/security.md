@@ -20,7 +20,7 @@
 3. **No secret leakage.** Logs, errors и cache keys без tokens и bodies?
 4. **Auth ≠ authz.** Valid identity всё равно проверяет scopes и MODX ACL?
 5. **Context isolation.** Caller не достаёт чужой context без permission?
-6. **Webhook safety.** Private URLs заблокированы в production (`mxheadless.webhook.allow_private_urls`)?
+6. **Webhook safety.** Private URLs заблокированы в production (`mxheadless_webhook_allow_private_urls`)?
 
 Полная threat model: [security.md](../security.md).
 

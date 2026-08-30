@@ -11,30 +11,30 @@
 
 ## Безопасность
 
-- [ ] `mxheadless.debug` = `false`
-- [ ] `mxheadless.enabled` = `true` в production (kill switch выключен)
-- [ ] `mxheadless.allowed_contexts` содержит только разрешённые контексты
+- [ ] `mxheadless_debug` = `false`
+- [ ] `mxheadless_enabled` = `true` в production (kill switch выключен)
+- [ ] `mxheadless_allowed_contexts` содержит только разрешённые контексты
 - [ ] API keys с минимальными scope (`resources.read`, `context.web`, `contexts.read`, …)
 - [ ] Мутации по сессии с заголовком `X-CSRF-Token`
-- [ ] CORS: явный список origin при `mxheadless.cors.enabled` (без `*` вместе с credentials)
+- [ ] CORS: явный список origin при `mxheadless_cors_enabled` (без `*` вместе с credentials)
 - [ ] Trusted proxy настроен под балансировщик, если используете `X-Forwarded-*`
 
 ## Кэш и лимиты
 
-- [ ] `mxheadless.cache.enabled` и `mxheadless.cache_ttl` согласованы с CDN или edge
-- [ ] Rate limit (`mxheadless.rate_limit.*`) для публичных endpoint
+- [ ] `mxheadless_cache_enabled` и `mxheadless_cache_ttl` согласованы с CDN или edge
+- [ ] Rate limit (`mxheadless_rate_limit_*`) для публичных endpoint
 - [ ] Лимиты body и URI подходят под ваши payload
 
 ## Idempotency
 
-- [ ] `mxheadless.idempotency.enabled` согласован с клиентами мутаций
+- [ ] `mxheadless_idempotency_enabled` согласован с клиентами мутаций
 - [ ] Общий cache backend MODX при нескольких нодах (см. [idempotency](../api/idempotency.md))
 - [ ] Фронт шлёт `Idempotency-Key` на `POST` при повторных create
 
 ## Webhooks и ISR (опционально)
 
 - [ ] `bin/webhook-worker.php` каждую минуту (cron или systemd timer, см. [workers](workers.md))
-- [ ] `mxheadless.webhook.worker_limit` и `mxheadless.webhook.max_attempts` под ваш трафик
+- [ ] `mxheadless_webhook_worker_limit` и `mxheadless_webhook_max_attempts` под ваш трафик
 - [ ] Таблица outbox создана после установки пакета
 - [ ] URL webhook на HTTPS и доступны с хоста MODX
 - [ ] `/api/revalidate` на фронте проверяет `X-MxHeadless-Signature` (см. [ISR revalidation](isr-revalidation.md))
@@ -42,15 +42,15 @@
 
 ## Audit log (опционально)
 
-- [ ] `mxheadless.audit.enabled` = `true` только если нужен журнал обращений в БД
+- [ ] `mxheadless_audit_enabled` = `true` только если нужен журнал обращений в БД
 - [ ] `bin/audit-prune.php` ежедневно (см. [audit log](audit-log.md))
 - [ ] Таблица `{prefix}mxheadless_api_log` создана после upgrade пакета
 
 ## OAuth tokens (опционально)
 
-- [ ] `mxheadless.oauth.enabled` = `true` только при использовании `mxt_*` токенов
+- [ ] `mxheadless_oauth_enabled` = `true` только при использовании `mxt_*` токенов
 - [ ] OAuth clients через [CLI](oauth-clients.md)
-- [ ] `mxheadless.oauth.password_grant_enabled` = `false`, если password grant не нужен
+- [ ] `mxheadless_oauth_password_grant_enabled` = `false`, если password grant не нужен
 
 ## Smoke-тесты для фронта
 

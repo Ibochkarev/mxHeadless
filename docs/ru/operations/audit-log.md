@@ -6,9 +6,9 @@
 
 | Настройка | По умолчанию | Описание |
 |-----------|--------------|----------|
-| `mxheadless.audit.enabled` | `false` | Главный переключатель |
-| `mxheadless.audit.retention_days` | `90` | Срок хранения для `audit-prune.php` |
-| `mxheadless.audit.log_get` | `false` | При `false` пишутся только `POST`, `PUT`, `PATCH`, `DELETE` |
+| `mxheadless_audit_enabled` | `false` | Главный переключатель |
+| `mxheadless_audit_retention_days` | `90` | Срок хранения для `audit-prune.php` |
+| `mxheadless_audit_log_get` | `false` | При `false` пишутся только `POST`, `PUT`, `PATCH`, `DELETE` |
 
 При `false` middleware `AuditLogMiddleware` ничего не делает.
 
@@ -45,7 +45,7 @@
 php core/components/mxheadless/bin/audit-prune.php
 ```
 
-С `--days=30` переопределяет `mxheadless.audit.retention_days`.
+С `--days=30` переопределяет `mxheadless_audit_retention_days`.
 
 ## Примеры SQL
 

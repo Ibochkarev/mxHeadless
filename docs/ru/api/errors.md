@@ -29,7 +29,7 @@
 
 | `code` | HTTP | Когда |
 |--------|------|-------|
-| `service_disabled` | 503 | `mxheadless.enabled` = `false` (кроме discovery и health) |
+| `service_disabled` | 503 | `mxheadless_enabled` = `false` (кроме discovery и health) |
 | `token_required` | 401 | Нет `Authorization` / `X-API-Key` на защищённом маршруте |
 | `invalid_token` | 401 | Credential есть, но неверный, истёкший или отозванный |
 | `scope_denied` | 403 | Вошли, но действие запрещено |
@@ -41,7 +41,7 @@
 
 ## Раскрытие в production
 
-При `mxheadless.debug` = `false` (по умолчанию) в ответе нет SQL, stack trace, путей к файлам и имён PHP-классов. Debug включайте только локально.
+При `mxheadless_debug` = `false` (по умолчанию) в ответе нет SQL, stack trace, путей к файлам и имён PHP-классов. Debug включайте только локально.
 
 ## Частые HTTP-коды
 
@@ -55,7 +55,7 @@
 | 422 | Валидация, битый JSON, неизвестное поле, фильтр или sort |
 | 429 | Превышен rate limit |
 | 500 | Необработанная ошибка сервера |
-| 503 | API выключен через `mxheadless.enabled` |
+| 503 | API выключен через `mxheadless_enabled` |
 
 ## Rate limit
 

@@ -6,8 +6,8 @@
 
 | Настройка | По умолчанию | Подбор |
 |-----------|--------------|--------|
-| `mxheadless.cache.enabled` | `true` | Оставляйте для read-heavy публичных сайтов |
-| `mxheadless.cache_ttl` | `300` | Выше для стабильных каталогов. Ниже для новостей |
+| `mxheadless_cache_enabled` | `true` | Оставляйте для read-heavy публичных сайтов |
+| `mxheadless_cache_ttl` | `300` | Выше для стабильных каталогов. Ниже для новостей |
 
 Анонимный GET попадает в MODX cache после первого запроса. Аутентифицированные чтения shared cache не используют. См. [cache](cache.md).
 
@@ -17,11 +17,11 @@
 
 | Лимит | По умолчанию |
 |-------|--------------|
-| `mxheadless.max_limit` | 100 |
-| `mxheadless.max_offset` | 100000 |
-| `mxheadless.max_fields` | 50 |
-| `mxheadless.max_include_relations` | 10 |
-| `mxheadless.max_include_depth` | 2 |
+| `mxheadless_max_limit` | 100 |
+| `mxheadless_max_offset` | 100000 |
+| `mxheadless_max_fields` | 50 |
+| `mxheadless_max_include_relations` | 10 |
+| `mxheadless_max_include_depth` | 2 |
 
 Просите у клиентов меньшие страницы вместо `limit=100` на каждый вызов. Глубокие деревья `include` умножают SQL.
 
@@ -31,8 +31,8 @@
 
 | Настройка | По умолчанию |
 |-----------|--------------|
-| `mxheadless.max_body_bytes` | 1048576 (1 MiB) |
-| `mxheadless.max_uri_bytes` | 2048 |
+| `mxheadless_max_body_bytes` | 1048576 (1 MiB) |
+| `mxheadless_max_uri_bytes` | 2048 |
 
 Длинные filter URL отсекаются рано. POST с body только там, где API это допускает (мутации).
 

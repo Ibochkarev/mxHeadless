@@ -20,7 +20,7 @@ Documentation-only fixes do not need a security reviewer unless they describe ne
 3. **No secret leakage.** Logs, errors, and cache keys exclude tokens and bodies?
 4. **Auth ≠ authz.** Does valid identity still check scopes and MODX ACL?
 5. **Context isolation.** Can a caller reach another context without permission?
-6. **Webhook safety.** Are private URLs blocked in production (`mxheadless.webhook.allow_private_urls`)?
+6. **Webhook safety.** Are private URLs blocked in production (`mxheadless_webhook_allow_private_urls`)?
 
 Full threat model: [security.md](../security.md).
 

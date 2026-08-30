@@ -1,5 +1,10 @@
 Changelog for mxHeadless.
 
+1.0.42-pl
+- System settings: dotted keys (`mxheadless.cors.enabled`) → underscores (`mxheadless_cors_enabled`).
+- Upgrade resolver copies values from old keys and removes them.
+- Docs EN/RU, lexicons, and OpenAPI updated for the new keys.
+
 1.0.12-pl
 - Manager UI: Components → mxHeadless (API keys grid create/update/revoke).
 - Lexicon EN/RU for settings labels and mgr strings.
@@ -44,7 +49,7 @@ Changelog for mxHeadless.
 
 1.0.5-pl
 - Built-in curl PSR-18 client for webhook delivery.
-- Setting mxheadless.webhook.allow_private_urls for local webhook targets.
+- Setting mxheadless_webhook_allow_private_urls for local webhook targets.
 - CLI bin/api-key-create.php for long-lived mxh_* keys.
 - Local webhook catcher asset for smoke testing.
 

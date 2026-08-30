@@ -7,10 +7,10 @@ Use this sequence when an API key leaks, you see abusive traffic, or mutations f
 | Situation | Action |
 |-----------|--------|
 | Leaked `mxh_*` or OAuth secret | Revoke the key or client immediately |
-| Ongoing abuse / scan | Lower rate limits or set `mxheadless.enabled` to `false` |
+| Ongoing abuse / scan | Lower rate limits or set `mxheadless_enabled` to `false` |
 | Bad deploy | Disable the mxHeadless plugin or roll back the package |
 
-Kill switch (`mxheadless.enabled` = `false`) leaves discovery and health up. Everything else returns `503` with `service_disabled`.
+Kill switch (`mxheadless_enabled` = `false`) leaves discovery and health up. Everything else returns `503` with `service_disabled`.
 
 ## 2. Identify scope
 
@@ -32,7 +32,7 @@ Follow [key rotation](key-rotation.md):
 
 - Issue replacement API keys before revoking compromised ones when possible
 - Rotate webhook secrets if the subscriber URL or signing secret was exposed
-- Force new OAuth tokens by revoking clients and shortening `mxheadless.oauth.token_ttl` temporarily if needed
+- Force new OAuth tokens by revoking clients and shortening `mxheadless_oauth_token_ttl` temporarily if needed
 
 ## 4. Review data exposure
 
@@ -47,7 +47,7 @@ See [security](../security.md) and [authorization](../api/authorization.md).
 ## 5. Restore service
 
 1. Fix root cause (revoked key redeployed, rate limit tuned, patch applied).
-2. Set `mxheadless.enabled` back to `true`.
+2. Set `mxheadless_enabled` back to `true`.
 3. Run smoke tests from [production checklist](production-checklist.md).
 4. Confirm webhook worker drains pending rows if mutations were queued during the outage.
 

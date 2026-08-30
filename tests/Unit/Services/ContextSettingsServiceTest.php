@@ -17,7 +17,7 @@ final class ContextSettingsServiceTest extends TestCase
 {
     public function testReturnsPublicContextOptionsForAllowedKey(): void
     {
-        $modx = new modX(['mxheadless.allowed_contexts' => 'web,mgr']);
+        $modx = new modX(['mxheadless_allowed_contexts' => 'web,mgr']);
         $authorizer = new Authorizer($modx);
         $service = new ContextSettingsService($modx, $authorizer);
         $identity = new Identity(
@@ -36,7 +36,7 @@ final class ContextSettingsServiceTest extends TestCase
 
     public function testRejectsContextWithoutAccess(): void
     {
-        $modx = new modX(['mxheadless.allowed_contexts' => 'web,mgr']);
+        $modx = new modX(['mxheadless_allowed_contexts' => 'web,mgr']);
         $authorizer = new Authorizer($modx);
         $service = new ContextSettingsService($modx, $authorizer);
         $identity = new Identity(

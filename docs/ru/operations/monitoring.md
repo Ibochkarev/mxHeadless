@@ -49,7 +49,7 @@ GROUP BY status;
 Обратите внимание на:
 
 - Рост `pending` (worker не работает или subscriber недоступен)
-- Строки в `failed` после `mxheadless.webhook.max_attempts`
+- Строки в `failed` после `mxheadless_webhook_max_attempts`
 - `Processed 0 webhook(s)` в логе при активной публикации контента
 
 Runbook: [workers](workers.md).
@@ -70,7 +70,7 @@ LIMIT 20;
 
 ## Kill switch
 
-`mxheadless.enabled` = `false` отдаёт `503` с `code: service_disabled` на всех маршрутах кроме discovery и health. Аварийная остановка без удаления пакета.
+`mxheadless_enabled` = `false` отдаёт `503` с `code: service_disabled` на всех маршрутах кроме discovery и health. Аварийная остановка без удаления пакета.
 
 ## См. также
 

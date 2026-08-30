@@ -10,7 +10,7 @@ php /path/to/modx/core/components/mxheadless/bin/webhook-worker.php --limit=50
 
 | Опция | По умолчанию | Описание |
 |-------|--------------|----------|
-| `--limit=N` | `mxheadless.webhook.worker_limit` или `50` | Макс. доставок за запуск |
+| `--limit=N` | `mxheadless_webhook_worker_limit` или `50` | Макс. доставок за запуск |
 
 Вывод:
 
@@ -65,13 +65,13 @@ sudo systemctl enable --now mxheadless-webhook.timer
 
 ## Очистка audit log
 
-При `mxheadless.audit.enabled` = `true` — ежедневно:
+При `mxheadless_audit_enabled` = `true` — ежедневно:
 
 ```bash
 php /path/to/modx/core/components/mxheadless/bin/audit-prune.php
 ```
 
-Без `--days` берётся `mxheadless.audit.retention_days`. См. [audit log](audit-log.md).
+Без `--days` берётся `mxheadless_audit_retention_days`. См. [audit log](audit-log.md).
 
 ## Требования
 
@@ -84,7 +84,7 @@ php /path/to/modx/core/components/mxheadless/bin/audit-prune.php
 ## Мониторинг
 
 - Рост `pending` в `mxheadless_webhook_deliveries`
-- Строки `failed` после исчерпания `mxheadless.webhook.max_attempts`
+- Строки `failed` после исчерпания `mxheadless_webhook_max_attempts`
 - Лог worker: `Processed 0` при активных мутациях
 
 ## См. также

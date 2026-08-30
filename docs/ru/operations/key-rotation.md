@@ -18,17 +18,17 @@
 ### После revoke
 
 - Bearer со старым secret вернёт `401`.
-- Кэшированные анонимные GET могут жить до `mxheadless.cache_ttl`. На время ротации снизьте TTL или выключите cache.
+- Кэшированные анонимные GET могут жить до `mxheadless_cache_ttl`. На время ротации снизьте TTL или выключите cache.
 
 ## OAuth clients (`mxt_*`)
 
-При `mxheadless.oauth.enabled` = `true`:
+При `mxheadless_oauth_enabled` = `true`:
 
 1. Создайте нового client через [oauth-clients CLI](oauth-clients.md).
 2. Обновите сервисы, которые вызывают `POST /api/v1/auth/token`.
 3. Отзовите старую строку client.
 
-Access tokens истекают через `mxheadless.oauth.token_ttl` (по умолчанию 3600 с). Смена client secret блокирует новые обмены. Уже выданные tokens живут до expiry.
+Access tokens истекают через `mxheadless_oauth_token_ttl` (по умолчанию 3600 с). Смена client secret блокирует новые обмены. Уже выданные tokens живут до expiry.
 
 ## Секреты webhook
 

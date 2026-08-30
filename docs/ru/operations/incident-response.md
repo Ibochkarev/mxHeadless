@@ -7,10 +7,10 @@
 | Ситуация | Действие |
 |----------|----------|
 | Утечка `mxh_*` или OAuth secret | Немедленно отозвать key или client |
-| Abuse или scan | Снизить rate limits или `mxheadless.enabled` = `false` |
+| Abuse или scan | Снизить rate limits или `mxheadless_enabled` = `false` |
 | Плохой deploy | Отключить плагин mxHeadless или откатить пакет |
 
-Kill switch (`mxheadless.enabled` = `false`) оставляет discovery и health. Остальное отдаёт `503` с `service_disabled`.
+Kill switch (`mxheadless_enabled` = `false`) оставляет discovery и health. Остальное отдаёт `503` с `service_disabled`.
 
 ## 2. Оценка масштаба
 
@@ -32,7 +32,7 @@ LIMIT 100;
 
 - Выдайте replacement keys до revoke скомпрометированных, если успеваете
 - Ротируйте webhook secrets при exposure URL или signing secret
-- Принудительно обновите OAuth tokens через revoke clients. Временно сократите `mxheadless.oauth.token_ttl`
+- Принудительно обновите OAuth tokens через revoke clients. Временно сократите `mxheadless_oauth_token_ttl`
 
 ## 4. Проверка exposure данных
 
@@ -47,7 +47,7 @@ mxHeadless отдаёт только зарегистрированные object
 ## 5. Восстановление сервиса
 
 1. Устраните причину (ключ развёрнут, rate limit настроен, патч применён).
-2. Верните `mxheadless.enabled` = `true`.
+2. Верните `mxheadless_enabled` = `true`.
 3. Прогоните smoke tests из [production checklist](production-checklist.md).
 4. Убедитесь, что webhook worker разгреб pending, если мутации копились во время простоя.
 

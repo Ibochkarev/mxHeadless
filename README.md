@@ -2,7 +2,7 @@
 
 REST API gateway for [MODX Revolution 3](https://modx.com/). It turns resources, pages, elements, contexts, and registered xPDO objects into JSON for Nuxt, Next.js, SvelteKit, mobile apps, and custom clients.
 
-Current release: **1.0.41** (see discovery `data.version`).
+Current release: **1.0.42** (see discovery `data.version`).
 
 License: GPL-2.0-or-later. No feature tiers.
 
@@ -92,7 +92,7 @@ Errors use [RFC 9457](https://www.rfc-editor.org/rfc/rfc9457) (`application/prob
 | Health | `GET /health` | DB check; stays up when kill switch is on |
 | Schema | `GET /schema` | Registered objects, fields, relations, flags |
 | Meta | `GET /meta/endpoints`, `/meta/openapi`, `/meta/openapi.json` | Live catalog and OpenAPI |
-| Docs | `GET /docs` | Swagger UI (`mxheadless.swagger.enabled`) |
+| Docs | `GET /docs` | Swagger UI (`mxheadless_swagger_enabled`) |
 | Auth | `POST /auth/token` | OAuth `client_credentials` → `mxt_…` when enabled |
 | Resources | `GET/POST /resources`, `GET/PUT/PATCH/DELETE /resources/{id}` | CRUD; soft delete; `?force=1` permanent |
 | Pages | `GET /pages/{uri}` | Resolve by MODX URI (`index`, nested paths) |
@@ -223,15 +223,15 @@ Guides: [extensions](docs/extensions/overview.md), [MiniShop3](docs/extensions/m
 
 | Feature | Setting / tool | Role |
 |---------|----------------|------|
-| Kill switch | `mxheadless.enabled=false` | Only discovery + health stay up |
-| CORS | `mxheadless.cors.*` | Browser SPA origins |
-| Trusted proxies | `mxheadless.trusted_proxies` | Correct `client_ip` / rate limits behind LB |
-| Rate limit | `mxheadless.rate_limit.*` (+ per-key overrides) | `429` with `X-RateLimit-*` |
-| HTTP cache | `mxheadless.cache.*` | Public ETag / `304`; auth → `private, no-store` |
-| Idempotency | `mxheadless.idempotency.*` | Safe POST/PATCH retries |
+| Kill switch | `mxheadless_enabled=false` | Only discovery + health stay up |
+| CORS | `mxheadless_cors_*` | Browser SPA origins |
+| Trusted proxies | `mxheadless_trusted_proxies` | Correct `client_ip` / rate limits behind LB |
+| Rate limit | `mxheadless_rate_limit_*` (+ per-key overrides) | `429` with `X-RateLimit-*` |
+| HTTP cache | `mxheadless_cache_*` | Public ETag / `304`; auth → `private, no-store` |
+| Idempotency | `mxheadless_idempotency_*` | Safe POST/PATCH retries |
 | Webhooks | outbox + `bin/webhook-worker.php` | ISR / revalidate payloads, SSRF guards |
-| Audit log | `mxheadless.audit.*` + `bin/audit-prune.php` | Request audit retention |
-| Debug | `mxheadless.debug` | Extra detail on 500s (keep off in production) |
+| Audit log | `mxheadless_audit_*` + `bin/audit-prune.php` | Request audit retention |
+| Debug | `mxheadless_debug` | Extra detail on 500s (keep off in production) |
 
 Checklists: [production](docs/operations/production-checklist.md), [deployment](docs/operations/deployment.md), [webhooks](docs/api/webhooks.md).
 

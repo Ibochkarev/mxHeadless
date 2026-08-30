@@ -1,6 +1,6 @@
 # HTTP caching
 
-Public GET responses can be cached in the browser or CDN when `mxheadless.cache.enabled` is `true`.
+Public GET responses can be cached in the browser or CDN when `mxheadless_cache_enabled` is `true`.
 
 ## Response headers
 
@@ -11,7 +11,7 @@ Cache-Control: public, max-age=300
 ETag: "a1b2c3d4e5f6..."
 ```
 
-`max-age` follows `mxheadless.cache_ttl` (default 300 seconds).
+`max-age` follows `mxheadless_cache_ttl` (default 300 seconds).
 
 ## Conditional requests
 

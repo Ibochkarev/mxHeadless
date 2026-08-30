@@ -20,7 +20,7 @@ final class AuditLogMiddlewareTest extends TestCase
     {
         $repository = new RecordingAuditLogWriter();
         $middleware = new AuditLogMiddleware(
-            new modX(['mxheadless.audit.enabled' => false]),
+            new modX(['mxheadless_audit_enabled' => false]),
             $repository,
         );
 
@@ -36,7 +36,7 @@ final class AuditLogMiddlewareTest extends TestCase
     {
         $repository = new RecordingAuditLogWriter();
         $middleware = new AuditLogMiddleware(
-            new modX(['mxheadless.audit.enabled' => true, 'mxheadless.audit.log_get' => false]),
+            new modX(['mxheadless_audit_enabled' => true, 'mxheadless_audit_log_get' => false]),
             $repository,
         );
 
@@ -61,7 +61,7 @@ final class AuditLogMiddlewareTest extends TestCase
     {
         $repository = new RecordingAuditLogWriter();
         $middleware = new AuditLogMiddleware(
-            new modX(['mxheadless.audit.enabled' => true, 'mxheadless.audit.log_get' => false]),
+            new modX(['mxheadless_audit_enabled' => true, 'mxheadless_audit_log_get' => false]),
             $repository,
         );
 
@@ -77,7 +77,7 @@ final class AuditLogMiddlewareTest extends TestCase
     {
         $repository = new RecordingAuditLogWriter();
         $middleware = new AuditLogMiddleware(
-            new modX(['mxheadless.audit.enabled' => true, 'mxheadless.audit.log_get' => true]),
+            new modX(['mxheadless_audit_enabled' => true, 'mxheadless_audit_log_get' => true]),
             $repository,
         );
 

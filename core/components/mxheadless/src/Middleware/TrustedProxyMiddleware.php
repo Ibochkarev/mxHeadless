@@ -43,7 +43,7 @@ final class TrustedProxyMiddleware implements MiddlewareInterface
      */
     private function parseTrustedProxies(): array
     {
-        $raw = (string) $this->modx->getOption('mxheadless.trusted_proxies', null, '');
+        $raw = (string) $this->modx->getOption('mxheadless_trusted_proxies', null, '');
 
         if ($raw === '') {
             return [];

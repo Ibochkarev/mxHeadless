@@ -10,7 +10,7 @@ php /path/to/modx/core/components/mxheadless/bin/webhook-worker.php --limit=50
 
 | Option | Default | Description |
 |--------|---------|-------------|
-| `--limit=N` | `mxheadless.webhook.worker_limit` or `50` | Max deliveries per run |
+| `--limit=N` | `mxheadless_webhook_worker_limit` or `50` | Max deliveries per run |
 
 Output:
 
@@ -65,13 +65,13 @@ sudo systemctl enable --now mxheadless-webhook.timer
 
 ## Audit log prune
 
-When `mxheadless.audit.enabled` is `true`, run daily:
+When `mxheadless_audit_enabled` is `true`, run daily:
 
 ```bash
 php /path/to/modx/core/components/mxheadless/bin/audit-prune.php
 ```
 
-Uses `mxheadless.audit.retention_days` unless you pass `--days=N`. See [audit log](audit-log.md).
+Uses `mxheadless_audit_retention_days` unless you pass `--days=N`. See [audit log](audit-log.md).
 
 ## Requirements
 
@@ -86,7 +86,7 @@ Uses `mxheadless.audit.retention_days` unless you pass `--days=N`. See [audit lo
 Watch:
 
 - Growing `pending` count in `mxheadless_webhook_deliveries`
-- Rows stuck in `failed` after `mxheadless.webhook.max_attempts`
+- Rows stuck in `failed` after `mxheadless_webhook_max_attempts`
 - Worker log for `Processed 0 webhook(s)` when mutations occur
 
 ## Related

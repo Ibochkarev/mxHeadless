@@ -14,7 +14,7 @@ use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
 /**
- * When mxheadless.enabled is false, only discovery (/) and health (/health) remain available.
+ * When mxheadless_enabled is false, only discovery (/) and health (/health) remain available.
  */
 final class ServiceGateMiddleware implements MiddlewareInterface
 {
@@ -51,7 +51,7 @@ final class ServiceGateMiddleware implements MiddlewareInterface
 
     private function isEnabled(): bool
     {
-        $value = $this->modx->getOption('mxheadless.enabled', null, true);
+        $value = $this->modx->getOption('mxheadless_enabled', null, true);
         if (is_bool($value)) {
             return $value;
         }

@@ -6,7 +6,7 @@ When MODX sits behind a load balancer or reverse proxy, the TCP peer IP is the b
 
 | Key | Default | Format |
 |-----|---------|--------|
-| `mxheadless.trusted_proxies` | empty | Comma-separated IPs (no CIDR parsing in core today) |
+| `mxheadless_trusted_proxies` | empty | Comma-separated IPs (no CIDR parsing in core today) |
 
 Example behind one nginx proxy:
 
@@ -21,7 +21,7 @@ Empty value means: always use `REMOTE_ADDR`. Forwarded headers are ignored.
 `TrustedProxyMiddleware` runs early in the stack:
 
 1. Read `REMOTE_ADDR` from the web server.
-2. If it matches an entry in `mxheadless.trusted_proxies`, take the first hop from `X-Forwarded-For` as `client_ip`.
+2. If it matches an entry in `mxheadless_trusted_proxies`, take the first hop from `X-Forwarded-For` as `client_ip`.
 3. Otherwise set `client_ip` to `REMOTE_ADDR`.
 
 Downstream middleware uses `client_ip` for rate limiting. Audit log does not store IP today, but rate limit fairness depends on this value.

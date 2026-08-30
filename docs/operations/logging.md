@@ -16,7 +16,7 @@ Unexpected exceptions (non-`HttpException`) are written to the MODX log:
 [mxHeadless] <message>
 ```
 
-When `mxheadless.debug` is `true`, problem+json may include a `debug.message` field for the same error. Keep debug off in production.
+When `mxheadless_debug` is `true`, problem+json may include a `debug.message` field for the same error. Keep debug off in production.
 
 Audit log insert failures also log to MODX at error level. The API response still returns normally.
 
@@ -33,7 +33,7 @@ Error messages should not echo user-supplied SQL or filter strings. Report issue
 
 ## Optional audit log
 
-When `mxheadless.audit.enabled` is `true`, `AuditLogMiddleware` writes one row per request to `{prefix}mxheadless_api_log`:
+When `mxheadless_audit_enabled` is `true`, `AuditLogMiddleware` writes one row per request to `{prefix}mxheadless_api_log`:
 
 | Stored | Not stored |
 |--------|------------|
@@ -41,7 +41,7 @@ When `mxheadless.audit.enabled` is `true`, `AuditLogMiddleware` writes one row p
 | `identity_key`, `api_key_id` | Bearer token |
 | `request_id`, `context_key` | Passwords |
 
-By default only mutations are logged (`mxheadless.audit.log_get` = `false`). Full reference: [audit log](audit-log.md).
+By default only mutations are logged (`mxheadless_audit_log_get` = `false`). Full reference: [audit log](audit-log.md).
 
 Prune old rows daily:
 

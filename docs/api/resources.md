@@ -14,7 +14,7 @@ Scope: `resources.read` (public read when configured).
 
 | Parameter | Example | Description |
 |-----------|---------|-------------|
-| `limit` | `20` | Page size; integer ≥ 1, capped by `mxheadless.max_limit` (default 100) |
+| `limit` | `20` | Page size; integer ≥ 1, capped by `mxheadless_max_limit` (default 100) |
 | `offset` | `0` | Skip rows; non-negative integer |
 | `page` | `2` | 1-based page when `offset` is omitted |
 | `fields` | `id,pagetitle,uri` | Sparse fieldset |
@@ -138,7 +138,7 @@ Pass context via query or header:
 curl -s https://example.com/api/v1/resources/5 -H 'X-Context: web'
 ```
 
-Only contexts listed in `mxheadless.allowed_contexts` are accepted.
+Only contexts listed in `mxheadless_allowed_contexts` are accepted.
 
 ## Caching
 

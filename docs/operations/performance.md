@@ -6,8 +6,8 @@ Tune cache TTL, query limits, and payload size before adding hardware. Most slow
 
 | Setting | Default | Tuning |
 |---------|---------|--------|
-| `mxheadless.cache.enabled` | `true` | Keep on for read-heavy public sites |
-| `mxheadless.cache_ttl` | `300` | Raise for stable catalogs; lower for news |
+| `mxheadless_cache_enabled` | `true` | Keep on for read-heavy public sites |
+| `mxheadless_cache_ttl` | `300` | Raise for stable catalogs; lower for news |
 
 Anonymous GET hits MODX cache after the first request. Authenticated reads skip shared cache. See [cache](cache.md).
 
@@ -17,11 +17,11 @@ Defaults from `QueryParser` (override via system settings if needed):
 
 | Limit | Default |
 |-------|---------|
-| `mxheadless.max_limit` | 100 |
-| `mxheadless.max_offset` | 100000 |
-| `mxheadless.max_fields` | 50 |
-| `mxheadless.max_include_relations` | 10 |
-| `mxheadless.max_include_depth` | 2 |
+| `mxheadless_max_limit` | 100 |
+| `mxheadless_max_offset` | 100000 |
+| `mxheadless_max_fields` | 50 |
+| `mxheadless_max_include_relations` | 10 |
+| `mxheadless_max_include_depth` | 2 |
 
 Ask clients for smaller pages instead of `limit=100` on every call. Deep `include` trees multiply SQL work.
 
@@ -31,8 +31,8 @@ Full list: [limits](../configuration/limits.md).
 
 | Setting | Default |
 |---------|---------|
-| `mxheadless.max_body_bytes` | 1048576 (1 MiB) |
-| `mxheadless.max_uri_bytes` | 2048 |
+| `mxheadless_max_body_bytes` | 1048576 (1 MiB) |
+| `mxheadless_max_uri_bytes` | 2048 |
 
 Long filter URLs fail early. Prefer POST with a body only where the API allows it (mutations), not ad-hoc GET workarounds.
 

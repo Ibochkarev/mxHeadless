@@ -15,7 +15,7 @@ final class AuthorizerContextTest extends TestCase
 {
     public function testAccessibleContextKeysRespectsApiKeyScopes(): void
     {
-        $modx = new modX(['mxheadless.allowed_contexts' => 'web,mgr,europe']);
+        $modx = new modX(['mxheadless_allowed_contexts' => 'web,mgr,europe']);
         $authorizer = new Authorizer($modx);
         $identity = new Identity(
             Identity::TYPE_API_KEY,
@@ -29,7 +29,7 @@ final class AuthorizerContextTest extends TestCase
 
     public function testAssertContextKeyAccessRejectsMissingScope(): void
     {
-        $modx = new modX(['mxheadless.allowed_contexts' => 'web,mgr']);
+        $modx = new modX(['mxheadless_allowed_contexts' => 'web,mgr']);
         $authorizer = new Authorizer($modx);
         $identity = new Identity(
             Identity::TYPE_API_KEY,

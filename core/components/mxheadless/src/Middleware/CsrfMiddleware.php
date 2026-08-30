@@ -21,7 +21,7 @@ final class CsrfMiddleware implements MiddlewareInterface
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        if (!(bool) $this->modx->getOption('mxheadless.csrf.enabled', null, true)) {
+        if (!(bool) $this->modx->getOption('mxheadless_csrf_enabled', null, true)) {
             return $handler->handle($request);
         }
 

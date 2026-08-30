@@ -2,7 +2,7 @@
 
 ## Apache
 
-Включите `mod_rewrite`. Friendly URLs MODX должны направлять неизвестные пути в `index.php`. Префикс gateway по умолчанию `/api` (`mxheadless.api.prefix`).
+Включите `mod_rewrite`. Friendly URLs MODX должны направлять неизвестные пути в `index.php`. Префикс gateway по умолчанию `/api` (`mxheadless_api_prefix`).
 
 ## Nginx
 

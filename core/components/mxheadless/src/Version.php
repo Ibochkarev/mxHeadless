@@ -9,5 +9,5 @@ namespace MxHeadless;
  */
 final class Version
 {
-    public const STRING = '1.0.41';
+    public const STRING = '1.0.42';
 }

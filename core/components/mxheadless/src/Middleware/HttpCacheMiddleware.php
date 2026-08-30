@@ -34,7 +34,7 @@ final class HttpCacheMiddleware implements MiddlewareInterface
         /** @var Identity|null $identity */
         $identity = $request->getAttribute('identity');
         $isPrivate = $identity !== null && !$identity->isAnonymous();
-        $sharedCache = !$isPrivate && (bool) $this->modx->getOption('mxheadless.cache.enabled', null, true);
+        $sharedCache = !$isPrivate && (bool) $this->modx->getOption('mxheadless_cache_enabled', null, true);
 
         if (!$sharedCache) {
             return $this->attachEtag(
@@ -149,7 +149,7 @@ final class HttpCacheMiddleware implements MiddlewareInterface
 
     private function cacheTtl(): int
     {
-        return (int) $this->modx->getOption('mxheadless.cache_ttl', null, 300);
+        return (int) $this->modx->getOption('mxheadless_cache_ttl', null, 300);
     }
 
     private function cachedResponse(

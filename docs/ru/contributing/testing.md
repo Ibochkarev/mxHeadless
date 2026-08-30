@@ -149,9 +149,9 @@ Unit test — при смене parser/registry/middleware/OpenAPI. Security tes
 - [ ] Pretty URL `/api/v1/*` или fallback `api.php` / `api.php?route=/v1/health`
 - [ ] `GET /api/v1` — name, version, links (resources, pages, elements, docs, openapi, auth_token)
 - [ ] `GET /api/v1/health` → `database: true`
-- [ ] Kill switch `mxheadless.enabled=false` → только discovery/health; иначе `service_disabled`
-- [ ] Смена `mxheadless.api.prefix` не ломает routing
-- [ ] `mxheadless.debug=false` → нет stack traces / секретов в ошибках
+- [ ] Kill switch `mxheadless_enabled=false` → только discovery/health; иначе `service_disabled`
+- [ ] Смена `mxheadless_api_prefix` не ломает routing
+- [ ] `mxheadless_debug=false` → нет stack traces / секретов в ошибках
 
 ### 2.2 Discovery, schema, meta
 

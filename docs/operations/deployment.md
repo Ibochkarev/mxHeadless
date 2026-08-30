@@ -20,7 +20,7 @@ Manual or dev installs: symlink `core/components/mxheadless/`, run `composer ins
 
 ## Route traffic to MODX
 
-The gateway matches `mxheadless.api.prefix` (default `/api`). All `/api/v1/*` requests must reach MODX `index.php`.
+The gateway matches `mxheadless_api_prefix` (default `/api`). All `/api/v1/*` requests must reach MODX `index.php`.
 
 | Setup | Notes |
 |-------|-------|
@@ -28,7 +28,7 @@ The gateway matches `mxheadless.api.prefix` (default `/api`). All `/api/v1/*` re
 | Nginx | `try_files` to `index.php` for unknown paths |
 | No rewrite | `assets/components/mxheadless/api.php?route=/v1/...` (or PATH_INFO `api.php/v1/...`) |
 
-Behind a load balancer, list balancer IPs in `mxheadless.trusted_proxies` so rate limits and audit see the real client IP. See [trusted proxies](../configuration/trusted-proxies.md).
+Behind a load balancer, list balancer IPs in `mxheadless_trusted_proxies` so rate limits and audit see the real client IP. See [trusted proxies](../configuration/trusted-proxies.md).
 
 ## Post-deploy checks
 
@@ -53,8 +53,8 @@ Cron, systemd, and audit prune: [workers](workers.md).
 
 Before go-live, walk through [production checklist](production-checklist.md):
 
-- `mxheadless.debug` = `false`
-- `mxheadless.enabled` = `true`
+- `mxheadless_debug` = `false`
+- `mxheadless_enabled` = `true`
 - Explicit CORS origins when the frontend is on another domain
 - Rate limits and cache TTL aligned with your CDN
 - API keys with least-privilege scopes
@@ -69,7 +69,7 @@ When several PHP nodes share one database:
 
 ## Rollback
 
-1. Set `mxheadless.enabled` to `false` (discovery and health still respond; other routes return `503`).
+1. Set `mxheadless_enabled` to `false` (discovery and health still respond; other routes return `503`).
 2. Disable the plugin if the gateway must stop entirely.
 3. Reinstall the previous transport package via Package Manager.
 

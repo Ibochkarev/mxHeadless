@@ -25,7 +25,7 @@ Per-client rate limits:
 
 ## Включить token endpoint
 
-1. `mxheadless.oauth.enabled = true`
+1. `mxheadless_oauth_enabled = true`
 2. Создать OAuth client (CLI выше)
 3. Выпустить токен:
 

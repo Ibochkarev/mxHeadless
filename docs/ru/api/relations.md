@@ -19,8 +19,8 @@ include=parent,children.tv
 
 | Лимит | Настройка | По умолчанию |
 |-------|-----------|--------------|
-| Число relations | `mxheadless.max_include_relations` | 10 |
-| Глубина | `mxheadless.max_include_depth` | 2 |
+| Число relations | `mxheadless_max_include_relations` | 10 |
+| Глубина | `mxheadless_max_include_depth` | 2 |
 
 Превышение даёт `422`. Неизвестное имя связи тоже `422` (`Include not allowed`).
 

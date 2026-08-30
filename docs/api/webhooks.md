@@ -87,7 +87,7 @@ Delivery uses a built-in curl PSR-18 client by default. If MODX already register
 
 ## Retries
 
-Failed deliveries stay `pending` with exponential backoff until `mxheadless.webhook.max_attempts` (default `5`). After that the row is marked `failed`.
+Failed deliveries stay `pending` with exponential backoff until `mxheadless_webhook_max_attempts` (default `5`). After that the row is marked `failed`.
 
 | Attempt | Backoff |
 |---------|---------|
@@ -107,7 +107,7 @@ The dispatcher blocks:
 - `localhost`, `*.local`, and `*.test` hosts (unless overridden)
 - Private and link-local IPs after DNS resolution
 
-For local development only, set `mxheadless.webhook.allow_private_urls` to `true`. Keep it `false` in production.
+For local development only, set `mxheadless_webhook_allow_private_urls` to `true`. Keep it `false` in production.
 
 Point subscriptions only to hosts you control.
 

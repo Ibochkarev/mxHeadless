@@ -44,7 +44,7 @@ $app = $modx->services->get('mxheadless');
 $app->bootstrap();
 
 if ($limit === null) {
-    $limit = max(1, (int) $modx->getOption('mxheadless.webhook.worker_limit', null, 50));
+    $limit = max(1, (int) $modx->getOption('mxheadless_webhook_worker_limit', null, 50));
 }
 
 $processed = $app->webhookDispatcher()->processPending($limit);

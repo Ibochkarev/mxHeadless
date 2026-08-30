@@ -20,7 +20,7 @@ Dev-установка: symlink `core/components/mxheadless/`, `composer install
 
 ## Маршрутизация на MODX
 
-Gateway смотрит на `mxheadless.api.prefix` (по умолчанию `/api`). Все запросы `/api/v1/*` должны попадать в MODX `index.php`.
+Gateway смотрит на `mxheadless_api_prefix` (по умолчанию `/api`). Все запросы `/api/v1/*` должны попадать в MODX `index.php`.
 
 | Схема | Заметки |
 |-------|---------|
@@ -28,7 +28,7 @@ Gateway смотрит на `mxheadless.api.prefix` (по умолчанию `/a
 | Nginx | `try_files` на `index.php` для неизвестных путей |
 | Без rewrite | `assets/components/mxheadless/api.php?route=/v1/...` (или PATH_INFO `api.php/v1/...`) |
 
-За балансировщиком добавьте его IP в `mxheadless.trusted_proxies`, чтобы rate limit и audit видели реальный IP клиента. См. [trusted proxies](../configuration/trusted-proxies.md).
+За балансировщиком добавьте его IP в `mxheadless_trusted_proxies`, чтобы rate limit и audit видели реальный IP клиента. См. [trusted proxies](../configuration/trusted-proxies.md).
 
 ## Проверки после деплоя
 
@@ -53,8 +53,8 @@ Cron, systemd и audit prune: [workers](workers.md).
 
 Перед запуском пройдите [production checklist](production-checklist.md):
 
-- `mxheadless.debug` = `false`
-- `mxheadless.enabled` = `true`
+- `mxheadless_debug` = `false`
+- `mxheadless_enabled` = `true`
 - Явные CORS origins, если фронт на другом домене
 - Rate limit и cache TTL под ваш CDN
 - API keys с минимальными scopes
@@ -69,7 +69,7 @@ Cron, systemd и audit prune: [workers](workers.md).
 
 ## Откат
 
-1. `mxheadless.enabled` = `false` (discovery и health остаются, остальное отдаёт `503`).
+1. `mxheadless_enabled` = `false` (discovery и health остаются, остальное отдаёт `503`).
 2. Отключите плагин, если gateway должен полностью остановиться.
 3. Переустановите предыдущий transport через Package Manager.
 

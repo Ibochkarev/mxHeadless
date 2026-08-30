@@ -18,7 +18,7 @@ final class BodyLimitMiddlewareTest extends TestCase
 {
     public function testPathLongerThanMaxUriBytesThrows414(): void
     {
-        $middleware = new BodyLimitMiddleware(new modX(['mxheadless.max_uri_bytes' => 10]));
+        $middleware = new BodyLimitMiddleware(new modX(['mxheadless_max_uri_bytes' => 10]));
         $longPath = '/api/v1/' . str_repeat('a', 20);
         $request = new ServerRequest('GET', 'https://example.test' . $longPath);
 
@@ -33,7 +33,7 @@ final class BodyLimitMiddlewareTest extends TestCase
 
     public function testContentLengthGreaterThanMaxBodyBytesThrows413(): void
     {
-        $middleware = new BodyLimitMiddleware(new modX(['mxheadless.max_body_bytes' => 100]));
+        $middleware = new BodyLimitMiddleware(new modX(['mxheadless_max_body_bytes' => 100]));
         $request = (new ServerRequest('POST', 'https://example.test/api/v1/resources'))
             ->withHeader('Content-Length', '200');
 
@@ -49,8 +49,8 @@ final class BodyLimitMiddlewareTest extends TestCase
     public function testWithinLimitsPasses(): void
     {
         $middleware = new BodyLimitMiddleware(new modX([
-            'mxheadless.max_uri_bytes' => 2048,
-            'mxheadless.max_body_bytes' => 1048576,
+            'mxheadless_max_uri_bytes' => 2048,
+            'mxheadless_max_body_bytes' => 1048576,
         ]));
         $request = (new ServerRequest('POST', 'https://example.test/api/v1/resources'))
             ->withHeader('Content-Length', '50');

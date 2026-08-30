@@ -24,7 +24,7 @@ Low risk, high value for operators and integrators.
 
 ### 1.1 Global kill switch
 
-**Setting:** `mxheadless.enabled` (default `true`)
+**Setting:** `mxheadless_enabled` (default `true`)
 
 When `false`, gateway returns `503` with problem code `service_disabled`. Matches mxApi `mxapi.enabled` behavior.
 
@@ -90,7 +90,7 @@ DB table for API access metadata (not bodies). Modeled after mxApi `modx_mxapi_l
 | `api_key_id` | Nullable FK to `mxheadless_api_keys` |
 | `created_on` | Unix timestamp |
 
-**Settings:** `mxheadless.audit.enabled`, `mxheadless.audit.retention_days`, optional GET sampling.
+**Settings:** `mxheadless_audit_enabled`, `mxheadless_audit_retention_days`, optional GET sampling.
 
 **Middleware:** `AuditLogMiddleware` after dispatch.
 

@@ -40,10 +40,10 @@ Configure in **System Settings** (namespace `mxheadless`):
 
 | Setting | Default | Purpose |
 |---------|---------|---------|
-| `mxheadless.api.prefix` | `/api` | URL prefix |
-| `mxheadless.allowed_contexts` | `web,mgr` | Contexts clients may request |
-| `mxheadless.max_limit` | `100` | Max page size |
-| `mxheadless.debug` | `false` | Verbose problem+json (dev only) |
+| `mxheadless_api_prefix` | `/api` | URL prefix |
+| `mxheadless_allowed_contexts` | `web,mgr` | Contexts clients may request |
+| `mxheadless_max_limit` | `100` | Max page size |
+| `mxheadless_debug` | `false` | Verbose problem+json (dev only) |
 
 ### Fallback: `api.php`
 

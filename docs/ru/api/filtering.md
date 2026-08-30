@@ -8,8 +8,8 @@ mxHeadless превращает query-параметры HTTP в типизир�
 
 | Параметр | По умолчанию | Потолок |
 |----------|--------------|---------|
-| `limit` | 20 | `mxheadless.max_limit` (100); целое ≥ 1 |
-| `offset` | 0 | `mxheadless.max_offset` (100000); неотрицательное целое |
+| `limit` | 20 | `mxheadless_max_limit` (100); целое ≥ 1 |
+| `offset` | 0 | `mxheadless_max_offset` (100000); неотрицательное целое |
 | `page` | — | Если нет `offset`: `offset = (page - 1) * limit`; page ≥ 1 |
 
 Невалидные `limit`, `offset` или `page` → `422`. Значения выше max обрезаются.
@@ -27,7 +27,7 @@ GET /api/v1/resources?limit=50&page=3
 GET /api/v1/resources?fields=id,pagetitle,uri
 ```
 
-Список через запятую. Максимум `mxheadless.max_fields` (50). Неизвестное поле: `422 Field not allowed`. Пустой `fields` отдаёт все разрешённые нескрытые поля.
+Список через запятую. Максимум `mxheadless_max_fields` (50). Неизвестное поле: `422 Field not allowed`. Пустой `fields` отдаёт все разрешённые нескрытые поля.
 
 ## Сортировка
 
@@ -88,8 +88,8 @@ GET /api/v1/resources?include=parent,children
 
 | Лимит | Настройка |
 |-------|-----------|
-| Число relations | `mxheadless.max_include_relations` (10) |
-| Глубина | `mxheadless.max_include_depth` (2) |
+| Число relations | `mxheadless_max_include_relations` (10) |
+| Глубина | `mxheadless_max_include_depth` (2) |
 
 Точка для вложенности: `include=parent,children.tv`. Связи регистрируют в определении объекта. Неизвестные имена → `422`.
 

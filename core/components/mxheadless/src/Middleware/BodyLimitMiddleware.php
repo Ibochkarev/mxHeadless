@@ -20,8 +20,8 @@ final class BodyLimitMiddleware implements MiddlewareInterface
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $maxBody = (int) $this->modx->getOption('mxheadless.max_body_bytes', null, 1048576);
-        $maxUri = (int) $this->modx->getOption('mxheadless.max_uri_bytes', null, 2048);
+        $maxBody = (int) $this->modx->getOption('mxheadless_max_body_bytes', null, 1048576);
+        $maxUri = (int) $this->modx->getOption('mxheadless_max_uri_bytes', null, 2048);
 
         $path = parse_url((string) $request->getUri(), PHP_URL_PATH) ?: '';
         if (strlen($path) > $maxUri) {

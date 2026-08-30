@@ -41,7 +41,7 @@ curl -s https://example.com/api/v1/resources \
 
 ## OAuth tokens (`mxt_*`)
 
-Короткоживущие bearer-токены через `POST /api/v1/auth/token`. **По умолчанию выключено** (`mxheadless.oauth.enabled`).
+Короткоживущие bearer-токены через `POST /api/v1/auth/token`. **По умолчанию выключено** (`mxheadless_oauth_enabled`).
 
 ### Формат
 
@@ -49,7 +49,7 @@ curl -s https://example.com/api/v1/resources \
 mxt_{tokenId}_{secret}
 ```
 
-В `{prefix}mxheadless_oauth_tokens` хранится только `token_hash`. TTL — `mxheadless.oauth.token_ttl` (по умолчанию 3600 с).
+В `{prefix}mxheadless_oauth_tokens` хранится только `token_hash`. TTL — `mxheadless_oauth_token_ttl` (по умолчанию 3600 с).
 
 ### Выпуск токена
 
@@ -132,7 +132,7 @@ X-CSRF-Token: {токен из сессии MODX}
 - Минимальные scopes на key и OAuth client
 - Keys — стабильные серверные клиенты. Tokens — когда нужен expiry
 - Не логируйте `Authorization` целиком
-- `mxheadless.oauth.password_grant_enabled` держите `false`, если не доверяете клиентам пароли MODX
+- `mxheadless_oauth_password_grant_enabled` держите `false`, если не доверяете клиентам пароли MODX
 - [Чеклист безопасности](../security.md)
 
 ## См. также

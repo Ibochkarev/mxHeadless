@@ -6,18 +6,18 @@
 
 | Ключ | Default | Заметки |
 |------|---------|---------|
-| `mxheadless.cors.enabled` | `false` | Главный переключатель |
-| `mxheadless.cors.allowed_origins` | пусто | Точные origin через запятую, или `*` |
-| `mxheadless.cors.allowed_methods` | GET,POST,PUT,PATCH,DELETE,OPTIONS | |
-| `mxheadless.cors.allowed_headers` | Authorization,Content-Type,X-Request-ID,X-CSRF-Token,X-Context,X-API-Key,Idempotency-Key | |
-| `mxheadless.cors.expose_headers` | ETag,X-Request-ID,X-RateLimit-*,Idempotency-Replayed | Доступны из JS |
-| `mxheadless.cors.allow_credentials` | `false` | Не сочетать с `*` в origins |
+| `mxheadless_cors_enabled` | `false` | Главный переключатель |
+| `mxheadless_cors_allowed_origins` | пусто | Точные origin через запятую, или `*` |
+| `mxheadless_cors_allowed_methods` | GET,POST,PUT,PATCH,DELETE,OPTIONS | |
+| `mxheadless_cors_allowed_headers` | Authorization,Content-Type,X-Request-ID,X-CSRF-Token,X-Context,X-API-Key,Idempotency-Key | |
+| `mxheadless_cors_expose_headers` | ETag,X-Request-ID,X-RateLimit-*,Idempotency-Replayed | Доступны из JS |
+| `mxheadless_cors_allow_credentials` | `false` | Не сочетать с `*` в origins |
 
 ## Пример для Nuxt / Next
 
 ```text
-mxheadless.cors.enabled = true
-mxheadless.cors.allowed_origins = http://localhost:3000,https://app.example.com
+mxheadless_cors_enabled = true
+mxheadless_cors_allowed_origins = http://localhost:3000,https://app.example.com
 ```
 
 OPTIONS preflight отвечает `204` с ACAO, если `Origin` совпал. Discovery (`GET /api/v1`) отдаёт `data.cors.enabled`.

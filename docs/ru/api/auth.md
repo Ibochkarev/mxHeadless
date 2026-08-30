@@ -6,9 +6,9 @@
 
 | Настройка | По умолчанию | Описание |
 |-----------|--------------|----------|
-| `mxheadless.oauth.enabled` | `false` | Главный переключатель для `POST /auth/token` |
-| `mxheadless.oauth.token_ttl` | `3600` | TTL access token (секунды) |
-| `mxheadless.oauth.password_grant_enabled` | `false` | Разрешить `grant_type=password` |
+| `mxheadless_oauth_enabled` | `false` | Главный переключатель для `POST /auth/token` |
+| `mxheadless_oauth_token_ttl` | `3600` | TTL access token (секунды) |
+| `mxheadless_oauth_password_grant_enabled` | `false` | Разрешить `grant_type=password` |
 
 Клиентов создавайте в `{prefix}mxheadless_oauth_clients` или через [CLI](../operations/oauth-clients.md).
 

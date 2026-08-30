@@ -11,30 +11,30 @@ Use this list before pointing a headless frontend at mxHeadless in production.
 
 ## Security
 
-- [ ] `mxheadless.debug` is `false`
-- [ ] `mxheadless.enabled` is `true` in production (kill switch off)
-- [ ] `mxheadless.allowed_contexts` lists only contexts the API should accept
+- [ ] `mxheadless_debug` is `false`
+- [ ] `mxheadless_enabled` is `true` in production (kill switch off)
+- [ ] `mxheadless_allowed_contexts` lists only contexts the API should accept
 - [ ] API keys use least-privilege scopes (`resources.read`, `context.web`, `contexts.read`, …)
 - [ ] Session mutations use `X-CSRF-Token` from the manager session
-- [ ] CORS origins are explicit when `mxheadless.cors.enabled` is on (no `*` with credentials)
+- [ ] CORS origins are explicit when `mxheadless_cors_enabled` is on (no `*` with credentials)
 - [ ] Trusted proxy settings match your load balancer if you rely on `X-Forwarded-*`
 
 ## Caching and limits
 
-- [ ] `mxheadless.cache.enabled` and `mxheadless.cache_ttl` match your CDN or edge strategy
-- [ ] Rate limits (`mxheadless.rate_limit.*`) are set for public endpoints
+- [ ] `mxheadless_cache_enabled` and `mxheadless_cache_ttl` match your CDN or edge strategy
+- [ ] Rate limits (`mxheadless_rate_limit_*`) are set for public endpoints
 - [ ] Body and URI limits are appropriate for your largest payloads
 
 ## Idempotency
 
-- [ ] `mxheadless.idempotency.enabled` matches your mutation clients
+- [ ] `mxheadless_idempotency_enabled` matches your mutation clients
 - [ ] Shared MODX cache backend if multiple app nodes (see [idempotency](../api/idempotency.md))
 - [ ] Frontend sends `Idempotency-Key` on `POST` when retrying creates
 
 ## Webhooks and ISR (optional)
 
 - [ ] `bin/webhook-worker.php` runs every minute (cron or systemd timer, see [workers](workers.md))
-- [ ] `mxheadless.webhook.worker_limit` and `mxheadless.webhook.max_attempts` tuned for your traffic
+- [ ] `mxheadless_webhook_worker_limit` and `mxheadless_webhook_max_attempts` tuned for your traffic
 - [ ] Outbox table exists after package install
 - [ ] Webhook URLs use HTTPS and are reachable from the MODX host
 - [ ] Frontend `/api/revalidate` verifies `X-MxHeadless-Signature` (see [ISR revalidation](isr-revalidation.md))
@@ -42,15 +42,15 @@ Use this list before pointing a headless frontend at mxHeadless in production.
 
 ## Audit log (optional)
 
-- [ ] `mxheadless.audit.enabled` is `true` only if you need DB access history
+- [ ] `mxheadless_audit_enabled` is `true` only if you need DB access history
 - [ ] `bin/audit-prune.php` runs daily (see [audit log](audit-log.md))
 - [ ] Table `{prefix}mxheadless_api_log` exists after package upgrade
 
 ## OAuth tokens (optional)
 
-- [ ] `mxheadless.oauth.enabled` is `true` only when using short-lived `mxt_*` tokens
+- [ ] `mxheadless_oauth_enabled` is `true` only when using short-lived `mxt_*` tokens
 - [ ] OAuth clients created via [CLI](oauth-clients.md) or Manager workflow
-- [ ] `mxheadless.oauth.password_grant_enabled` stays `false` unless you need password grant
+- [ ] `mxheadless_oauth_password_grant_enabled` stays `false` unless you need password grant
 
 ## Frontend smoke tests
 

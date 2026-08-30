@@ -8,8 +8,8 @@ Applies to `/api/v1/resources`, `/api/v1/objects/{name}`, and other list endpoin
 
 | Parameter | Default | Max (configurable) |
 |-----------|---------|-------------------|
-| `limit` | 20 | `mxheadless.max_limit` (100); must be an integer ≥ 1 |
-| `offset` | 0 | `mxheadless.max_offset` (100000); non-negative integer |
+| `limit` | 20 | `mxheadless_max_limit` (100); must be an integer ≥ 1 |
+| `offset` | 0 | `mxheadless_max_offset` (100000); non-negative integer |
 | `page` | — | When `offset` is omitted: `offset = (page - 1) * limit`; page ≥ 1 |
 
 Invalid `limit`, `offset`, or `page` return `422`. Values above the configured max are capped.
@@ -28,7 +28,7 @@ GET /api/v1/resources?fields=id,pagetitle,uri
 ```
 
 - Comma-separated list
-- Maximum `mxheadless.max_fields` (default 50)
+- Maximum `mxheadless_max_fields` (default 50)
 - Unknown fields return `422 Field not allowed`
 - Empty `fields` returns all non-hidden fields allowed for the caller
 
@@ -97,8 +97,8 @@ GET /api/v1/resources?include=parent,children
 
 | Limit | Setting |
 |-------|---------|
-| Max relations | `mxheadless.max_include_relations` (10) |
-| Max depth | `mxheadless.max_include_depth` (2) |
+| Max relations | `mxheadless_max_include_relations` (10) |
+| Max depth | `mxheadless_max_include_depth` (2) |
 
 Nested paths use dot notation: `include=parent,children.tv`.
 

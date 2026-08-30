@@ -29,7 +29,7 @@ Failed requests return [RFC 9457](https://www.rfc-editor.org/rfc/rfc9457) Proble
 
 | `code` | HTTP | When |
 |--------|------|------|
-| `service_disabled` | 503 | `mxheadless.enabled` is `false` (except discovery and health) |
+| `service_disabled` | 503 | `mxheadless_enabled` is `false` (except discovery and health) |
 | `token_required` | 401 | No `Authorization` / `X-API-Key` credential on a protected route |
 | `invalid_token` | 401 | Credential present but wrong, expired, or revoked |
 | `scope_denied` | 403 | Authenticated but not allowed |
@@ -41,7 +41,7 @@ Not every error includes `code`. Prefer `status` + `type` for generic handling; 
 
 ## Production disclosure
 
-When `mxheadless.debug` is `false` (default), responses never include SQL, stack traces, file paths, or PHP class names. Turning debug on is for local development only.
+When `mxheadless_debug` is `false` (default), responses never include SQL, stack traces, file paths, or PHP class names. Turning debug on is for local development only.
 
 ## Common status codes
 
@@ -55,7 +55,7 @@ When `mxheadless.debug` is `false` (default), responses never include SQL, stack
 | 422 | Validation, malformed JSON body, unknown field, filter, or sort |
 | 429 | Rate limit exceeded |
 | 500 | Unhandled server error |
-| 503 | API disabled via `mxheadless.enabled` |
+| 503 | API disabled via `mxheadless_enabled` |
 
 ## Rate limit errors
 

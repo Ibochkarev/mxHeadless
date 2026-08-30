@@ -16,7 +16,7 @@ mxHeadless разделяет три канала: request ID на каждом 
 [mxHeadless] <message>
 ```
 
-При `mxheadless.debug` = `true` problem+json может содержать `debug.message`. В production debug держите выключенным.
+При `mxheadless_debug` = `true` problem+json может содержать `debug.message`. В production debug держите выключенным.
 
 Сбой записи audit log тоже попадает в MODX на уровне error. Ответ API при этом отдаётся.
 
@@ -33,7 +33,7 @@ mxHeadless разделяет три канала: request ID на каждом 
 
 ## Опциональный audit log
 
-При `mxheadless.audit.enabled` = `true` `AuditLogMiddleware` пишет строку в `{prefix}mxheadless_api_log`:
+При `mxheadless_audit_enabled` = `true` `AuditLogMiddleware` пишет строку в `{prefix}mxheadless_api_log`:
 
 | Пишется | Не пишется |
 |---------|------------|
@@ -41,7 +41,7 @@ mxHeadless разделяет три канала: request ID на каждом 
 | `identity_key`, `api_key_id` | Bearer token |
 | `request_id`, `context_key` | Пароли |
 
-По умолчанию только мутации (`mxheadless.audit.log_get` = `false`). Полное описание: [audit log](audit-log.md).
+По умолчанию только мутации (`mxheadless_audit_log_get` = `false`). Полное описание: [audit log](audit-log.md).
 
 Ежедневная очистка:
 

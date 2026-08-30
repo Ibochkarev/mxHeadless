@@ -8,8 +8,8 @@ Details also appear in [filtering](filtering.md#pagination).
 
 | Parameter | Default | Max setting |
 |-----------|---------|-------------|
-| `limit` | 20 | `mxheadless.max_limit` (100) |
-| `offset` | 0 | `mxheadless.max_offset` (100000) |
+| `limit` | 20 | `mxheadless_max_limit` (100) |
+| `offset` | 0 | `mxheadless_max_offset` (100000) |
 | `page` | — | 1-based page index when `offset` is omitted (`offset = (page - 1) * limit`) |
 
 `limit` must be an integer ≥ 1. `offset` must be a non-negative integer. `page` must be ≥ 1. Invalid values return `422`. Values above the configured max are capped. Sending both `page` and `offset` returns `422`.

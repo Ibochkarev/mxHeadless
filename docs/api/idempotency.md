@@ -15,8 +15,8 @@ Rules:
 - Optional. Without the header, behavior is unchanged.
 - 1–128 characters: letters, digits, `.`, `_`, `:`, `-`.
 - Scoped per authenticated actor (API key or session) and request path.
-- TTL: `mxheadless.idempotency_ttl` (default `86400` seconds).
-- Toggle: `mxheadless.idempotency.enabled`.
+- TTL: `mxheadless_idempotency_ttl` (default `86400` seconds).
+- Toggle: `mxheadless_idempotency_enabled`.
 
 ## Responses
 

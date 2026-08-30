@@ -10,7 +10,7 @@ No authentication required.
 curl -s https://example.com/api/v1
 ```
 
-The path prefix comes from the system setting `mxheadless.api.prefix` (default `/api`). Version `v1` is fixed in the router.
+The path prefix comes from the system setting `mxheadless_api_prefix` (default `/api`). Version `v1` is fixed in the router.
 
 ## Response
 

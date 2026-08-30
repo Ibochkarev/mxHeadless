@@ -101,7 +101,7 @@ final class WebhookDispatcher
             return false;
         }
 
-        $allowPrivate = (bool) $this->modx->getOption('mxheadless.webhook.allow_private_urls', null, false);
+        $allowPrivate = (bool) $this->modx->getOption('mxheadless_webhook_allow_private_urls', null, false);
         if (!$allowPrivate && ($host === 'localhost' || str_ends_with($host, '.local') || str_ends_with($host, '.test'))) {
             return false;
         }

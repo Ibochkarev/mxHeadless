@@ -15,8 +15,8 @@ Content-Type: application/json
 - Заголовок опционален. Без него поведение как раньше.
 - 1–128 символов: буквы, цифры, `.`, `_`, `:`, `-`.
 - Ключ привязан к актору (API key или сессия) и пути запроса.
-- TTL: `mxheadless.idempotency_ttl` (по умолчанию `86400` секунд).
-- Включение: `mxheadless.idempotency.enabled`.
+- TTL: `mxheadless_idempotency_ttl` (по умолчанию `86400` секунд).
+- Включение: `mxheadless_idempotency_enabled`.
 
 ## Ответы
 

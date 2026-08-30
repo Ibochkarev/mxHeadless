@@ -44,9 +44,9 @@
 
 ## CORS, proxy, ошибки
 
-CORS по умолчанию выключен. `X-Forwarded-For` доверяем только от `mxheadless.trusted_proxies`.
+CORS по умолчанию выключен. `X-Forwarded-For` доверяем только от `mxheadless_trusted_proxies`.
 
-В production нет SQL, stack trace, путей и имён классов в ответах. `mxheadless.debug` только для разработки.
+В production нет SQL, stack trace, путей и имён классов в ответах. `mxheadless_debug` только для разработки.
 
 ## Webhook SSRF
 
@@ -54,7 +54,7 @@ CORS по умолчанию выключен. `X-Forwarded-For` доверяе�
 
 ## Чеклист production
 
-- [ ] `mxheadless.debug` = false
+- [ ] `mxheadless_debug` = false
 - [ ] CORS с явными origins
 - [ ] Rate limit включён
 - [ ] Trusted proxies за балансировщиком

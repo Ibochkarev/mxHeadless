@@ -7,7 +7,7 @@
 | Причина | Исправление |
 |---------|-------------|
 | Плагин выключен | Включите mxHeadless в Manager |
-| Неверный prefix | Проверьте `mxheadless.api.prefix` (по умолчанию `/api`) |
+| Неверный prefix | Проверьте `mxheadless_api_prefix` (по умолчанию `/api`) |
 | Rewrite мимо MODX | Направьте `/api` в `index.php`. См. [web server](../installation/web-server.md) |
 | Friendly URLs выключены | Используйте `assets/components/mxheadless/api.php?route=/v1/health` (или PATH_INFO `api.php/v1/health`, если сервер поддерживает) |
 
@@ -19,7 +19,7 @@ curl -sI https://your-site.example/api/v1/health
 
 ## 503 `service_disabled`
 
-`mxheadless.enabled` = `false`. Discovery (`GET /api/v1`) и health работают. Включите настройку в **System Settings → mxheadless**.
+`mxheadless_enabled` = `false`. Discovery (`GET /api/v1`) и health работают. Включите настройку в **System Settings → mxheadless**.
 
 ## 401 / 403 на защищённых маршрутах
 
@@ -34,7 +34,7 @@ CSRF: шлите `X-CSRF-Token` из manager session на `POST`/`PUT`/`PATCH`/`
 
 ## 429 Too Many Requests
 
-Превышен rate limit. Смотрите `X-RateLimit-*` и per-key overrides. Подкрутите `mxheadless.rate_limit.*` или `rate_limit_max` / `rate_limit_window` ключа.
+Превышен rate limit. Смотрите `X-RateLimit-*` и per-key overrides. Подкрутите `mxheadless_rate_limit_*` или `rate_limit_max` / `rate_limit_window` ключа.
 
 Если лимиты «не те» для реальных клиентов, проверьте [trusted proxies](../configuration/trusted-proxies.md). Без IP балансировщика все могут делить один IP.
 
@@ -47,19 +47,19 @@ Filter, sort и field names должны совпадать с object definition
 ## 500 internal errors
 
 1. MODX error log, строки `[mxHeadless]`.
-2. `mxheadless.debug` = `true` только на staging и ненадолго.
+2. `mxheadless_debug` = `true` только на staging и ненадолго.
 3. `request_id` из заголовка ответа для audit.
 
 ## Webhooks не доставляются
 
 1. `bin/webhook-worker.php` по расписанию ([workers](workers.md)).
 2. Pending: `SELECT * FROM modx_mxheadless_webhook_deliveries WHERE status = 'pending' LIMIT 10`.
-3. URL subscriber — HTTPS и reachable (в production не полагайтесь на `mxheadless.webhook.allow_private_urls`).
+3. URL subscriber — HTTPS и reachable (в production не полагайтесь на `mxheadless_webhook_allow_private_urls`).
 4. Подпись на фронте совпадает с subscription secret ([ISR revalidation](isr-revalidation.md)).
 
 ## Устаревший JSON после правки
 
-1. TTL response cache (`mxheadless.cache_ttl`). Tag invalidation на mutation есть. CDN edge может отставать.
+1. TTL response cache (`mxheadless_cache_ttl`). Tag invalidation на mutation есть. CDN edge может отставать.
 2. Статический кэш фронта ждёт webhook revalidation tags.
 3. Браузер держит ETag. Hard refresh или `Cache-Control: no-cache`.
 
@@ -67,7 +67,7 @@ Filter, sort и field names должны совпадать с object definition
 
 - Object не зарегистрирован в `OnMxHeadlessRegister`
 - Неверный context (`X-Context` или `?context=`)
-- `mxheadless.allowed_contexts` не включает target context
+- `mxheadless_allowed_contexts` не включает target context
 - Filter `published` скрывает unpublished resources
 
 ## См. также

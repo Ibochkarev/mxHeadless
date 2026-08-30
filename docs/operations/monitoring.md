@@ -49,7 +49,7 @@ GROUP BY status;
 Watch for:
 
 - Growing `pending` count (worker not running or subscriber down)
-- Rows stuck in `failed` after `mxheadless.webhook.max_attempts`
+- Rows stuck in `failed` after `mxheadless_webhook_max_attempts`
 - Worker log showing `Processed 0 webhook(s)` while editors publish content
 
 Runbook: [workers](workers.md).
@@ -70,7 +70,7 @@ More examples: [audit log](audit-log.md).
 
 ## Kill switch
 
-`mxheadless.enabled` = `false` returns `503` with `code: service_disabled` on all routes except discovery and health. Use it as an emergency brake without uninstalling the package.
+`mxheadless_enabled` = `false` returns `503` with `code: service_disabled` on all routes except discovery and health. Use it as an emergency brake without uninstalling the package.
 
 ## Related
 

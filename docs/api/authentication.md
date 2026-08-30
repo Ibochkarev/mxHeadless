@@ -41,7 +41,7 @@ Create and revoke in MODX Manager (`mxheadless_apikeys`). See [API keys](api-key
 
 ## OAuth tokens (`mxt_*`)
 
-Short-lived bearer tokens issued by `POST /api/v1/auth/token`. **Disabled by default** (`mxheadless.oauth.enabled`).
+Short-lived bearer tokens issued by `POST /api/v1/auth/token`. **Disabled by default** (`mxheadless_oauth_enabled`).
 
 ### Format
 
@@ -49,7 +49,7 @@ Short-lived bearer tokens issued by `POST /api/v1/auth/token`. **Disabled by def
 mxt_{tokenId}_{secret}
 ```
 
-Only `token_hash` is stored in `{prefix}mxheadless_oauth_tokens`. Tokens expire after `mxheadless.oauth.token_ttl` (default 3600s).
+Only `token_hash` is stored in `{prefix}mxheadless_oauth_tokens`. Tokens expire after `mxheadless_oauth_token_ttl` (default 3600s).
 
 ### Issue a token
 
@@ -137,7 +137,7 @@ See [errors](errors.md).
 - Minimal scopes per key or OAuth client
 - API keys for stable server clients. OAuth tokens when you need expiry and client credentials flow
 - Never log raw secrets or full `Authorization` headers
-- Keep `mxheadless.oauth.password_grant_enabled` off unless you trust every client with MODX user passwords
+- Keep `mxheadless_oauth_password_grant_enabled` off unless you trust every client with MODX user passwords
 - See [security checklist](../security.md)
 
 ## Related

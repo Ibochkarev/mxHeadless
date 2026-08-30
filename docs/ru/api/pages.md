@@ -28,7 +28,7 @@ curl -s 'https://example.com/api/v1/pages/about?fields=id,pagetitle,content'
 curl -s 'https://example.com/api/v1/pages/about.html?fields=id,pagetitle,content'
 ```
 
-Кодируйте сегменты пути. Длинные URI упираются в `mxheadless.max_uri_bytes` (по умолчанию 2048).
+Кодируйте сегменты пути. Длинные URI упираются в `mxheadless_max_uri_bytes` (по умолчанию 2048).
 
 ## Query-параметры
 
@@ -41,7 +41,7 @@ curl -s 'https://example.com/api/v1/pages/about?fields=id,pagetitle,content&incl
 
 ## Контекст
 
-Передайте контекст MODX заголовком `X-Context` или параметром `context`. Принимаются только значения из `mxheadless.allowed_contexts` (по умолчанию `web,mgr`).
+Передайте контекст MODX заголовком `X-Context` или параметром `context`. Принимаются только значения из `mxheadless_allowed_contexts` (по умолчанию `web,mgr`).
 
 ## Ответ
 

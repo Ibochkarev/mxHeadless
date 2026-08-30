@@ -6,7 +6,7 @@
 
 | Ключ | По умолчанию | Формат |
 |-----|--------------|--------|
-| `mxheadless.trusted_proxies` | пусто | IP через запятую (CIDR core сейчас не парсит) |
+| `mxheadless_trusted_proxies` | пусто | IP через запятую (CIDR core сейчас не парсит) |
 
 Пример за одним nginx proxy:
 
@@ -21,7 +21,7 @@
 `TrustedProxyMiddleware` в начале stack:
 
 1. Читает `REMOTE_ADDR` с веб-сервера.
-2. Если совпал с записью в `mxheadless.trusted_proxies`, первый hop из `X-Forwarded-For` становится `client_ip`.
+2. Если совпал с записью в `mxheadless_trusted_proxies`, первый hop из `X-Forwarded-For` становится `client_ip`.
 3. Иначе `client_ip` = `REMOTE_ADDR`.
 
 Rate limiting использует `client_ip`. Audit log IP сегодня не хранит. Справедливость rate limit зависит от этой логики.

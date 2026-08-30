@@ -13,7 +13,7 @@ GET /api/v1/objects/contexts
 GET /api/v1/objects/contexts/{key}
 ```
 
-Authentication is required. Scope: `contexts.read`. Each record is filtered by MODX ACL (`context_{key}` for session users, `context.{key}` for API keys). Contexts outside `mxheadless.allowed_contexts` are never returned.
+Authentication is required. Scope: `contexts.read`. Each record is filtered by MODX ACL (`context_{key}` for session users, `context.{key}` for API keys). Contexts outside `mxheadless_allowed_contexts` are never returned.
 
 Fields: `key`, `name`, `description`, `rank`.
 
@@ -43,7 +43,7 @@ Default when omitted: current MODX context, usually `web`.
 
 ## Whitelist
 
-Only contexts listed in `mxheadless.allowed_contexts` are accepted (default `web,mgr`). Others return `422 Invalid context`.
+Only contexts listed in `mxheadless_allowed_contexts` are accepted (default `web,mgr`). Others return `422 Invalid context`.
 
 Object definitions may further restrict contexts (resources allow `web` and `mgr` in core bootstrap).
 

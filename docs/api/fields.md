@@ -10,7 +10,7 @@ Applies to list and single-object GET on resources and registered objects.
 GET /api/v1/resources?fields=id,pagetitle,uri,introtext
 ```
 
-Comma-separated names. Maximum count: `mxheadless.max_fields` (default 50).
+Comma-separated names. Maximum count: `mxheadless_max_fields` (default 50).
 
 Unknown or hidden field names return `422 Field not allowed`. Protected fields without permission are omitted from the response instead of failing the request.
 

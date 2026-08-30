@@ -24,7 +24,7 @@
 
 ### 1.1 Глобальный kill switch
 
-**Настройка:** `mxheadless.enabled` (по умолчанию `true`)
+**Настройка:** `mxheadless_enabled` (по умолчанию `true`)
 
 При `false` gateway отдаёт `503` с кодом `service_disabled`. Как `mxapi.enabled` у mxApi.
 
@@ -90,7 +90,7 @@ GET /api/v1/meta/openapi     — OpenAPI 3.0 JSON из routes + ObjectRegistry
 | `api_key_id` | Nullable FK |
 | `created_on` | Timestamp |
 
-**Настройки:** `mxheadless.audit.enabled`, `mxheadless.audit.retention_days`, sampling для GET.
+**Настройки:** `mxheadless_audit_enabled`, `mxheadless_audit_retention_days`, sampling для GET.
 
 **Middleware:** `AuditLogMiddleware` после dispatch.
 

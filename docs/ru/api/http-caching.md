@@ -1,6 +1,6 @@
 # HTTP-кэш
 
-Публичные GET можно кэшировать в браузере или CDN, если `mxheadless.cache.enabled` = `true`.
+Публичные GET можно кэшировать в браузере или CDN, если `mxheadless_cache_enabled` = `true`.
 
 ## Заголовки ответа
 
@@ -11,7 +11,7 @@ Cache-Control: public, max-age=300
 ETag: "a1b2c3d4e5f6..."
 ```
 
-`max-age` берётся из `mxheadless.cache_ttl` (по умолчанию 300 с).
+`max-age` берётся из `mxheadless_cache_ttl` (по умолчанию 300 с).
 
 ## Условные запросы
 

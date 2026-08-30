@@ -126,16 +126,16 @@ SPA в браузере бьёт в оба API. Один и тот же allowlis
 
 | Тема | mxHeadless | MiniShop3 |
 |------|------------|-----------|
-| Origins | `mxheadless.cors.enabled=true`, `mxheadless.cors.allowed_origins` | `ms3_cors_allowed_origins` (пусто = только same-origin) |
-| Credentials (cookies) | `mxheadless.cors.allow_credentials` | В коде MS3 CORS `allow_credentials: true` при заданных origins |
+| Origins | `mxheadless_cors_enabled=true`, `mxheadless_cors_allowed_origins` | `ms3_cors_allowed_origins` (пусто = только same-origin) |
+| Credentials (cookies) | `mxheadless_cors_allow_credentials` | В коде MS3 CORS `allow_credentials: true` при заданных origins |
 | Заголовки SPA | `Authorization`, `X-API-Key`, `Idempotency-Key`, … | `Authorization`, `MS3TOKEN` |
 
 Пример для Nuxt на `https://app.example.com`:
 
 ```text
-mxheadless.cors.enabled = true
-mxheadless.cors.allowed_origins = https://app.example.com,http://localhost:3000
-mxheadless.cors.allow_credentials = false
+mxheadless_cors_enabled = true
+mxheadless_cors_allowed_origins = https://app.example.com,http://localhost:3000
+mxheadless_cors_allow_credentials = false
 
 ms3_cors_allowed_origins = https://app.example.com,http://localhost:3000
 ```
@@ -146,7 +146,7 @@ ms3_cors_allowed_origins = https://app.example.com,http://localhost:3000
 
 ### Trusted proxies
 
-mxHeadless: `mxheadless.trusted_proxies` = IP балансировщиков ([trusted proxies](../configuration/trusted-proxies.md)).
+mxHeadless: `mxheadless_trusted_proxies` = IP балансировщиков ([trusted proxies](../configuration/trusted-proxies.md)).
 
 У MiniShop3 отдельной настройки нет. Rate limit и логи берут IP по своей логике. Один и тот же nginx/LB перед обоими входами (`X-Forwarded-For` sanitized, TLS на proxy). Кривой proxy бьёт fairness у обоих API независимо.
 

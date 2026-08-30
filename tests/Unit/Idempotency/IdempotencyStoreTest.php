@@ -13,7 +13,7 @@ final class IdempotencyStoreTest extends TestCase
 {
     public function testSaveAndFindRoundTrip(): void
     {
-        $modx = new modX(['mxheadless.idempotency_ttl' => 3600]);
+        $modx = new modX(['mxheadless_idempotency_ttl' => 3600]);
         $store = new IdempotencyStore($modx, new ModxCacheAdapter($modx));
         $fingerprint = hash('sha256', 'actor|/api/v1/resources|key-1');
 

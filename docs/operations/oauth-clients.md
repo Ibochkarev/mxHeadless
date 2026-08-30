@@ -25,7 +25,7 @@ The script prints `client_secret` once. Store it in your secrets manager.
 
 ## Enable the token endpoint
 
-1. Set `mxheadless.oauth.enabled` to `true`
+1. Set `mxheadless_oauth_enabled` to `true`
 2. Create at least one OAuth client (CLI above)
 3. Issue a token:
 

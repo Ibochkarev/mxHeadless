@@ -8,8 +8,8 @@
 
 | Параметр | По умолчанию | Потолок |
 |----------|--------------|---------|
-| `limit` | 20 | `mxheadless.max_limit` (100) |
-| `offset` | 0 | `mxheadless.max_offset` (100000) |
+| `limit` | 20 | `mxheadless_max_limit` (100) |
+| `offset` | 0 | `mxheadless_max_offset` (100000) |
 | `page` | — | 1-based; если `offset` не передан: `offset = (page - 1) * limit` |
 
 `limit` — целое ≥ 1. `offset` — неотрицательное целое. `page` ≥ 1. Невалидные значения → `422`. Выше max — обрезаются. Одновременно `page` и `offset` → `422`.

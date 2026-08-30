@@ -15,8 +15,8 @@ final class SwaggerUiServiceTest extends TestCase
     public function testRendersHtmlWhenEnabled(): void
     {
         $modx = new modX([
-            'mxheadless.swagger.enabled' => true,
-            'mxheadless.api.prefix' => '/api',
+            'mxheadless_swagger_enabled' => true,
+            'mxheadless_api_prefix' => '/api',
         ]);
 
         $response = (new SwaggerUiService($modx, new ApiPrefix($modx)))->handle();
@@ -32,7 +32,7 @@ final class SwaggerUiServiceTest extends TestCase
     public function testReturnsNotFoundWhenDisabled(): void
     {
         $modx = new modX([
-            'mxheadless.swagger.enabled' => false,
+            'mxheadless_swagger_enabled' => false,
         ]);
 
         $this->expectException(NotFoundException::class);

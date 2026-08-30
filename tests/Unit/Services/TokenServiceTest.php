@@ -17,8 +17,8 @@ final class TokenServiceTest extends TestCase
     public function testClientCredentialsIssuesBearerToken(): void
     {
         $modx = new modX([
-            'mxheadless.oauth.enabled' => true,
-            'mxheadless.oauth.token_ttl' => 1800,
+            'mxheadless_oauth_enabled' => true,
+            'mxheadless_oauth_token_ttl' => 1800,
         ]);
         $clients = new OAuthClientRepository($modx);
         $clients->addInMemory('ci-client', [
@@ -49,7 +49,7 @@ final class TokenServiceTest extends TestCase
 
     public function testDisabledEndpointRejectsGrant(): void
     {
-        $modx = new modX(['mxheadless.oauth.enabled' => false]);
+        $modx = new modX(['mxheadless_oauth_enabled' => false]);
         $service = new TokenService($modx, new OAuthClientRepository($modx), new OAuthTokenRepository($modx));
 
         $this->expectException(InvalidGrantException::class);

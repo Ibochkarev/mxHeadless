@@ -20,7 +20,7 @@ final class ServiceGateMiddlewareTest extends TestCase
 {
     public function testAllowsAllRoutesWhenEnabled(): void
     {
-        $middleware = new ServiceGateMiddleware(new modX(['mxheadless.enabled' => true]), new ApiPrefix(new modX()));
+        $middleware = new ServiceGateMiddleware(new modX(['mxheadless_enabled' => true]), new ApiPrefix(new modX()));
         $request = (new ServerRequest('GET', 'https://example.test/api/v1/resources'))
             ->withAttribute('route', new Route('resources.list', ['GET'], '/resources', static fn (): array => []));
 
@@ -30,7 +30,7 @@ final class ServiceGateMiddlewareTest extends TestCase
 
     public function testAllowsDiscoveryAndHealthWhenDisabled(): void
     {
-        $middleware = new ServiceGateMiddleware(new modX(['mxheadless.enabled' => false]), new ApiPrefix(new modX()));
+        $middleware = new ServiceGateMiddleware(new modX(['mxheadless_enabled' => false]), new ApiPrefix(new modX()));
         $request = (new ServerRequest('GET', 'https://example.test/api/v1/'))
             ->withAttribute('route', new Route('discovery', ['GET'], '/', static fn (): array => []));
 
@@ -40,7 +40,7 @@ final class ServiceGateMiddlewareTest extends TestCase
 
     public function testBlocksOtherRoutesWhenDisabled(): void
     {
-        $middleware = new ServiceGateMiddleware(new modX(['mxheadless.enabled' => false]), new ApiPrefix(new modX()));
+        $middleware = new ServiceGateMiddleware(new modX(['mxheadless_enabled' => false]), new ApiPrefix(new modX()));
         $request = (new ServerRequest('GET', 'https://example.test/api/v1/resources'))
             ->withAttribute('route', new Route('resources.list', ['GET'], '/resources', static fn (): array => []));
 
@@ -50,7 +50,7 @@ final class ServiceGateMiddlewareTest extends TestCase
 
     public function testTreatsStringZeroAsDisabled(): void
     {
-        $middleware = new ServiceGateMiddleware(new modX(['mxheadless.enabled' => '0']), new ApiPrefix(new modX()));
+        $middleware = new ServiceGateMiddleware(new modX(['mxheadless_enabled' => '0']), new ApiPrefix(new modX()));
         $request = (new ServerRequest('GET', 'https://example.test/api/v1/resources'))
             ->withAttribute('route', new Route('resources.list', ['GET'], '/resources', static fn (): array => []));
 

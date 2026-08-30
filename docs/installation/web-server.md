@@ -2,7 +2,7 @@
 
 ## Apache
 
-Enable `mod_rewrite`. MODX friendly URLs must route unknown paths to `index.php`. Gateway prefix defaults to `/api` (`mxheadless.api.prefix`).
+Enable `mod_rewrite`. MODX friendly URLs must route unknown paths to `index.php`. Gateway prefix defaults to `/api` (`mxheadless_api_prefix`).
 
 ## Nginx
 

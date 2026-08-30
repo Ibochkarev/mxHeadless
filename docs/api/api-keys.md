@@ -45,7 +45,7 @@ Grant the smallest set that covers the integration:
 
 ## Revoke
 
-Revocation is immediate. Cached responses keyed by the old identity should expire within `mxheadless.cache_ttl`.
+Revocation is immediate. Cached responses keyed by the old identity should expire within `mxheadless_cache_ttl`.
 
 ## Related
 

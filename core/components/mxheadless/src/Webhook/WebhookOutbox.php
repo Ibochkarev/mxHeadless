@@ -63,7 +63,7 @@ final class WebhookOutbox
 
     public function markFailed(modMxHeadlessWebhookDelivery $delivery, string $error): void
     {
-        $maxAttempts = max(1, (int) $this->modx->getOption('mxheadless.webhook.max_attempts', null, 5));
+        $maxAttempts = max(1, (int) $this->modx->getOption('mxheadless_webhook_max_attempts', null, 5));
         $attempts = (int) $delivery->get('attempts') + 1;
         $delivery->set('attempts', $attempts);
         $delivery->set('last_error', $error);

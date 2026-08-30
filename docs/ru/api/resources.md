@@ -14,7 +14,7 @@ Scope: `resources.read` (публичное чтение, если настро�
 
 | Параметр | Пример | Описание |
 |----------|--------|----------|
-| `limit` | `20` | Размер страницы; целое ≥ 1, потолок `mxheadless.max_limit` (по умолчанию 100) |
+| `limit` | `20` | Размер страницы; целое ≥ 1, потолок `mxheadless_max_limit` (по умолчанию 100) |
 | `offset` | `0` | Пропустить строк; неотрицательное целое |
 | `page` | `2` | Страница с 1, если `offset` не задан |
 | `fields` | `id,pagetitle,uri` | Разреженный набор полей |
@@ -138,7 +138,7 @@ GET /api/v1/resources/5?include=tv&tv_fields=image,subtitle
 curl -s https://example.com/api/v1/resources/5 -H 'X-Context: web'
 ```
 
-Принимаются только контексты из `mxheadless.allowed_contexts`.
+Принимаются только контексты из `mxheadless_allowed_contexts`.
 
 ## Кэширование
 

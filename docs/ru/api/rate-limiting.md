@@ -1,13 +1,13 @@
 # Rate limiting
 
-При `mxheadless.rate_limit.enabled` = `true` (по умолчанию) у каждого клиента есть лимит запросов на окно времени.
+При `mxheadless_rate_limit_enabled` = `true` (по умолчанию) у каждого клиента есть лимит запросов на окно времени.
 
 ## По умолчанию
 
 | Настройка | Значение |
 |-----------|----------|
-| `mxheadless.rate_limit.max_requests` | 120 |
-| `mxheadless.rate_limit.window_seconds` | 60 |
+| `mxheadless_rate_limit_max_requests` | 120 |
+| `mxheadless_rate_limit_window_seconds` | 60 |
 
 Ключ: IP (после trusted proxy) + `identity_key`.
 
@@ -18,7 +18,7 @@
 | API key | `rate_limit_max`, `rate_limit_window` в `mxheadless_api_keys` |
 | OAuth client | те же колонки в `mxheadless_oauth_clients` (для `mxt_*` этого client) |
 
-Если заданы, подменяют глобальные `mxheadless.rate_limit.*`.
+Если заданы, подменяют глобальные `mxheadless_rate_limit_*`.
 
 ## Заголовки
 
@@ -32,7 +32,7 @@ X-RateLimit-Reset: 1693142460
 
 ## Отключение
 
-`mxheadless.rate_limit.enabled` = `false` имеет смысл только во внутренней сети. На публичном сайте лимит лучше оставить.
+`mxheadless_rate_limit_enabled` = `false` имеет смысл только во внутренней сети. На публичном сайте лимит лучше оставить.
 
 ## См. также
 

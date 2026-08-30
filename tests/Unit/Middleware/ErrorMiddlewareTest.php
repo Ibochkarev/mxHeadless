@@ -34,7 +34,7 @@ final class ErrorMiddlewareTest extends TestCase
 
     public function testGenericThrowableWithoutDebugReturns500WithoutDebugKey(): void
     {
-        $middleware = new ErrorMiddleware(new modX(['mxheadless.debug' => false]));
+        $middleware = new ErrorMiddleware(new modX(['mxheadless_debug' => false]));
         $request = new ServerRequest('GET', 'https://example.test/api/v1/resources');
 
         $response = $middleware->process($request, $this->throwingHandler(
@@ -50,7 +50,7 @@ final class ErrorMiddlewareTest extends TestCase
 
     public function testGenericThrowableWithDebugReturns500WithDebugMessage(): void
     {
-        $middleware = new ErrorMiddleware(new modX(['mxheadless.debug' => true]));
+        $middleware = new ErrorMiddleware(new modX(['mxheadless_debug' => true]));
         $request = new ServerRequest('GET', 'https://example.test/api/v1/resources');
 
         $response = $middleware->process($request, $this->throwingHandler(

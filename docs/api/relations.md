@@ -19,8 +19,8 @@ include=parent,children.tv
 
 | Limit | Setting | Default |
 |-------|---------|---------|
-| Relation count | `mxheadless.max_include_relations` | 10 |
-| Depth | `mxheadless.max_include_depth` | 2 |
+| Relation count | `mxheadless_max_include_relations` | 10 |
+| Depth | `mxheadless_max_include_depth` | 2 |
 
 Exceeding limits returns `422`. Unknown relation names also return `422` (`Include not allowed`).
 

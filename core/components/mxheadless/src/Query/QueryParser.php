@@ -19,11 +19,11 @@ final class QueryParser
      */
     public function parse(string $objectName, array $queryParams, ?string $contextHeader = null): ObjectQuery
     {
-        $maxLimit = (int) $this->modx->getOption('mxheadless.max_limit', null, 100);
-        $maxOffset = (int) $this->modx->getOption('mxheadless.max_offset', null, 100000);
-        $maxFields = (int) $this->modx->getOption('mxheadless.max_fields', null, 50);
-        $maxIncludes = (int) $this->modx->getOption('mxheadless.max_include_relations', null, 10);
-        $maxIncludeDepth = (int) $this->modx->getOption('mxheadless.max_include_depth', null, 2);
+        $maxLimit = (int) $this->modx->getOption('mxheadless_max_limit', null, 100);
+        $maxOffset = (int) $this->modx->getOption('mxheadless_max_offset', null, 100000);
+        $maxFields = (int) $this->modx->getOption('mxheadless_max_fields', null, 50);
+        $maxIncludes = (int) $this->modx->getOption('mxheadless_max_include_relations', null, 10);
+        $maxIncludeDepth = (int) $this->modx->getOption('mxheadless_max_include_depth', null, 2);
 
         $limit = $this->resolveLimit($queryParams, $maxLimit);
         $offset = $this->resolveOffset($queryParams, $limit, $maxOffset);
@@ -275,7 +275,7 @@ final class QueryParser
             ? $contextHeader
             : (string) ($queryParams['context'] ?? 'web');
 
-        $allowed = array_map('trim', explode(',', (string) $this->modx->getOption('mxheadless.allowed_contexts', null, 'web,mgr')));
+        $allowed = array_map('trim', explode(',', (string) $this->modx->getOption('mxheadless_allowed_contexts', null, 'web,mgr')));
         if (!in_array($context, $allowed, true)) {
             throw new ValidationException('Invalid context', ['context' => ['Context not allowed']]);
         }

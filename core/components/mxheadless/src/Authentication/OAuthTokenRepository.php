@@ -36,7 +36,7 @@ final class OAuthTokenRepository
         $tokenId = bin2hex(random_bytes(8));
         $secret = bin2hex(random_bytes(16));
         $plain = self::PREFIX . $tokenId . '_' . $secret;
-        $ttl = max(60, (int) $this->modx->getOption('mxheadless.oauth.token_ttl', null, 3600));
+        $ttl = max(60, (int) $this->modx->getOption('mxheadless_oauth_token_ttl', null, 3600));
 
         /** @var modMxHeadlessOAuthToken|null $model */
         $model = $this->modx->newObject(modMxHeadlessOAuthToken::class);

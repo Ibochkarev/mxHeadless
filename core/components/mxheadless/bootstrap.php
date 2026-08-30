@@ -24,7 +24,7 @@ if (!$modx->services->has(\Psr\Http\Client\ClientInterface::class)) {
         \Psr\Http\Client\ClientInterface::class,
         static function () use ($modx): \Psr\Http\Client\ClientInterface {
             // Dev-only: when private webhook URLs are allowed, skip TLS verify for local certs.
-            $verifyPeer = !(bool) $modx->getOption('mxheadless.webhook.allow_private_urls', null, false);
+            $verifyPeer = !(bool) $modx->getOption('mxheadless_webhook_allow_private_urls', null, false);
 
             return new \MxHeadless\Http\CurlHttpClient($verifyPeer);
         },

@@ -17,12 +17,12 @@ final class QueryParserTest extends TestCase
     protected function setUp(): void
     {
         $this->parser = new QueryParser(new modX([
-            'mxheadless.max_limit' => 100,
-            'mxheadless.max_offset' => 100000,
-            'mxheadless.max_fields' => 50,
-            'mxheadless.max_include_relations' => 10,
-            'mxheadless.max_include_depth' => 2,
-            'mxheadless.allowed_contexts' => 'web,mgr',
+            'mxheadless_max_limit' => 100,
+            'mxheadless_max_offset' => 100000,
+            'mxheadless_max_fields' => 50,
+            'mxheadless_max_include_relations' => 10,
+            'mxheadless_max_include_depth' => 2,
+            'mxheadless_allowed_contexts' => 'web,mgr',
         ]));
     }
 

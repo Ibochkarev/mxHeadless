@@ -17,7 +17,7 @@ final class IdempotencyStore
 
     public function isEnabled(): bool
     {
-        return (bool) $this->modx->getOption('mxheadless.idempotency.enabled', null, true);
+        return (bool) $this->modx->getOption('mxheadless_idempotency_enabled', null, true);
     }
 
     /**
@@ -62,7 +62,7 @@ final class IdempotencyStore
         array $headers,
         string $payloadHash = '',
     ): void {
-        $ttl = max(60, (int) $this->modx->getOption('mxheadless.idempotency_ttl', null, 86400));
+        $ttl = max(60, (int) $this->modx->getOption('mxheadless_idempotency_ttl', null, 86400));
         $this->cache->set($this->recordKey($fingerprint), [
             'idempotency_key' => $idempotencyKey,
             'status_code' => $statusCode,

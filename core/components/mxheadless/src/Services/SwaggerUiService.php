@@ -23,7 +23,7 @@ final class SwaggerUiService
 
     public function handle(): ResponseInterface
     {
-        if (!(bool) $this->modx->getOption('mxheadless.swagger.enabled', null, true)) {
+        if (!(bool) $this->modx->getOption('mxheadless_swagger_enabled', null, true)) {
             throw new NotFoundException('Endpoint not found');
         }
 

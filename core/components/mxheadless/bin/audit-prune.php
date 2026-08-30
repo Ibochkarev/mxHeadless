@@ -14,7 +14,7 @@ $days = null;
 foreach (array_slice($argv, 1) as $arg) {
     if ($arg === '--help' || $arg === '-h') {
         echo "Usage: php audit-prune.php [--days=N]\n";
-        echo "  --days=N  Delete rows older than N days (default: mxheadless.audit.retention_days or 90)\n";
+        echo "  --days=N  Delete rows older than N days (default: mxheadless_audit_retention_days or 90)\n";
         exit(0);
     }
     if (str_starts_with($arg, '--days=')) {
@@ -45,7 +45,7 @@ $namespace = ['path' => MODX_CORE_PATH . 'components/mxheadless/'];
 require_once $bootstrap;
 
 if ($days === null) {
-    $days = max(1, (int) $modx->getOption('mxheadless.audit.retention_days', null, 90));
+    $days = max(1, (int) $modx->getOption('mxheadless_audit_retention_days', null, 90));
 }
 
 $repository = new \MxHeadless\Audit\AuditLogRepository($modx);

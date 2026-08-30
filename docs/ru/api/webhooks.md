@@ -87,7 +87,7 @@ php core/components/mxheadless/bin/webhook-subscribe.php \
 
 ## Повторы
 
-При ошибке строка остаётся `pending` с exponential backoff до `mxheadless.webhook.max_attempts` (по умолчанию `5`). Затем статус `failed`.
+При ошибке строка остаётся `pending` с exponential backoff до `mxheadless_webhook_max_attempts` (по умолчанию `5`). Затем статус `failed`.
 
 | Попытка | Пауза |
 |---------|-------|
@@ -102,7 +102,7 @@ Worker запускайте из cron или systemd. См. [workers](../operati
 ## SSRF
 
 Блокируются не-HTTP(S) схемы, `localhost` / `*.local` / `*.test`, private/link-local IP после DNS.
-Для локальной разработки: `mxheadless.webhook.allow_private_urls = true` (в production держите `false`).
+Для локальной разработки: `mxheadless_webhook_allow_private_urls = true` (в production держите `false`).
 
 ## См. также
 

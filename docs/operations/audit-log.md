@@ -6,9 +6,9 @@ Optional database audit trail for API requests. Modeled after mxApi access logs,
 
 | Setting | Default | Description |
 |---------|---------|-------------|
-| `mxheadless.audit.enabled` | `false` | Master switch |
-| `mxheadless.audit.retention_days` | `90` | Rows older than this are removed by the prune worker |
-| `mxheadless.audit.log_get` | `false` | When `false`, only `POST`, `PUT`, `PATCH`, and `DELETE` are logged |
+| `mxheadless_audit_enabled` | `false` | Master switch |
+| `mxheadless_audit_retention_days` | `90` | Rows older than this are removed by the prune worker |
+| `mxheadless_audit_log_get` | `false` | When `false`, only `POST`, `PUT`, `PATCH`, and `DELETE` are logged |
 
 When disabled, `AuditLogMiddleware` is a no-op.
 
@@ -51,7 +51,7 @@ Override retention:
 php core/components/mxheadless/bin/audit-prune.php --days=30
 ```
 
-Without `--days`, the worker reads `mxheadless.audit.retention_days`.
+Without `--days`, the worker reads `mxheadless_audit_retention_days`.
 
 ## Example queries
 

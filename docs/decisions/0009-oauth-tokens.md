@@ -25,7 +25,7 @@ Opaque bearer tokens: `mxt_{tokenId}_{secret}`. Only `token_hash` is stored in `
 | Grant | Default | Notes |
 |-------|---------|-------|
 | `client_credentials` | Enabled when OAuth is on | Requires registered client + secret hash |
-| `password` | Disabled (`mxheadless.oauth.password_grant_enabled`) | MODX user credentials; client must allow grant |
+| `password` | Disabled (`mxheadless_oauth_password_grant_enabled`) | MODX user credentials; client must allow grant |
 
 ### Tables
 
@@ -42,9 +42,9 @@ Uninstall does not drop tables (same policy as API keys and audit log).
 
 | Key | Default |
 |-----|---------|
-| `mxheadless.oauth.enabled` | `false` |
-| `mxheadless.oauth.token_ttl` | `3600` |
-| `mxheadless.oauth.password_grant_enabled` | `false` |
+| `mxheadless_oauth_enabled` | `false` |
+| `mxheadless_oauth_token_ttl` | `3600` |
+| `mxheadless_oauth_password_grant_enabled` | `false` |
 
 Master switch is off by default. Operators opt in explicitly.
 

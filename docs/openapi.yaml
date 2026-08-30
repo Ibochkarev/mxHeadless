@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: mxHeadless API
-  version: 1.0.41
+  version: 1.0.42
   description: |
     Universal REST API for MODX Revolution 3.
 
@@ -152,7 +152,7 @@ paths:
       security: []
       responses:
         '200':
-          description: Interactive Swagger UI HTML (requires mxheadless.swagger.enabled)
+          description: Interactive Swagger UI HTML (requires mxheadless_swagger_enabled)
           content:
             text/html:
               schema:

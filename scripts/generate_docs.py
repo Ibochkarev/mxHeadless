@@ -70,7 +70,7 @@ pairs = [
 
 ## Apache
 
-Enable `mod_rewrite`. MODX friendly URLs must route unknown paths to `index.php`. Gateway prefix defaults to `/api` (`mxheadless.api.prefix`).
+Enable `mod_rewrite`. MODX friendly URLs must route unknown paths to `index.php`. Gateway prefix defaults to `/api` (`mxheadless_api_prefix`).
 
 ## Nginx
 
@@ -90,7 +90,7 @@ If rewrite is unavailable, use `assets/components/mxheadless/api.php`.
 
 ## Apache
 
-Включите `mod_rewrite`. Friendly URLs MODX должны направлять неизвестные пути в `index.php`. Префикс gateway по умолчанию `/api` (`mxheadless.api.prefix`).
+Включите `mod_rewrite`. Friendly URLs MODX должны направлять неизвестные пути в `index.php`. Префикс gateway по умолчанию `/api` (`mxheadless_api_prefix`).
 
 ## Nginx
 
@@ -203,10 +203,10 @@ config_pages = [
 
 | Key | Default | Description |
 |-----|---------|-------------|
-| `mxheadless.api.prefix` | `/api` | URL prefix |
+| `mxheadless_api_prefix` | `/api` | URL prefix |
 | `mxheadless.debug` | `false` | Exception details |
-| `mxheadless.cache.enabled` | `true` | Response cache |
-| `mxheadless.rate_limit.enabled` | `true` | Rate limiting |
+| `mxheadless_cache_enabled` | `true` | Response cache |
+| `mxheadless_rate_limit_enabled` | `true` | Rate limiting |
 
 Full list in Package Manager → System Settings → namespace `mxheadless`.
 """,
@@ -214,10 +214,10 @@ Full list in Package Manager → System Settings → namespace `mxheadless`.
 
 | Ключ | По умолчанию | Описание |
 |------|--------------|----------|
-| `mxheadless.api.prefix` | `/api` | Префикс URL |
+| `mxheadless_api_prefix` | `/api` | Префикс URL |
 | `mxheadless.debug` | `false` | Детали исключений |
-| `mxheadless.cache.enabled` | `true` | Кэш ответов |
-| `mxheadless.rate_limit.enabled` | `true` | Rate limiting |
+| `mxheadless_cache_enabled` | `true` | Кэш ответов |
+| `mxheadless_rate_limit_enabled` | `true` | Rate limiting |
 
 Полный список: System Settings → namespace `mxheadless`.
 """,
@@ -226,17 +226,17 @@ Full list in Package Manager → System Settings → namespace `mxheadless`.
         "configuration/cors.md",
         """# CORS
 
-- `mxheadless.cors.enabled` — master switch
-- `mxheadless.cors.allowed_origins` — comma-separated list
-- `mxheadless.cors.allow_credentials` — only with explicit origins
+- `mxheadless_cors_enabled` — master switch
+- `mxheadless_cors_allowed_origins` — comma-separated list
+- `mxheadless_cors_allow_credentials` — only with explicit origins
 
 OPTIONS preflight is handled by middleware without hitting handlers.
 """,
         """# CORS
 
-- `mxheadless.cors.enabled` — главный переключатель
-- `mxheadless.cors.allowed_origins` — список origins
-- `mxheadless.cors.allow_credentials` — только с явными origins
+- `mxheadless_cors_enabled` — главный переключатель
+- `mxheadless_cors_allowed_origins` — список origins
+- `mxheadless_cors_allow_credentials` — только с явными origins
 
 OPTIONS обрабатывается middleware без вызова handlers.
 """,

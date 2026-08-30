@@ -6,8 +6,8 @@ mxHeadless кэширует анонимные GET в MODX cache manager. Мут
 
 | Ключ | По умолчанию | Роль |
 |-----|--------------|------|
-| `mxheadless.cache.enabled` | `true` | Общий кэш для анонимных GET |
-| `mxheadless.cache_ttl` | `300` | `max-age` и TTL записи (секунды) |
+| `mxheadless_cache_enabled` | `true` | Общий кэш для анонимных GET |
+| `mxheadless_cache_ttl` | `300` | `max-age` и TTL записи (секунды) |
 
 Аутентифицированные запросы, API keys и preview всегда получают `Cache-Control: private, no-store`. См. [HTTP caching](../api/http-caching.md).
 
@@ -47,11 +47,11 @@ CDN перед анонимными GET имеет смысл, когда:
 
 | Цель | Действие |
 |------|----------|
-| Отладка | `mxheadless.cache.enabled` = `false` |
-| Быстрее контент | Уменьшить `mxheadless.cache_ttl` |
+| Отладка | `mxheadless_cache_enabled` = `false` |
+| Быстрее контент | Уменьшить `mxheadless_cache_ttl` |
 | Свежий API | Выключить кэш. Webhooks оставить для фронта |
 
-Отзыв API key не чистит кэш мгновенно. Записи протухают в пределах `mxheadless.cache_ttl`.
+Отзыв API key не чистит кэш мгновенно. Записи протухают в пределах `mxheadless_cache_ttl`.
 
 ## См. также
 

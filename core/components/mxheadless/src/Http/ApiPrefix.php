@@ -15,7 +15,7 @@ final class ApiPrefix
 
     public function base(): string
     {
-        return rtrim((string) $this->modx->getOption('mxheadless.api.prefix', null, '/api'), '/');
+        return rtrim((string) $this->modx->getOption('mxheadless_api_prefix', null, '/api'), '/');
     }
 
     public function versioned(): string

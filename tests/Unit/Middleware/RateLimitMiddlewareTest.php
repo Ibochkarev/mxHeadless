@@ -23,9 +23,9 @@ final class RateLimitMiddlewareTest extends TestCase
         $limiter = new RecordingRateLimiter(true);
         $middleware = new RateLimitMiddleware(
             new modX([
-                'mxheadless.rate_limit.enabled' => true,
-                'mxheadless.rate_limit.max_requests' => 120,
-                'mxheadless.rate_limit.window_seconds' => 60,
+                'mxheadless_rate_limit_enabled' => true,
+                'mxheadless_rate_limit_max_requests' => 120,
+                'mxheadless_rate_limit_window_seconds' => 60,
             ]),
             $limiter,
         );
@@ -45,9 +45,9 @@ final class RateLimitMiddlewareTest extends TestCase
         $limiter = new RecordingRateLimiter(true);
         $middleware = new RateLimitMiddleware(
             new modX([
-                'mxheadless.rate_limit.enabled' => true,
-                'mxheadless.rate_limit.max_requests' => 120,
-                'mxheadless.rate_limit.window_seconds' => 60,
+                'mxheadless_rate_limit_enabled' => true,
+                'mxheadless_rate_limit_max_requests' => 120,
+                'mxheadless_rate_limit_window_seconds' => 60,
             ]),
             $limiter,
         );
@@ -68,9 +68,9 @@ final class RateLimitMiddlewareTest extends TestCase
     {
         $middleware = new RateLimitMiddleware(
             new modX([
-                'mxheadless.rate_limit.enabled' => true,
-                'mxheadless.rate_limit.max_requests' => 120,
-                'mxheadless.rate_limit.window_seconds' => 60,
+                'mxheadless_rate_limit_enabled' => true,
+                'mxheadless_rate_limit_max_requests' => 120,
+                'mxheadless_rate_limit_window_seconds' => 60,
             ]),
             new RecordingRateLimiter(true),
         );
@@ -90,7 +90,7 @@ final class RateLimitMiddlewareTest extends TestCase
     public function testThrowsWhenLimitExceeded(): void
     {
         $middleware = new RateLimitMiddleware(
-            new modX(['mxheadless.rate_limit.enabled' => true]),
+            new modX(['mxheadless_rate_limit_enabled' => true]),
             new RecordingRateLimiter(false),
         );
 

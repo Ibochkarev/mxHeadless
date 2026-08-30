@@ -29,7 +29,7 @@ final class DiscoveryService
                 'version' => Version::STRING,
                 'api' => $base,
                 'cors' => [
-                    'enabled' => (bool) $this->modx->getOption('mxheadless.cors.enabled', null, false),
+                    'enabled' => (bool) $this->modx->getOption('mxheadless_cors_enabled', null, false),
                     'allowed_origins' => $this->corsAllowedOrigins(),
                 ],
                 'links' => [
@@ -61,7 +61,7 @@ final class DiscoveryService
      */
     private function corsAllowedOrigins(): array
     {
-        $raw = (string) $this->modx->getOption('mxheadless.cors.allowed_origins', null, '');
+        $raw = (string) $this->modx->getOption('mxheadless_cors_allowed_origins', null, '');
         $origins = [];
         foreach (explode(',', $raw) as $origin) {
             $origin = trim($origin);

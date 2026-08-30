@@ -25,7 +25,7 @@ final class TokenService
      */
     public function handle(ServerRequestInterface $request): array
     {
-        if (!(bool) $this->modx->getOption('mxheadless.oauth.enabled', null, false)) {
+        if (!(bool) $this->modx->getOption('mxheadless_oauth_enabled', null, false)) {
             throw new InvalidGrantException('OAuth token endpoint is disabled');
         }
 
@@ -50,7 +50,7 @@ final class TokenService
      */
     private function issueGrant(array $payload, string $grantType): array
     {
-        if ($grantType === 'password' && !(bool) $this->modx->getOption('mxheadless.oauth.password_grant_enabled', null, false)) {
+        if ($grantType === 'password' && !(bool) $this->modx->getOption('mxheadless_oauth_password_grant_enabled', null, false)) {
             throw new InvalidGrantException('Password grant is disabled');
         }
 

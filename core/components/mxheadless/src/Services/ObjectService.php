@@ -850,7 +850,7 @@ final class ObjectService
         $key = trim($value);
         $allowed = array_values(array_filter(array_map(
             'trim',
-            explode(',', (string) $this->modx->getOption('mxheadless.allowed_contexts', null, 'web,mgr')),
+            explode(',', (string) $this->modx->getOption('mxheadless_allowed_contexts', null, 'web,mgr')),
         )));
         if ($allowed !== [] && !in_array($key, $allowed, true)) {
             throw new ValidationException('Invalid context', [

@@ -126,16 +126,16 @@ Browser SPA calls both APIs. Mirror the same allowlist on both packages.
 
 | Concern | mxHeadless | MiniShop3 |
 |---------|------------|-----------|
-| Enable / origins | `mxheadless.cors.enabled=true`, `mxheadless.cors.allowed_origins` | `ms3_cors_allowed_origins` (empty = same-origin only) |
-| Credentials (cookies) | `mxheadless.cors.allow_credentials` | MS3 CORS uses `allow_credentials: true` in code when origins are set |
+| Enable / origins | `mxheadless_cors_enabled=true`, `mxheadless_cors_allowed_origins` | `ms3_cors_allowed_origins` (empty = same-origin only) |
+| Credentials (cookies) | `mxheadless_cors_allow_credentials` | MS3 CORS uses `allow_credentials: true` in code when origins are set |
 | Headers the SPA sends | Include `Authorization`, `X-API-Key`, `Idempotency-Key`, … | Include `Authorization`, `MS3TOKEN` |
 
 Example for Nuxt on `https://app.example.com`:
 
 ```text
-mxheadless.cors.enabled = true
-mxheadless.cors.allowed_origins = https://app.example.com,http://localhost:3000
-mxheadless.cors.allow_credentials = false
+mxheadless_cors_enabled = true
+mxheadless_cors_allowed_origins = https://app.example.com,http://localhost:3000
+mxheadless_cors_allow_credentials = false
 
 ms3_cors_allowed_origins = https://app.example.com,http://localhost:3000
 ```
@@ -146,7 +146,7 @@ See [CORS](../configuration/cors.md).
 
 ### Trusted proxies
 
-mxHeadless: set `mxheadless.trusted_proxies` to balancer IPs so rate limit / `client_ip` use `X-Forwarded-For` correctly ([trusted proxies](../configuration/trusted-proxies.md)).
+mxHeadless: set `mxheadless_trusted_proxies` to balancer IPs so rate limit / `client_ip` use `X-Forwarded-For` correctly ([trusted proxies](../configuration/trusted-proxies.md)).
 
 MiniShop3 does not share that setting. Rate limit and logging use its own IP resolution. Put the **same nginx/LB config** in front of both entrypoints (`X-Forwarded-For` sanitized, TLS terminated). Wrong proxy config breaks fairness on both APIs independently.
 

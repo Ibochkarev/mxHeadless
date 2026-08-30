@@ -40,10 +40,10 @@ mxHeadless перехватывает запросы до разбора рес�
 
 | Настройка | По умолчанию | Назначение |
 |-----------|--------------|------------|
-| `mxheadless.api.prefix` | `/api` | Префикс URL |
-| `mxheadless.allowed_contexts` | `web,mgr` | Разрешённые контексты |
-| `mxheadless.max_limit` | `100` | Максимальный limit |
-| `mxheadless.debug` | `false` | Подробные ошибки (только dev) |
+| `mxheadless_api_prefix` | `/api` | Префикс URL |
+| `mxheadless_allowed_contexts` | `web,mgr` | Разрешённые контексты |
+| `mxheadless_max_limit` | `100` | Максимальный limit |
+| `mxheadless_debug` | `false` | Подробные ошибки (только dev) |
 
 ### Запасной путь: `api.php`
 

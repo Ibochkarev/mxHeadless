@@ -27,7 +27,7 @@ It ships content endpoints (`resources`, `pages`, `contexts`, `chunks`), a white
 | Default prefix | `/mxapi/v1` | `/api/v1` |
 | Content API out of the box | No | Yes |
 | Bearer auth | Opaque DB tokens (`sha256`) | API keys `mxh_*` + session + anonymous |
-| Token endpoint | `POST /auth/token` (password, client_credentials) | `POST /auth/token` when `mxheadless.oauth.enabled` |
+| Token endpoint | `POST /auth/token` (password, client_credentials) | `POST /auth/token` when `mxheadless_oauth_enabled` |
 | Scopes + MODX ACL | Yes (`mxapi` namespace policies) | Yes (key scopes + MODX permissions) |
 | Rate limiting | Per integration client | Global + per-key API limits + per OAuth client |
 | Idempotency | `Idempotency-Key` | `Idempotency-Key` on `POST` (2xx cached) |

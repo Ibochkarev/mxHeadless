@@ -13,7 +13,7 @@ GET /api/v1/objects/contexts
 GET /api/v1/objects/contexts/{key}
 ```
 
-Нужна аутентификация. Scope: `contexts.read`. Каждая запись фильтруется по ACL MODX (`context_{key}` для сессии, `context.{key}` для API key). Контексты вне `mxheadless.allowed_contexts` не попадают в ответ.
+Нужна аутентификация. Scope: `contexts.read`. Каждая запись фильтруется по ACL MODX (`context_{key}` для сессии, `context.{key}` для API key). Контексты вне `mxheadless_allowed_contexts` не попадают в ответ.
 
 Поля: `key`, `name`, `description`, `rank`.
 
@@ -43,7 +43,7 @@ X-Context: web
 
 ## Whitelist
 
-Принимаются только контексты из `mxheadless.allowed_contexts` (по умолчанию `web,mgr`). Остальные дают `422 Invalid context`.
+Принимаются только контексты из `mxheadless_allowed_contexts` (по умолчанию `web,mgr`). Остальные дают `422 Invalid context`.
 
 Определение объекта может сузить список (у resources в ядре `web` и `mgr`).
 

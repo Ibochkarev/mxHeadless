@@ -18,17 +18,17 @@ Never revoke until all callers use the new key. Downtime follows immediately aft
 ### After revoke
 
 - Bearer auth with the old secret returns `401`.
-- Cached anonymous GET responses may linger up to `mxheadless.cache_ttl`. Lower TTL or disable cache during rotation if that window matters.
+- Cached anonymous GET responses may linger up to `mxheadless_cache_ttl`. Lower TTL or disable cache during rotation if that window matters.
 
 ## OAuth clients (`mxt_*`)
 
-When `mxheadless.oauth.enabled` is `true`:
+When `mxheadless_oauth_enabled` is `true`:
 
 1. Create a new client via [oauth-clients CLI](oauth-clients.md).
 2. Update services that call `POST /api/v1/auth/token`.
 3. Revoke the old client row.
 
-Access tokens expire after `mxheadless.oauth.token_ttl` (default 3600 s). Rotating the client secret invalidates future token exchanges, not already-issued tokens until they expire.
+Access tokens expire after `mxheadless_oauth_token_ttl` (default 3600 s). Rotating the client secret invalidates future token exchanges, not already-issued tokens until they expire.
 
 ## Webhook secrets
 

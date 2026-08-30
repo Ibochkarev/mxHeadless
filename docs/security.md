@@ -102,7 +102,7 @@ Production responses never include:
 - PHP class names
 - Credentials
 
-Development mode (`mxheadless.debug`) may include limited debug extension in problem+json.
+Development mode (`mxheadless_debug`) may include limited debug extension in problem+json.
 
 ## Webhook SSRF
 
@@ -114,7 +114,7 @@ Manager processors require `mxheadless_apikeys` permission. Create shows secret 
 
 ## Production checklist
 
-- [ ] `mxheadless.debug` = false
+- [ ] `mxheadless_debug` = false
 - [ ] CORS origins explicitly configured
 - [ ] Rate limiting enabled
 - [ ] Trusted proxies configured if behind load balancer

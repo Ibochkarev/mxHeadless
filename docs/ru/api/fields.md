@@ -10,7 +10,7 @@
 GET /api/v1/resources?fields=id,pagetitle,uri,introtext
 ```
 
-Имена через запятую. Потолок: `mxheadless.max_fields` (по умолчанию 50).
+Имена через запятую. Потолок: `mxheadless_max_fields` (по умолчанию 50).
 
 ## По умолчанию
 
