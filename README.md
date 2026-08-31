@@ -14,7 +14,9 @@ License: GPL-2.0-or-later. No feature tiers.
 - Speaks PSR-7/15 middleware (CORS, rate limit, CSRF for sessions, idempotency, HTTP cache, audit, webhooks).
 - Ships live OpenAPI and Swagger UI at `/api/v1/docs`.
 
-Full docs: [English](docs/index.md) · [Russian](docs/ru/index.md)
+Full docs (repo): [English](docs/index.md) · [Russian](docs/ru/index.md)
+
+Published on docs.modx.pro: [Русский](https://docs.modx.pro/components/mxheadless/) · [English](https://docs.modx.pro/en/components/mxheadless/)
 
 ## Requirements
 
@@ -257,6 +259,7 @@ Testing matrix (automatic + manual): [docs/contributing/testing.md](docs/contrib
 
 | Topic | Link |
 |-------|------|
+| Online (docs.modx.pro) | [RU](https://docs.modx.pro/components/mxheadless/) · [EN](https://docs.modx.pro/en/components/mxheadless/) |
 | Architecture | [docs/architecture.md](docs/architecture.md) |
 | Security | [docs/security.md](docs/security.md) |
 | OpenAPI (static) | [docs/openapi.yaml](docs/openapi.yaml) |
