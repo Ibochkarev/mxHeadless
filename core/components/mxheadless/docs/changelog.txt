@@ -10,6 +10,7 @@ Versioning: [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - System settings: dotted keys (`mxheadless.cors.enabled`) → underscores (`mxheadless_cors_enabled`).
 - Upgrade resolver copies values from old keys and removes them.
 - Docs EN/RU, lexicons, and OpenAPI updated for the new keys.
+- API bootstrap context is now configurable via `mxheadless_context` (default `web`); `mgr` is ignored and falls back to `web`.
 
 ## [1.0.12-pl]
 

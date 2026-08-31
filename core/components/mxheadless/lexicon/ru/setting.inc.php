@@ -8,6 +8,8 @@
 
 $_lang['setting_mxheadless_api_prefix'] = 'Префикс API';
 $_lang['setting_mxheadless_api_prefix_desc'] = 'Публичный префикс до /v1 (по умолчанию /api).';
+$_lang['setting_mxheadless_context'] = 'Контекст API';
+$_lang['setting_mxheadless_context_desc'] = 'Контекст инициализации MODX для API (по умолчанию web). Значение mgr игнорируется в пользу web.';
 
 $_lang['setting_mxheadless_enabled'] = 'API включён';
 $_lang['setting_mxheadless_enabled_desc'] = 'Kill switch. При «Нет» gateway отвечает 503 service_disabled.';

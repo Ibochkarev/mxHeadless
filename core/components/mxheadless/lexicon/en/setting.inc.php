@@ -8,6 +8,8 @@
 
 $_lang['setting_mxheadless_api_prefix'] = 'API path prefix';
 $_lang['setting_mxheadless_api_prefix_desc'] = 'Public URL prefix before /v1 (default /api).';
+$_lang['setting_mxheadless_context'] = 'API context';
+$_lang['setting_mxheadless_context_desc'] = 'MODX context key used to initialize API requests (default web). The mgr value is ignored and falls back to web.';
 
 $_lang['setting_mxheadless_enabled'] = 'API enabled';
 $_lang['setting_mxheadless_enabled_desc'] = 'Kill switch. When No, gateway returns 503 service_disabled (health/discovery may stay up).';

@@ -22,7 +22,11 @@ require_once $modxIndex;
 
 /** @var \MODX\Revolution\modX $modx */
 $modx->getRequest();
-$modx->initialize('web');
+$contextKey = trim((string) $modx->getOption('mxheadless_context', null, 'web'));
+if ($contextKey === '' || strcasecmp($contextKey, 'mgr') === 0) {
+    $contextKey = 'web';
+}
+$modx->initialize($contextKey);
 
 if (!$modx->services->has('mxheadless')) {
     http_response_code(503);

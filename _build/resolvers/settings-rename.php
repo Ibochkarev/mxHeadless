@@ -18,6 +18,7 @@ switch ($options[xPDOTransport::PACKAGE_ACTION]) {
     case xPDOTransport::ACTION_UPGRADE:
         $map = [
             'mxheadless.api.prefix' => 'mxheadless_api_prefix',
+            'mxheadless.context' => 'mxheadless_context',
             'mxheadless.debug' => 'mxheadless_debug',
             'mxheadless.enabled' => 'mxheadless_enabled',
             'mxheadless.cache.enabled' => 'mxheadless_cache_enabled',

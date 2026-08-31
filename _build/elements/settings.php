@@ -7,6 +7,12 @@ return [
         'value' => '/api',
         'area' => 'mxheadless_api',
     ],
+    'context' => [
+        'key' => 'mxheadless_context',
+        'xtype' => 'textfield',
+        'value' => 'web',
+        'area' => 'mxheadless_api',
+    ],
     'debug' => [
         'key' => 'mxheadless_debug',
         'xtype' => 'combo-boolean',
