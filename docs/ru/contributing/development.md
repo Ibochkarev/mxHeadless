@@ -112,12 +112,14 @@ Core-маршруты: `Routing/RoutesRegistrar.php`. Новый endpoint тре
 
 ## Релиз
 
+Подробно: [Релизы](releases.md) — файлы версии, автоматический GitHub Release, чеклист maintainer.
+
+Локальная сборка:
+
 ```bash
 cd _build
 php build.php
 ```
-
-Загрузите transport-пакет через Package Manager. Теги SemVer согласованы с API (`/api/v1` → пакет 1.x).
 
 Breaking API: новый major path (`/api/v2`) и major bump пакета.
 

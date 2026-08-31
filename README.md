@@ -266,5 +266,6 @@ Testing matrix (automatic + manual): [docs/contributing/testing.md](docs/contrib
 | Settings | [docs/configuration/settings.md](docs/configuration/settings.md) |
 | vs mxApi | [docs/comparison/mxapi.md](docs/comparison/mxapi.md) |
 | Contributing | [docs/contributing/development.md](docs/contributing/development.md) |
+| Releases | [docs/contributing/releases.md](docs/contributing/releases.md) |
 
 Russian mirror: [docs/ru/index.md](docs/ru/index.md).

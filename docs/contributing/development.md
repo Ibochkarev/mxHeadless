@@ -115,12 +115,14 @@ Run prose through project tone guidelines: direct, no filler, complete sentences
 
 ## Release
 
+See [Releases](releases.md) for version files, automated GitHub Release workflow, and maintainer checklist.
+
+Local build:
+
 ```bash
 cd _build
 php build.php
 ```
-
-Upload the generated transport package via MODX Package Manager. Tag releases SemVer aligned with API version (`/api/v1` → package 1.x).
 
 Breaking API changes require a new major API path (`/api/v2`) and semver major bump.
 
