@@ -87,19 +87,7 @@ MODX_CORE_PATH=/path/to/modx/core/ php _build/build.php
 
 ## GitHub Actions
 
-### CI при каждом push
-
-[`.github/workflows/ci.yml`](../../.github/workflows/ci.yml): PHPUnit (PHP 8.2–8.5), PHPStan, PHPCS, Composer validate/audit, lint синтаксиса PHP, проверка структуры OpenAPI.
-
-### Аннотация Node.js на runner
-
-У job **Build transport package** (и части CI jobs) на GitHub-hosted runners может появиться аннотация:
-
-```text
-Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/upload-artifact@v4.
-```
-
-Это информационное сообщение от GitHub Actions ([changelog](https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/)). Текущие workflow используют actions на Node.js 24 (`actions/checkout@v7`, `actions/upload-artifact@v7`, `actions/cache@v6`).
+[`.github/workflows/ci.yml`](../../.github/workflows/ci.yml) при каждом push: PHPUnit (PHP 8.2–8.5), PHPStan, PHPCS, Composer validate/audit, lint синтаксиса PHP, проверка структуры OpenAPI.
 
 ## См. также
 

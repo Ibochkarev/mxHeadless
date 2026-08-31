@@ -85,21 +85,9 @@ Site operators:
 
 No separate CLI migrate command exists. Resolvers run during package upgrade.
 
-## GitHub Actions notes
+## GitHub Actions
 
-### CI on every push
-
-[`.github/workflows/ci.yml`](../../.github/workflows/ci.yml) runs PHPUnit (PHP 8.2–8.5), PHPStan, PHPCS, Composer validate/audit, PHP syntax lint, and OpenAPI structure checks.
-
-### Node.js runner annotation
-
-The **Build transport package** job (and some CI jobs) may show this annotation on GitHub-hosted runners:
-
-```text
-Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/upload-artifact@v4.
-```
-
-This is informational from GitHub Actions ([changelog](https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/)). Current workflows use Node.js 24 actions (`actions/checkout@v7`, `actions/upload-artifact@v7`, `actions/cache@v6`).
+[`.github/workflows/ci.yml`](../../.github/workflows/ci.yml) runs on every push: PHPUnit (PHP 8.2–8.5), PHPStan, PHPCS, Composer validate/audit, PHP syntax lint, and OpenAPI structure checks.
 
 ## Related
 
