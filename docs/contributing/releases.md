@@ -99,7 +99,7 @@ The **Build transport package** job (and some CI jobs) may show this annotation 
 Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/upload-artifact@v4.
 ```
 
-This is informational from GitHub Actions ([changelog](https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/)). The workflow still completes successfully. Current workflows target Node.js 24 (`actions/checkout@v5`, `actions/upload-artifact@v5`). Older runs may show the message until action majors are bumped.
+This is informational from GitHub Actions ([changelog](https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/)). Current workflows use Node.js 24 actions (`actions/checkout@v7`, `actions/upload-artifact@v7`, `actions/cache@v6`).
 
 ## Related
 
