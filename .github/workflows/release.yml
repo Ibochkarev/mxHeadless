@@ -1,0 +1,130 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - '*.*.*-*'
+  workflow_dispatch:
+
+concurrency:
+  group: release-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-release:
+    name: Build transport package
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    services:
+      mysql:
+        image: mysql:8.4
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: modx
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -proot"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: pdo_mysql, zip, mbstring, json
+          coverage: none
+          tools: composer:v2
+
+      - name: Resolve package version
+        id: version
+        run: |
+          PACKAGE_VERSION="$(php scripts/resolve-package-version.php)"
+          echo "package=${PACKAGE_VERSION}" >> "$GITHUB_OUTPUT"
+          echo "Package version: ${PACKAGE_VERSION}"
+
+      - name: Verify tag matches package version
+        if: github.event_name == 'push'
+        run: |
+          TAG="${GITHUB_REF#refs/tags/}"
+          EXPECTED="${{ steps.version.outputs.package }}"
+          if [ "$TAG" != "$EXPECTED" ]; then
+            echo "Git tag '${TAG}' does not match _build/config.inc.php (${EXPECTED})."
+            exit 1
+          fi
+
+      - name: Verify Version.php matches config
+        run: |
+          php -r '
+          require "core/components/mxheadless/src/Version.php";
+          $config = require "_build/config.inc.php";
+          if (\MxHeadless\Version::STRING !== $config["version"]) {
+              fwrite(STDERR, "Version.php and config.inc.php disagree.\n");
+              exit(1);
+          }
+          '
+
+      - name: Install MODX Revolution
+        run: composer create-project modx/revolution /tmp/modx 3.2.3-pl --no-interaction --prefer-dist
+
+      - name: Install MODX non-interactively
+        run: |
+          cp tests/fixtures/modx-config.xml /tmp/modx/setup/config.xml
+          php /tmp/modx/setup/index.php --installmode=new --config=/tmp/modx/setup/config.xml
+
+      - name: Build transport package
+        env:
+          MODX_CORE_PATH: /tmp/modx/core/
+        run: php _build/build.php
+
+      - name: Collect transport artifact
+        run: |
+          PACKAGE="mxheadless-${{ steps.version.outputs.package }}.transport.zip"
+          SOURCE="/tmp/modx/core/packages/${PACKAGE}"
+          if [ ! -f "$SOURCE" ]; then
+            echo "Transport package not found: ${SOURCE}"
+            ls -la /tmp/modx/core/packages/ || true
+            exit 1
+          fi
+          mkdir -p dist
+          cp "$SOURCE" "dist/${PACKAGE}"
+          sha256sum "dist/${PACKAGE}" > "dist/${PACKAGE}.sha256"
+
+      - name: Extract changelog for release notes
+        id: changelog
+        run: |
+          CHANGELOG_FILE="${RUNNER_TEMP}/release-notes.md"
+          node scripts/extract-changelog.mjs "${{ steps.version.outputs.package }}" > "$CHANGELOG_FILE"
+          echo "file=${CHANGELOG_FILE}" >> "$GITHUB_OUTPUT"
+
+      - name: Create GitHub Release
+        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ github.ref_name }}
+          RELEASE_NOTES_FILE: ${{ steps.changelog.outputs.file }}
+        run: |
+          PACKAGE="dist/mxheadless-${RELEASE_TAG}.transport.zip"
+          gh release create "${RELEASE_TAG}" \
+            --title "mxHeadless ${RELEASE_TAG}" \
+            --notes-file "${RELEASE_NOTES_FILE}" \
+            "${PACKAGE}" \
+            "${PACKAGE}.sha256"
+
+      - name: Upload transport artifact
+        if: github.event_name == 'workflow_dispatch'
+        uses: actions/upload-artifact@v4
+        with:
+          name: mxheadless-transport-${{ steps.version.outputs.package }}
+          path: dist/*
+          if-no-files-found: error

@@ -1,11 +1,21 @@
 <?php
 
 if (!defined('MODX_CORE_PATH')) {
-    $path = dirname(__FILE__);
-    while (!file_exists($path . '/core/config/config.inc.php') && (strlen($path) > 1)) {
-        $path = dirname($path);
+    $envCorePath = getenv('MODX_CORE_PATH');
+    if (is_string($envCorePath) && $envCorePath !== '') {
+        $envCorePath = rtrim($envCorePath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
+        if (is_file($envCorePath . 'config/config.inc.php')) {
+            define('MODX_CORE_PATH', $envCorePath);
+        }
     }
-    define('MODX_CORE_PATH', $path . '/core/');
+
+    if (!defined('MODX_CORE_PATH')) {
+        $path = dirname(__FILE__);
+        while (!file_exists($path . '/core/config/config.inc.php') && (strlen($path) > 1)) {
+            $path = dirname($path);
+        }
+        define('MODX_CORE_PATH', $path . '/core/');
+    }
 }
 
 return [

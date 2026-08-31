@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modx>
+    <database_type>mysql</database_type>
+    <database_server>127.0.0.1</database_server>
+    <database>modx</database>
+    <database_user>root</database_user>
+    <database_password>root</database_password>
+    <database_connection_charset>utf8mb4</database_connection_charset>
+    <database_charset>utf8mb4</database_charset>
+    <database_collation>utf8mb4_unicode_ci</database_collation>
+    <table_prefix>modx_</table_prefix>
+    <https_port>443</https_port>
+    <http_host>localhost</http_host>
+    <inplace>1</inplace>
+    <unpacked>0</unpacked>
+    <language>en</language>
+    <cmsadmin>admin</cmsadmin>
+    <cmspassword>adminadmin</cmspassword>
+    <cmsadminemail>admin@example.com</cmsadminemail>
+    <core_path>/tmp/modx/core/</core_path>
+    <context_mgr_path>/tmp/modx/manager/</context_mgr_path>
+    <context_mgr_url>/manager/</context_mgr_url>
+    <context_connectors_path>/tmp/modx/connectors/</context_connectors_path>
+    <context_connectors_url>/connectors/</context_connectors_url>
+    <context_web_path>/tmp/modx/</context_web_path>
+    <context_web_url>/</context_web_url>
+    <remove_setup_directory>0</remove_setup_directory>
+</modx>
