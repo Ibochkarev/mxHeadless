@@ -12,12 +12,16 @@ use xPDOQuery;
 class modX
 {
     public const LOG_LEVEL_ERROR = 1;
+    public const LOG_LEVEL_INFO = 2;
 
     /** @var object|null */
     public ?object $context = null;
 
     /** @var object */
     public object $services;
+
+    /** @var array<string, mixed> */
+    public array $version = [];
 
     /** @var array<string, mixed> */
     private array $options;
@@ -56,6 +60,24 @@ class modX
     public function getOption(string $key, $options = null, $default = null): mixed
     {
         return $this->options[$key] ?? $default;
+    }
+
+    public function reloadConfig(): void
+    {
+    }
+
+    public function getVersionData(): void
+    {
+    }
+
+    /**
+     * @return object{pdo?: PDO|null}
+     */
+    public function getConnection(): object
+    {
+        return new class {
+            public ?PDO $pdo = null;
+        };
     }
 
     public function log(int $level, string $message, ?string $target = null, ?string $def = '', ?string $file = '', ?string $line = '', ?string $tag = ''): void

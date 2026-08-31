@@ -70,7 +70,7 @@ class mxHeadlessPackage
         ]);
 
         $resolverDir = (string) $this->config['resolvers'];
-        foreach (['tables.php', 'events.php', 'permissions.php', 'settings-rename.php'] as $resolver) {
+        foreach (['tables.php', 'events.php', 'permissions.php', 'settings-rename.php', 'metrics.php'] as $resolver) {
             $source = $resolverDir . $resolver;
             if (is_file($source) && $vehicle->resolve('php', ['source' => $source])) {
                 $this->modx->log(modX::LOG_LEVEL_INFO, 'Added resolver ' . preg_replace('#\.php$#', '', $resolver));

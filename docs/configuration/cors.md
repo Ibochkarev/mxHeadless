@@ -1,6 +1,6 @@
 # CORS
 
-Required when a **browser** on another origin calls the API directly (Nuxt SPA, Next client components). Server-side Nuxt/Next (`$fetch` in server routes, RSC, Route Handlers) does not need CORS.
+You need CORS when a **browser** on another origin calls the API directly (Nuxt SPA, Next client components). Server-side Nuxt/Next (`$fetch` in server routes, RSC, Route Handlers) does not need CORS.
 
 ## Settings
 
@@ -13,15 +13,61 @@ Required when a **browser** on another origin calls the API directly (Nuxt SPA, 
 | `mxheadless_cors_expose_headers` | ETag,X-Request-ID,X-RateLimit-*,Idempotency-Replayed | Browser JS can read these |
 | `mxheadless_cors_allow_credentials` | `false` | Do not combine with `*` origins |
 
-## Nuxt / Next example
+## What the defaults mean
+
+`mxheadless_cors_enabled=false` turns CORS off. The API does not send `Access-Control-*` headers.
+
+That is not "allow everyone". With CORS disabled, browser cross-origin requests fail in the client. Same-origin pages and server-side callers are unaffected.
+
+When you set `mxheadless_cors_enabled=true`, the allowlist still applies. Headers go out only if `Origin` matches `mxheadless_cors_allowed_origins`, or the list is exactly `*`. Even with `*`, the response echoes the request origin in `Access-Control-Allow-Origin`, not a blanket open wildcard with credentials.
+
+Implementation: `core/components/mxheadless/src/Middleware/CorsMiddleware.php`.
+
+## How to: local Nuxt/Next SPA
+
+Use this when the frontend runs on `localhost:3000` and MODX/API is on another host or port.
 
 ```text
 mxheadless_cors_enabled = true
-mxheadless_cors_allowed_origins = http://localhost:3000,https://app.example.com
+mxheadless_cors_allowed_origins = http://localhost:3000
+mxheadless_cors_allow_credentials = false
 ```
 
-OPTIONS preflight returns `204` with ACAO headers when the `Origin` matches. Discovery (`GET /api/v1`) exposes `data.cors.enabled` and `data.cors.allowed_origins` so the frontend can fail fast if CORS is misconfigured.
+If you need session cookies from MODX in the browser, set `mxheadless_cors_allow_credentials = true` and list the exact origin (not `*`).
 
-`Access-Control-Expose-Headers` includes `ETag` so client `fetch` can implement conditional revalidation.
+Check from the browser devtools: preflight `OPTIONS` should return `204` and `Access-Control-Allow-Origin: http://localhost:3000`.
+
+## How to: production SPA on another domain
+
+```text
+mxheadless_cors_enabled = true
+mxheadless_cors_allowed_origins = https://app.example.com
+```
+
+Add staging explicitly if you use it:
+
+```text
+mxheadless_cors_allowed_origins = https://app.example.com,https://staging.example.com
+```
+
+Discovery (`GET /api/v1`) returns `data.cors.enabled` and `data.cors.allowed_origins`. Compare that with your SPA origin before debugging fetch errors.
+
+## How to: skip CORS entirely
+
+If Nuxt/Next talks to MODX only from server routes (BFF pattern), leave `mxheadless_cors_enabled=false`. The browser never hits MODX directly, so CORS does not apply.
+
+## Quick check with curl
+
+Simulate a browser preflight:
+
+```bash
+curl -i -X OPTIONS 'https://modx.example.com/api/v1/health' \
+  -H 'Origin: https://app.example.com' \
+  -H 'Access-Control-Request-Method: GET'
+```
+
+With CORS on and the origin allowlisted, expect `204` and `Access-Control-Allow-Origin: https://app.example.com`. With CORS off or a wrong origin, those headers are missing.
+
+`Access-Control-Expose-Headers` includes `ETag` so client `fetch` can do conditional revalidation.
 
 When MiniShop3 Web API runs on the same site, mirror the SPA origin in `ms3_cors_allowed_origins`. Details: [MiniShop3 coexistence](../extensions/minishop3.md#coexistence-mxheadless--ms3-web-api).
