@@ -12,6 +12,251 @@ Versioning: [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - Docs EN/RU, lexicons, and OpenAPI updated for the new keys.
 - API bootstrap context is now configurable via `mxheadless_context` (default `web`); `mgr` is ignored and falls back to `web`.
 
+## [1.0.41-pl] - 2026-08-30
+
+### Fixed
+
+- CLI bins resolve the MODX root by walking up to `core/config/config.inc.php` (works from Extra source and installed `core/components/mxheadless/bin`).
+
+### Changed
+
+- Unit coverage for CORS, CSRF, body limit, request ID, trusted proxy, errors, HTTP cache, routing, and media URLs.
+
+## [1.0.40-pl] - 2026-08-30
+
+### Fixed
+
+- Fallback `assets/components/mxheadless/api.php` mapped the request path incorrectly and returned 404.
+- On nginx/Herd without PATH_INFO, use `?route=/v1/health` (or `?route=/api/v1/...`). PATH_INFO `api.php/v1/...` still works when the server provides it.
+
+## [1.0.39-pl] - 2026-08-30
+
+### Fixed
+
+- `page` and `offset` together used to silently prefer `offset`. Now 422.
+
+### Changed
+
+- OpenAPI: `force` on DELETE for soft-delete objects; `include_deleted` on resource GET by id.
+
+## [1.0.38-pl] - 2026-08-30
+
+### Fixed
+
+- Second soft `DELETE` of the same resource returned 200. Now 404. `?force=1` still purges an already deleted row.
+
+## [1.0.37-pl] - 2026-08-30
+
+### Fixed
+
+- `Accept: text/html` on JSON endpoints returned 200. HTML is allowed only on `/docs`; otherwise 406.
+- `fields=` on a protected field (e.g. `createdby`) returned 200 with the field omitted. Now 422, same as hidden fields.
+- OpenAPI path for contexts by primary key is `/contexts/{key}` (not `{id}`).
+
+## [1.0.36-pl] - 2026-08-30
+
+### Added
+
+- Relations `category` (chunks, templates, snippets, TVs) and `parent` (categories).
+- Filter operator alias `ne` → `neq`.
+- Endpoint catalog `path` alias for `pattern`.
+
+### Changed
+
+- OpenAPI `include` only when the object has relations; `preview` / `include_deleted` only when `published` / `deleted` exist.
+- OpenAPI root `tags` lists the API groups (was empty).
+
+## [1.0.35-pl] - 2026-08-30
+
+### Changed
+
+- Live OpenAPI list query params come from each `ObjectDefinition` (filterable, sorts, relations). Templates no longer advertise `filter[published]`.
+- OpenAPI tags: `ContentTypes`, `TVs`.
+
+## [1.0.34-pl] - 2026-08-30
+
+### Added
+
+- Read-only collections: `templates`, `snippets`, `tvs`, `categories`, `content_types` (scopes `*.read`).
+- Static OpenAPI: `POST /auth/token`. Discovery links for resources, elements, auth, `openapi.json`.
+- Docs: `docs/api/elements.md` (EN/RU).
+
+## [1.0.33-pl] - 2026-08-30
+
+### Fixed
+
+- Manager session without `resources.read` blocked public GET (Swagger in the same browser returned 403). Session on public safe reads is treated like anonymous; API key / OAuth still need the scope.
+
+### Changed
+
+- OpenAPI: list/get query parameters; public operations use optional security `[{}, {bearerAuth}]` so Authorize still attaches a Bearer.
+
+## [1.0.32-pl] - 2026-08-30
+
+### Changed
+
+- OpenAPI `requestBody` on POST/PUT/PATCH (`MutationBody`, `OAuthTokenRequest`); create responses 201.
+- Swagger UI: `validatorUrl` disabled (no validator.swagger.io for local hosts).
+
+## [1.0.31-pl] - 2026-08-30
+
+### Added
+
+- `GET /api/v1/docs` Swagger UI; `GET /api/v1/meta/openapi.json` raw spec.
+- Setting `mxheadless.swagger.enabled` (default Yes). Discovery `links.docs`.
+
+### Fixed
+
+- HTTP cache stores `Content-Type` (cached `/docs` no longer comes back as JSON).
+- `Accept: text/html` and `application/openapi+json` no longer 406 on those routes.
+
+## [1.0.30-pl] - 2026-08-30
+
+### Fixed
+
+- Creating a resource with `parent` pointing at a soft-deleted row. Now 422.
+
+## [1.0.29-pl] - 2026-08-30
+
+### Fixed
+
+- Boolean filters: `filter[published][eq]=true` compared as a string and matched nothing. `true`/`false`/`yes`/`no` coerce; garbage is 422.
+
+## [1.0.28-pl] - 2026-08-30
+
+### Changed
+
+- `PATCH {"deleted":true}` uses the same soft-delete path as `DELETE` (audit fields + resource tree).
+- `PATCH {"deleted":0}` clears `deletedon` / `deletedby`.
+
+## [1.0.27-pl] - 2026-08-30
+
+### Changed
+
+- `deletedon` (and other immutable/hidden fields) rejected on write with 422 instead of ignored.
+- `alias` longer than 255 characters is 422.
+
+## [1.0.26-pl] - 2026-08-30
+
+### Fixed
+
+- Duplicate `alias` among non-deleted siblings. Now 422.
+- `template` must be `0` or an existing template id.
+
+## [1.0.25-pl] - 2026-08-30
+
+### Fixed
+
+- Parent cycle (`A → B → A`) hung in `modResource::save`. Detected before write, 422.
+- `content_type` must exist and be ≥ 1.
+
+## [1.0.24-pl] - 2026-08-30
+
+### Fixed
+
+- `class_key` must name an existing `modResource` subclass (unknown class used to save and then 404 on read).
+- `parent` must be `0` or an existing id, not self.
+- `template` must be ≥ 0.
+
+## [1.0.23-pl] - 2026-08-30
+
+### Fixed
+
+- Writing `context_key` to an unknown or unloadable context caused 500. Now 422 / 403 (whitelist, ACL, exists, loadable).
+- Mutations by id look up the row across contexts, then check access to the object's context.
+- 500 log lines include `file:line`.
+
+## [1.0.22-pl] - 2026-08-30
+
+### Changed
+
+- Mutations reject arrays/objects in scalar fields (422).
+- Booleans: only `true`/`false`/`0`/`1`. Integers (`parent`, `template`, …) must be integers.
+
+## [1.0.21-pl] - 2026-08-30
+
+### Changed
+
+- `limit` / `offset` / `page` of `0`, negative, or non-numeric is 422 (no silent clamp).
+- Unknown `include=` relation is 422 (`Include not allowed`).
+
+## [1.0.20-pl] - 2026-08-30
+
+### Added
+
+- `include_deleted=true` on GET list/get (requires `preview`, `resources.update`, or `resources.delete`; also skips published-only).
+
+### Fixed
+
+- Update/delete could not see soft-deleted rows, so restore was impossible. Mutations find trash; `PATCH {"deleted":0}` restores.
+- `PUT {}` without required fields is 422 (was 200, like PATCH).
+
+## [1.0.19-pl] - 2026-08-30
+
+### Added
+
+- Schema lists `required`, `protected`, and `immutable` fields.
+
+### Fixed
+
+- `PATCH` with empty `pagetitle` is 422.
+
+## [1.0.18-pl] - 2026-08-30
+
+### Fixed
+
+- Unknown filter operator (`filter[id][drop]=1`) was 500. Now 422.
+- `POST /resources` with `{}` or blank `pagetitle` was 201. Resources require a non-empty `pagetitle` (422).
+- `bootstrap.php` without `$namespace` (CLI) used a missing path. Fallback to `__DIR__/`.
+
+## [1.0.17-pl] - 2026-08-30
+
+### Changed
+
+- `DELETE /resources/{id}` is soft-delete (`deleted` / `deletedon` / `deletedby` + children). `?force=true` removes the row (including already deleted).
+- List pagination: `page` plus `links.self|next|prev`.
+
+### Fixed
+
+- Concurrent `Idempotency-Key` could produce two 201s. Lock via cache `add()`, then re-find.
+- Malformed JSON body is 422 (not 400).
+- Webhook `attempts` increments on successful delivery.
+
+## [1.0.16-pl] - 2026-08-30
+
+### Fixed
+
+- Same `Idempotency-Key` with a different body used to replay the first 2xx. Now 409 `idempotency_conflict`.
+- OAuth: `Authorization: Basic base64(client_id:client_secret)` with form or JSON body (RFC 6749).
+
+## [1.0.15-pl] - 2026-08-30
+
+### Fixed
+
+- OAuth `mxt_*` tokens never authenticated protected routes: MySQL `expires_on` datetime was cast with `(int)` and treated as expired. `normalizeTimestamp()` in token and API-key repositories.
+
+### Added
+
+- `POST /auth/token` accepts `application/x-www-form-urlencoded`.
+- `include=tvs` as an alias of `include=tv`.
+
+## [1.0.14-pl] - 2026-08-30
+
+### Added
+
+- Sort aliases `field:asc` / `field:desc` (alongside `+field` / `-field`).
+- `last_used_on` on API keys and OAuth tokens (updated on successful auth, 60s throttle).
+
+### Fixed
+
+- Manager API-key grid search: Enter via `specialkey` instead of a fragile DOM `keydown`.
+
+## [1.0.13-pl] - 2026-08-30
+
+### Fixed
+
+- Missing credential still `token_required`. Present but invalid, expired, or revoked Bearer is `invalid_token` (was `token_required`).
+
 ## [1.0.12-pl]
 
 ### Added
@@ -19,6 +264,10 @@ Versioning: [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - Manager UI: Components → mxHeadless (API keys grid create/update/revoke).
 - Lexicon EN/RU for settings labels and mgr strings.
 - Permission `mxheadless_apikeys` on Administrator policy.
+
+### Fixed
+
+- `oauth-client-create` CLI uses `MxHeadless\Model\modMxHeadlessOAuthClient` (mysql subclass failed to save).
 
 ## [1.0.11-pl]
 
@@ -106,15 +355,20 @@ Versioning: [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 - Do not overwrite existing system settings on package update.
 - Add `id` to resources filterable fields.
 
-## [1.0.3-pl]
+## [1.0.2-pl]
 
 ### Fixed
 
-- HTTP gateway recursion (plugin no longer binds `OnMxHeadlessRegister`).
-- xPDO model lookups (use `MxHeadless\Model\modMxHeadless*` base classes).
-- Allow public POST routes (OAuth token endpoint).
+- xPDO lookups use `MxHeadless\Model\modMxHeadless*` base classes (mysql subclasses did not hydrate API keys, OAuth, audit).
+- Public POST routes (OAuth `POST /auth/token`) no longer require a GET-only public check.
 - OPTIONS preflight returns 204 even when CORS is disabled.
-- Fix `oauth-client-create` CLI model class.
+
+## [1.0.1-pl]
+
+### Fixed
+
+- HTTP gateway recursion: plugin listens only to `OnHandleRequest` (dropped `OnMxHeadlessRegister` binding).
+- Upgrade resolver removes a leftover `OnMxHeadlessRegister` plugin event from 1.0.0 installs.
 
 ## [1.0.0-pl]
 
