@@ -31,10 +31,14 @@
         "test": "phpunit -c phpunit.xml.dist",
         "phpstan": "phpstan analyse -c phpstan.neon.dist --memory-limit=512M",
         "phpcs": "phpcs --standard=phpcs.xml.dist --warning-severity=0",
+        "check-composer": "composer validate --strict",
+        "check-audit": "composer audit",
         "ci": [
+            "@check-composer",
             "@test",
             "@phpstan",
-            "@phpcs"
+            "@phpcs",
+            "@check-audit"
         ],
         "dump-autoload": "composer dump-autoload -d core/components/mxheadless"
     },

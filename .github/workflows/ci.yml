@@ -16,6 +16,42 @@ permissions:
   contents: read
 
 jobs:
+  composer-check:
+    name: Composer validate and audit
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          coverage: none
+          tools: composer:v2
+
+      - name: Validate composer.json
+        run: composer validate --strict
+
+      - name: Get Composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - name: Install dependencies
+        run: composer install --no-interaction --prefer-dist
+
+      - name: Composer audit
+        run: composer audit
+
   test:
     name: PHPUnit (PHP ${{ matrix.php-version }})
     runs-on: ubuntu-latest
@@ -112,5 +148,27 @@ jobs:
         run: |
           find _build/resolvers -name '*.php' -print0 | xargs -0 -n1 php -l
 
+      - name: Lint component source
+        run: |
+          find core/components/mxheadless/src -name '*.php' -print0 | xargs -0 -n1 php -l
+
       - name: Lint API bootstrap
         run: php -l assets/components/mxheadless/api.php
+
+  openapi:
+    name: OpenAPI structure
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Validate OpenAPI YAML
+        run: |
+          npm install --no-save yaml
+          node scripts/validate-openapi.mjs docs/openapi.yaml

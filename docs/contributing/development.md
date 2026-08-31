@@ -62,7 +62,7 @@ composer phpcs
 composer ci
 ```
 
-`composer ci` runs PHPUnit, PHPStan, and PHPCS in one pass (same gates as GitHub Actions).
+`composer ci` runs validate, PHPUnit, PHPStan, PHPCS, and audit (same gates as GitHub Actions, except OpenAPI YAML structure check).
 
 ## Integration testing with MODX
 
