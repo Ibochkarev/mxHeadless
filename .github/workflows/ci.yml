@@ -6,16 +6,28 @@ on:
       - main
       - master
   pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
 
 jobs:
   test:
+    name: PHPUnit (PHP ${{ matrix.php-version }})
     runs-on: ubuntu-latest
 
     strategy:
+      fail-fast: false
       matrix:
         php-version:
           - '8.1'
           - '8.2'
+          - '8.3'
+          - '8.4'
 
     steps:
       - name: Checkout
@@ -36,7 +48,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('composer.lock') }}
           restore-keys: |
             ${{ runner.os }}-composer-
 
@@ -46,8 +58,59 @@ jobs:
       - name: PHPUnit
         run: composer test
 
-      - name: PHP_CodeSniffer
-        run: composer phpcs
+  static-analysis:
+    name: PHPStan and PHPCS
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          coverage: none
+          tools: composer:v2
+
+      - name: Get Composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - name: Install dependencies
+        run: composer install --no-interaction --prefer-dist
 
       - name: PHPStan
         run: composer phpstan
+
+      - name: PHP_CodeSniffer
+        run: composer phpcs
+
+  syntax:
+    name: PHP syntax
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          coverage: none
+
+      - name: Lint build resolvers
+        run: |
+          find _build/resolvers -name '*.php' -print0 | xargs -0 -n1 php -l
+
+      - name: Lint API bootstrap
+        run: php -l assets/components/mxheadless/api.php

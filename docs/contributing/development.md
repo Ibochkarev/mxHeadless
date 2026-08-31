@@ -59,7 +59,10 @@ composer test
 ```bash
 composer phpstan
 composer phpcs
+composer ci
 ```
+
+`composer ci` runs PHPUnit, PHPStan, and PHPCS in one pass (same gates as GitHub Actions).
 
 ## Integration testing with MODX
 

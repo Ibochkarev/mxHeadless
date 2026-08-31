@@ -1,5 +1,7 @@
 # mxHeadless
 
+[![CI](https://github.com/Ibochkarev/mxHeadless/actions/workflows/ci.yml/badge.svg)](https://github.com/Ibochkarev/mxHeadless/actions/workflows/ci.yml)
+
 REST API gateway for [MODX Revolution 3](https://modx.com/). It turns resources, pages, elements, contexts, and registered xPDO objects into JSON for Nuxt, Next.js, SvelteKit, mobile apps, and custom clients.
 
 Current release: **1.0.42** (see discovery `data.version`).
@@ -246,9 +248,7 @@ Checklists: [production](docs/operations/production-checklist.md), [deployment](
 ## Development
 
 ```bash
-composer test
-composer phpstan
-composer phpcs
+composer ci
 cd _build && php build.php
 php scripts/e2e-live.php https://your-site.example "$API_KEY"
 ```
