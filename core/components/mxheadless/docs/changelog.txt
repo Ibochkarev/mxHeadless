@@ -3,6 +3,16 @@
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 Versioning: [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
+## [Unreleased]
+
+## [1.0.43-pl] - 2026-09-26
+
+### Fixed
+
+- Session CSRF: issue `$_SESSION['mxheadless.csrf_token']` on session-auth requests and return it as `X-CSRF-Token` (#1).
+- `mxheadless_context` now switches the MODX context on the rewrite gateway and is the QueryParser default when `X-Context` / `?context=` are omitted (#2).
+- `/pages/{uri}` percent-decodes the captured path, same as other route params (#3).
+
 ## [1.0.42-pl] - 2026-08-30
 
 ### Changed

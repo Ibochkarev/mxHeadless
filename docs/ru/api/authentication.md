@@ -89,11 +89,7 @@ curl -s -X POST https://example.com/api/v1/auth/token \
 
 ### CSRF
 
-Для `POST`, `PUT`, `PATCH`, `DELETE` по сессии:
-
-```
-X-CSRF-Token: {токен из сессии MODX}
-```
+Любой запрос с session identity создаёт `$_SESSION['mxheadless.csrf_token']`, если его ещё нет, и возвращает его в `X-CSRF-Token`. Для `POST`, `PUT`, `PATCH`, `DELETE` отправьте тот же заголовок. Это не CSRF-токен ядра MODX.
 
 `mxh_*` и `mxt_*` CSRF не требуют.
 

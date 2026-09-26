@@ -6,6 +6,7 @@ namespace MxHeadless\Query;
 
 use MODX\Revolution\modX;
 use MxHeadless\Exception\ValidationException;
+use MxHeadless\Http\ApiContext;
 
 final class QueryParser
 {
@@ -271,15 +272,38 @@ final class QueryParser
      */
     private function resolveContext(array $queryParams, ?string $contextHeader): string
     {
+        $allowed = $this->allowedContexts();
         $context = $contextHeader !== null && $contextHeader !== ''
             ? $contextHeader
-            : (string) ($queryParams['context'] ?? 'web');
+            : (string) ($queryParams['context'] ?? $this->defaultContext($allowed));
 
-        $allowed = array_map('trim', explode(',', (string) $this->modx->getOption('mxheadless_allowed_contexts', null, 'web,mgr')));
         if (!in_array($context, $allowed, true)) {
             throw new ValidationException('Invalid context', ['context' => ['Context not allowed']]);
         }
 
         return $context;
+    }
+
+    /**
+     * @return list<string>
+     */
+    private function allowedContexts(): array
+    {
+        $allowed = array_map('trim', explode(',', (string) $this->modx->getOption('mxheadless_allowed_contexts', null, 'web,mgr')));
+
+        return array_values(array_filter($allowed, static fn (string $key): bool => $key !== ''));
+    }
+
+    /**
+     * @param list<string> $allowed
+     */
+    private function defaultContext(array $allowed): string
+    {
+        $fromSetting = ApiContext::bootstrapKey($this->modx);
+        if (in_array($fromSetting, $allowed, true)) {
+            return $fromSetting;
+        }
+
+        return in_array('web', $allowed, true) ? 'web' : ($allowed[0] ?? 'web');
     }
 }

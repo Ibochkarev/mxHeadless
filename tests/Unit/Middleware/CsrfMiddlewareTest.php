@@ -34,7 +34,7 @@ final class CsrfMiddlewareTest extends TestCase
         self::assertSame(200, $response->getStatusCode());
     }
 
-    public function testGetAlwaysPasses(): void
+    public function testGetAlwaysPassesAndIssuesToken(): void
     {
         $middleware = new CsrfMiddleware(new modX(['mxheadless_csrf_enabled' => true]));
         $request = (new ServerRequest('GET', 'https://example.test/api/v1/resources'))
@@ -42,6 +42,9 @@ final class CsrfMiddlewareTest extends TestCase
 
         $response = $middleware->process($request, $this->okHandler());
         self::assertSame(200, $response->getStatusCode());
+        $token = $response->getHeaderLine('X-CSRF-Token');
+        self::assertNotSame('', $token);
+        self::assertSame($token, $_SESSION['mxheadless.csrf_token'] ?? null);
     }
 
     public function testApiKeyIdentityPostPassesWithoutCsrf(): void
@@ -76,6 +79,7 @@ final class CsrfMiddlewareTest extends TestCase
 
         $response = $middleware->process($request, $this->okHandler());
         self::assertSame(200, $response->getStatusCode());
+        self::assertSame('valid-csrf-token', $response->getHeaderLine('X-CSRF-Token'));
     }
 
     private function sessionIdentity(): Identity

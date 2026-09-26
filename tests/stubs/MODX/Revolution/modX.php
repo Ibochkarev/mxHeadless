@@ -89,9 +89,9 @@ class modX
         return new xPDOQuery($class, $alias);
     }
 
-  /**
-   * @param array<string, mixed>|int|string $criteria
-   */
+    /**
+     * @param array<string, mixed>|int|string $criteria
+     */
     public function getObject(string $class, $criteria): ?\xPDOObject
     {
         return null;
@@ -146,6 +146,25 @@ class modX
     public function getAuthenticatedUser(): ?object
     {
         return null;
+    }
+
+    public function switchContext(string $contextKey, bool $reload = false): bool
+    {
+        $this->context = new class ($contextKey) {
+            public function __construct(private readonly string $key)
+            {
+            }
+
+            public function get(string $name): mixed
+            {
+                return match ($name) {
+                    'key' => $this->key,
+                    default => null,
+                };
+            }
+        };
+
+        return true;
     }
 
     /** @var object|null */

@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: mxHeadless API
-  version: 1.0.42
+  version: 1.0.43
   description: |
     Universal REST API for MODX Revolution 3.
 

@@ -4,7 +4,7 @@
 
 REST API gateway for [MODX Revolution 3](https://modx.com/). It turns resources, pages, elements, contexts, and registered xPDO objects into JSON for Nuxt, Next.js, SvelteKit, mobile apps, and custom clients.
 
-Current release: **1.0.42** (see discovery `data.version`).
+Current release: **1.0.43** (see discovery `data.version`).
 
 License: GPL-2.0-or-later. No feature tiers.
 

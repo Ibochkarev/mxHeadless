@@ -94,11 +94,7 @@ When the browser has a MODX session cookie for the target context, mxHeadless re
 
 ### CSRF
 
-State-changing requests (`POST`, `PUT`, `PATCH`, `DELETE`) with session auth require:
-
-```
-X-CSRF-Token: {token from MODX session}
-```
+Any request with a session identity creates `$_SESSION['mxheadless.csrf_token']` if missing and returns it in `X-CSRF-Token`. Send the same header on `POST`, `PUT`, `PATCH`, `DELETE`. This is not the MODX core CSRF token.
 
 Bearer credentials (`mxh_*`, `mxt_*`) skip CSRF.
 

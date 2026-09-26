@@ -88,7 +88,7 @@ return [
     'cors_expose_headers' => [
         'key' => 'mxheadless_cors_expose_headers',
         'xtype' => 'textfield',
-        'value' => 'ETag,X-Request-ID,X-RateLimit-Limit,X-RateLimit-Remaining,X-RateLimit-Reset,Idempotency-Replayed',
+        'value' => 'ETag,X-Request-ID,X-RateLimit-Limit,X-RateLimit-Remaining,X-RateLimit-Reset,Idempotency-Replayed,X-CSRF-Token',
         'area' => 'mxheadless_cors',
     ],
     'cors_allow_credentials' => [

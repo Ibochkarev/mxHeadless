@@ -140,6 +140,23 @@ final class QueryParserTest extends TestCase
         self::assertSame('mgr', $query->context());
     }
 
+    public function testDefaultContextUsesMxheadlessContextWhenAllowed(): void
+    {
+        $parser = new QueryParser(new modX([
+            'mxheadless_max_limit' => 100,
+            'mxheadless_max_offset' => 100000,
+            'mxheadless_max_fields' => 50,
+            'mxheadless_max_include_relations' => 10,
+            'mxheadless_max_include_depth' => 2,
+            'mxheadless_allowed_contexts' => 'web,mgr,site',
+            'mxheadless_context' => 'site',
+        ]));
+
+        $query = $parser->parse('articles', []);
+
+        self::assertSame('site', $query->context());
+    }
+
     public function testInvalidContextThrows(): void
     {
         $this->expectException(ValidationException::class);

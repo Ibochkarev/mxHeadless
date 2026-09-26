@@ -20,27 +20,28 @@ final class CorsMiddleware implements MiddlewareInterface
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
+        $corsEnabled = (bool) $this->modx->getOption('mxheadless_cors_enabled', null, false);
+
         if ($request->getMethod() === 'OPTIONS') {
-            $response = Psr7Factory::createResponse(204);
-
-            if (!(bool) $this->modx->getOption('mxheadless_cors_enabled', null, false)) {
-                return $response;
-            }
-
-            $origin = $request->getHeaderLine('Origin');
-            $allowedOrigin = $this->resolveAllowedOrigin($origin, $this->parseOrigins());
-
-            return $allowedOrigin !== null ? $this->applyCorsHeaders($response, $allowedOrigin) : $response;
+            return $this->applyCorsIfAllowed(Psr7Factory::createResponse(204), $request, $corsEnabled);
         }
 
-        if (!(bool) $this->modx->getOption('mxheadless_cors_enabled', null, false)) {
-            return $handler->handle($request);
+        return $this->applyCorsIfAllowed($handler->handle($request), $request, $corsEnabled);
+    }
+
+    private function applyCorsIfAllowed(
+        ResponseInterface $response,
+        ServerRequestInterface $request,
+        bool $corsEnabled,
+    ): ResponseInterface {
+        if (!$corsEnabled) {
+            return $response;
         }
 
-        $origin = $request->getHeaderLine('Origin');
-        $allowedOrigin = $this->resolveAllowedOrigin($origin, $this->parseOrigins());
-
-        $response = $handler->handle($request);
+        $allowedOrigin = $this->resolveAllowedOrigin(
+            $request->getHeaderLine('Origin'),
+            $this->parseOrigins(),
+        );
 
         return $allowedOrigin !== null ? $this->applyCorsHeaders($response, $allowedOrigin) : $response;
     }
@@ -86,7 +87,7 @@ final class CorsMiddleware implements MiddlewareInterface
         $expose = (string) $this->modx->getOption(
             'mxheadless_cors_expose_headers',
             null,
-            'ETag,X-Request-ID,X-RateLimit-Limit,X-RateLimit-Remaining,X-RateLimit-Reset,Idempotency-Replayed',
+            'ETag,X-Request-ID,X-RateLimit-Limit,X-RateLimit-Remaining,X-RateLimit-Reset,Idempotency-Replayed,X-CSRF-Token',
         );
         $credentials = (bool) $this->modx->getOption('mxheadless_cors_allow_credentials', null, false);
 

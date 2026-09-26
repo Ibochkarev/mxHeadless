@@ -34,5 +34,7 @@ if (!$application->matchesPath($path)) {
     return;
 }
 
+\MxHeadless\Http\ApiContext::apply($modx);
+
 $application->handleFromGlobals();
 exit;

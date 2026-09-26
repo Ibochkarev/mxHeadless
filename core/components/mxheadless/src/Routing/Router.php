@@ -51,9 +51,9 @@ final class Router
         }
 
         if (str_ends_with($pattern, '{uri}')) {
-            $prefix = substr($pattern, 0, -5);
-            if ($path === rtrim($prefix, '/') || str_starts_with($path, $prefix)) {
-                return ['uri' => ltrim(substr($path, strlen(rtrim($prefix, '/'))), '/')];
+            $base = rtrim(substr($pattern, 0, -5), '/');
+            if ($path === $base || str_starts_with($path, $base . '/')) {
+                return ['uri' => rawurldecode(ltrim(substr($path, strlen($base)), '/'))];
             }
 
             return null;

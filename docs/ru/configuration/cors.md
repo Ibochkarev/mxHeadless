@@ -10,7 +10,7 @@ CORS нужен, когда **браузер** с другого origin ходи
 | `mxheadless_cors_allowed_origins` | пусто | Точные origin через запятую, или `*` |
 | `mxheadless_cors_allowed_methods` | GET,POST,PUT,PATCH,DELETE,OPTIONS | |
 | `mxheadless_cors_allowed_headers` | Authorization,Content-Type,X-Request-ID,X-CSRF-Token,X-Context,X-API-Key,Idempotency-Key | |
-| `mxheadless_cors_expose_headers` | ETag,X-Request-ID,X-RateLimit-*,Idempotency-Replayed | Доступны из JS |
+| `mxheadless_cors_expose_headers` | ETag,X-Request-ID,X-RateLimit-*,Idempotency-Replayed,X-CSRF-Token | Доступны из JS |
 | `mxheadless_cors_allow_credentials` | `false` | Не сочетать с `*` в origins |
 
 ## Что значит дефолт

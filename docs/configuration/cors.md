@@ -10,7 +10,7 @@ You need CORS when a **browser** on another origin calls the API directly (Nuxt 
 | `mxheadless_cors_allowed_origins` | empty | Comma-separated exact origins, or `*` |
 | `mxheadless_cors_allowed_methods` | GET,POST,PUT,PATCH,DELETE,OPTIONS | |
 | `mxheadless_cors_allowed_headers` | Authorization,Content-Type,X-Request-ID,X-CSRF-Token,X-Context,X-API-Key,Idempotency-Key | |
-| `mxheadless_cors_expose_headers` | ETag,X-Request-ID,X-RateLimit-*,Idempotency-Replayed | Browser JS can read these |
+| `mxheadless_cors_expose_headers` | ETag,X-Request-ID,X-RateLimit-*,Idempotency-Replayed,X-CSRF-Token | Browser JS can read these |
 | `mxheadless_cors_allow_credentials` | `false` | Do not combine with `*` origins |
 
 ## What the defaults mean
