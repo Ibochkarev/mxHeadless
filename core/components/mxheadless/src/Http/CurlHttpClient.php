@@ -10,11 +10,16 @@ use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
 /**
- * Minimal PSR-18 client backed by curl for webhook delivery when the host
- * has not registered another ClientInterface in the MODX container.
+ * Minimal PSR-18 client for webhook delivery when the host has not registered
+ * another ClientInterface in the MODX container.
+ *
+ * Uses PHP HTTP streams (not libcurl) so connect/read timeouts are enforced
+ * under PHP-FPM, where SIGALRM-based curl timeouts are unreliable.
  */
 final class CurlHttpClient implements ClientInterface
 {
+    private const CONNECT_AND_READ_TIMEOUT_SECONDS = 10;
+
     public function __construct(
         private readonly bool $verifyPeer = true,
     ) {
@@ -22,13 +27,10 @@ final class CurlHttpClient implements ClientInterface
 
     public function sendRequest(RequestInterface $request): ResponseInterface
     {
-        if (!function_exists('curl_init')) {
-            throw $this->clientException('curl extension is required for webhook delivery');
-        }
-
-        $handle = curl_init((string) $request->getUri());
-        if ($handle === false) {
-            throw $this->clientException('Unable to initialize curl');
+        $uri = (string) $request->getUri();
+        $scheme = strtolower((string) $request->getUri()->getScheme());
+        if (!in_array($scheme, ['http', 'https'], true)) {
+            throw $this->clientException('Only http/https webhook URLs are allowed');
         }
 
         $headers = [];
@@ -39,38 +41,46 @@ final class CurlHttpClient implements ClientInterface
         }
 
         $body = (string) $request->getBody();
-        curl_setopt_array($handle, [
-            CURLOPT_CUSTOMREQUEST => $request->getMethod(),
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_HEADER => true,
-            CURLOPT_HTTPHEADER => $headers,
-            CURLOPT_TIMEOUT => 15,
-            CURLOPT_FOLLOWLOCATION => false,
-            CURLOPT_PROTOCOLS => CURLPROTO_HTTP | CURLPROTO_HTTPS,
-            CURLOPT_REDIR_PROTOCOLS => CURLPROTO_HTTP | CURLPROTO_HTTPS,
-            CURLOPT_SSL_VERIFYPEER => $this->verifyPeer,
-            CURLOPT_SSL_VERIFYHOST => $this->verifyPeer ? 2 : 0,
+        $context = stream_context_create([
+            'http' => [
+                'method' => $request->getMethod(),
+                'header' => implode("\r\n", $headers),
+                'content' => $body,
+                'timeout' => self::CONNECT_AND_READ_TIMEOUT_SECONDS,
+                'ignore_errors' => true,
+                'follow_location' => 0,
+                'max_redirects' => 0,
+            ],
+            'ssl' => [
+                'verify_peer' => $this->verifyPeer,
+                'verify_peer_name' => $this->verifyPeer,
+            ],
         ]);
 
-        if ($body !== '') {
-            curl_setopt($handle, CURLOPT_POSTFIELDS, $body);
-        }
-
-        $raw = curl_exec($handle);
+        $raw = @file_get_contents($uri, false, $context);
         if ($raw === false) {
-            $error = curl_error($handle);
-            curl_close($handle);
-            throw $this->clientException($error !== '' ? $error : 'curl request failed');
+            $error = error_get_last();
+            $message = is_array($error) ? (string) ($error['message'] ?? '') : '';
+            throw $this->clientException($message !== '' ? $message : 'HTTP request failed');
         }
 
-        $status = (int) curl_getinfo($handle, CURLINFO_HTTP_CODE);
-        $headerSize = (int) curl_getinfo($handle, CURLINFO_HEADER_SIZE);
-        curl_close($handle);
+        $headerLines = function_exists('http_get_last_response_headers')
+            ? http_get_last_response_headers()
+            : null;
+        if (!is_array($headerLines)) {
+            $headerLines = [];
+        }
 
-        $headerRaw = substr($raw, 0, $headerSize);
-        $responseBody = substr($raw, $headerSize);
         $responseHeaders = [];
-        foreach (explode("\r\n", $headerRaw) as $line) {
+        $status = 0;
+        foreach ($headerLines as $line) {
+            if (!is_string($line)) {
+                continue;
+            }
+            if (preg_match('/^HTTP\/\S+\s+(\d{3})/', $line, $matches) === 1) {
+                $status = (int) $matches[1];
+                continue;
+            }
             if (!str_contains($line, ':')) {
                 continue;
             }
@@ -78,7 +88,7 @@ final class CurlHttpClient implements ClientInterface
             $responseHeaders[trim($name)] = trim($value);
         }
 
-        return Psr7Factory::createResponse($status, $responseHeaders, $responseBody);
+        return Psr7Factory::createResponse($status > 0 ? $status : 0, $responseHeaders, $raw);
     }
 
     private function clientException(string $message): ClientExceptionInterface

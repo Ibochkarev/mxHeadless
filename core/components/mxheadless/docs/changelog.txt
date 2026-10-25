@@ -5,6 +5,13 @@ Versioning: [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 
 ## [Unreleased]
 
+## [1.0.44-pl] - 2026-10-25
+
+### Fixed
+
+- Webhook HTTP client uses PHP streams with a 10 second connect and read timeout. libcurl timeouts were unreliable under PHP-FPM.
+- Webhook worker stops before `max_execution_time`, so a slow endpoint does not abort the batch with a fatal error.
+
 ## [1.0.43-pl] - 2026-09-26
 
 ### Fixed

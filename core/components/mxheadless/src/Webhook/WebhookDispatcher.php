@@ -25,8 +25,18 @@ final class WebhookDispatcher
     public function processPending(int $limit = 50): int
     {
         $processed = 0;
+        $startedAt = microtime(true);
+        $maxExecution = (float) ini_get('max_execution_time');
+        // Stop before PHP fatal when SAPI enforces max_execution_time (often 30s).
+        $deadline = $maxExecution > 0.0
+            ? $startedAt + max(1.0, $maxExecution - 2.0)
+            : null;
 
         foreach ($this->outbox->pending($limit) as $delivery) {
+            if ($deadline !== null && microtime(true) >= $deadline) {
+                break;
+            }
+
             $url = (string) $delivery->get('url');
             if ($url === '' || !$this->isSafeUrl($url)) {
                 $this->outbox->markFailed($delivery, 'Unsafe or missing webhook URL');
