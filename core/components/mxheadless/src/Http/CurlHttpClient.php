@@ -60,7 +60,7 @@ final class CurlHttpClient implements ClientInterface
         $raw = @file_get_contents($uri, false, $context);
         if ($raw === false) {
             $error = error_get_last();
-            $message = is_array($error) ? (string) ($error['message'] ?? '') : '';
+            $message = is_array($error) ? $error['message'] : '';
             throw $this->clientException($message !== '' ? $message : 'HTTP request failed');
         }
 
